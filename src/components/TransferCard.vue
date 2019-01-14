@@ -8,7 +8,7 @@
         </b-col>
         <b-col cols="4">
           <p class="margin-none"><span class="text-primary">123.13</span> {{symbol}}</p>
-          <p class="margin-none"><span class="text-danger">000.00</span> VTHO</p>
+          <p class="margin-none"><span class="text-danger">{{vthoValue}}</span> VTHO</p>
         </b-col>
         <b-col cols="1">
           <p @click="toggleShowOffButton">x</p>
@@ -102,6 +102,7 @@
 
 <script>
 const calc = require('../calculations.js')
+const network = require('../network.js')
 
 export default {
   props: {
@@ -110,6 +111,7 @@ export default {
   },
   data () {
     return {
+      vthoValue: 0,
       amountOwned: 100, // Amount of token that owned by address.
       showCollapseOfTransfer: false,
       showCollapseOfConfirmation: false,
@@ -124,11 +126,15 @@ export default {
       transactionFeeTitle: 'Fee',
       confirmTransferButton: 'Confirm',
       cancelTransferButton: 'Cancel',
-      modalText: ''
+      modalText: '',
+      modalOkButtonText: 'Okay'
     }
   },
   mounted () {
     this.hideAllCollapse()
+    let accInfo = network.getAccountBalance(this.address)
+    debugger
+    console.log(accInfo)
   },
   methods: {
     setModalText (text) {

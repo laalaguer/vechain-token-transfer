@@ -19,6 +19,7 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
+    "@vechain/connex": "^0.6.1",
     "@vue/cli-plugin-babel": "^3.2.0",
     "@vue/cli-plugin-eslint": "^3.2.0",
     "@vue/cli-service": "^3.2.0",
