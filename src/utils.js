@@ -32,12 +32,14 @@ const evmToHuman = function (aBigNumber, decimals = DECIMALS) {
 }
 
 /**
- * Turn a human understandable number to an EVM number.
- * @param {BigNumber} aBigNumber An EVM big number.
+ * Turn a human understandable number to an EVM Big number.
+ * @param {Number} aNumber A normal float/int from user input.
  * @param {BigNumber} decimals Percisions that EVM number has. Default is 10 ** 18.
+ * @returns {String} String represented number.
  */
-const humanToEvm = function (aBigNumber, decimals = DECIMALS) {
-  return aBigNumber.multipliedBy(decimals)
+const humanToEvm = function (aNumber, decimals = DECIMALS) {
+  const a = makeBN(aNumber)
+  return a.multipliedBy(decimals).toString()
 }
 
 /**

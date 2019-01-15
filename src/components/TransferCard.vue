@@ -71,8 +71,6 @@
         <p>{{toAddress}}</p>
         <p>{{transferAmountTitle}}</p>
         <p>{{transferAmount}} {{symbol}}</p>
-        <p>{{transactionFeeTitle}}</p>
-        <p>000.00 VTHO</p>
       </div>
       <b-row style="text-align: center;">
         <b-col cols="6">
@@ -122,10 +120,8 @@ export default {
       validAddressFeedback: 'Looks good.',
       transferAmount: 0,
       transferAmountTitle: 'Amount:',
-      invalidAmountFeedback: 'Must be positive.',
       validAmountFeedback: 'Looks good.',
       createTransferButton: 'Next Step',
-      transactionFeeTitle: 'Fee',
       confirmTransferButton: 'Confirm',
       cancelTransferButton: 'Cancel',
       modalText: '',
@@ -148,8 +144,16 @@ export default {
       operations.getTokenBalance(this.contract, this.address)
         .then(result => {
           this.tokenValue = utils.evmToPrintable(result['decoded']['balance'])
+          // this will result in a Promise with undefined as resolve(value).
         })
-        .then(setTimeout(() => { this.refreshTokenBalance() }, 3000))
+        .then(() => {
+          // eslint-disable-next-line
+          const ticker = connex.thor.ticker()
+          ticker.next().then(() => { this.refreshTokenBalance() })
+        })
+        .catch(e => {
+          setTimeout(() => { this.refreshTokenBalance() }, 3000)
+        })
     },
     refreshVTHOBalance () {
       // Refresh user vtho balance
@@ -158,7 +162,12 @@ export default {
           this.vthoValue = utils.evmToPrintable(result['energy'])
           // this will result in a Promise with undefined as resolve(value).
         })
-        .then(setTimeout(() => { this.refreshVTHOBalance() }, 3000))
+        .then(() => {
+          // eslint-disable-next-line
+          const ticker = connex.thor.ticker()
+          ticker.next().then(() => { this.refreshVTHOBalance() })
+        })
+        .catch(e => { setTimeout(() => { this.refreshVTHOBalance() }, 3000) })
     },
     setModalText (text) {
       this.modalText = text
@@ -182,7 +191,7 @@ export default {
       this.showCollapseOfConfirmation = false
     },
     toggleArrowIcon () {
-      if (this.arrowChoice === 'angle-double-down'){
+      if (this.arrowChoice === 'angle-double-down') {
         this.arrowChoice = 'angle-double-up'
       } else {
         this.arrowChoice = 'angle-double-down'
@@ -198,20 +207,68 @@ export default {
       }
     },
     createTransfer () { // Create a transfer, not sending out yet.
-      this.showConfirmationHideTransfer()
+      if (this.canTransfer)
+        this.showConfirmationHideTransfer()
     },
-    confirmTransfer () {
-      this.setModalText('Transaction sent!')
-      this.showModal()
+    confirmTransfer () { // Confrim and send out a transfer.
+      const emvAmount = utils.humanToEvm(this.transferAmount)
+      operations.transferToken(this.contract, this.address, this.toAddress, emvAmount)
+        .then(result => {
+          this.setModalText('Transaction sent!')
+          this.showModal()
+        })
+        .catch(e => {
+          this.setModalText(e.toString())
+          this.showModal()
+        })
     },
     cancelTransfer () {
       this.showTransferHideConfirmation()
     },
     handleModalOk () {
+      this.clearTransferData()
+      this.hideAllCollapse()
       this.hideModal()
     }
   },
   computed: {
+    addressErrorCode () { // Error code of address
+      if (!this.toAddress.startsWith('0x')) {
+        return 'ERR_START_WRONG'
+      }
+      if (this.toAddress.length < 42) {
+        return 'ERR_TOO_SHORT'
+      }
+      if (this.toAddress.length > 42) {
+        return 'ERR_TOO_LONG'
+      }
+      if (!calc.onlyAlphanumeric(this.toAddress.slice(2))) {
+        return 'ERR_NON_ALPHANUMERIC'
+      }
+      if (!calc.isValidAddress(this.toAddress.slice(2))) {
+        return 'ERR_INVALID_ADDRESS'
+      }
+      return null
+    },
+    amountErrorCode () {  // Error code of amount
+      if (isNaN(this.transferAmount)){
+        return 'ERR_NAN'
+      }
+      if (this.transferAmount === 0) {
+        return 'ERR_ZERO'
+      }
+      if (this.transferAmount < 0) {
+        return 'ERR_NEGATIVE'
+      }
+      if (this.transferAmount > this.tokenValue){
+        return 'ERR_BREACH_MAX'
+      }
+      const p = /^[0-9]+.?[0-9]{0,4}$/
+      if (!this.transferAmount.toString().match(p)){
+        return 'ERR_DECIMAL_FORMAT'
+      }
+      return null
+    },
     truncatedAddress () {
       return this.address.slice(0, 8) + '...' + this.address.slice(-6)
     },
@@ -219,38 +276,68 @@ export default {
       return this.tokenValue
     },
     transferAmountState () {
-      if (this.transferAmount === 0) {
-        return null
+      switch (this.amountErrorCode){
+        case 'ERR_ZERO':
+          return null
+        case 'ERR_NAN':
+        case 'ERR_NEGATIVE':
+        case 'ERR_BREACH_MAX':
+        case 'ERR_DECIMAL_FORMAT':
+          return false
+        default:
+          return true
       }
-      return this.transferAmount > 0 && this.transferAmount <= this.tokenValue
     },
-    toAddressState () { // The state of input box.
+    toAddressState () { // The state of address input box.
       if (this.toAddress.length === 0) {
         return null
       }
-      return calc.isValidAddress(this.toAddress.slice(2))
+      if (this.addressErrorCode) {
+        return false
+      } else {
+        return true
+      }
+    },
+    canTransfer () {
+      if (this.transferAmountState && this.toAddressState){
+        return true
+      } else {
+        return false
+      }
+    },
+    invalidAmountFeedback () {
+      switch (this.amountErrorCode){
+        case 'ERR_ZERO':
+          return 'Cannot be 0'
+        case 'ERR_NAN':
+          return 'Must be a number'
+        case 'ERR_NEGATIVE':
+          return 'Must be positive'
+        case 'ERR_BREACH_MAX':
+          return 'Too large'
+        case 'ERR_DECIMAL_FORMAT':
+          return 'Max 4 decimal digits allowed'
+        default:
+          return ''
+      }
     },
     invalidAddressFeedback () { // Input feedback message.
-      if (!this.toAddress.startsWith('0x')) {
-        return 'Should start with 0x'
-      }
-      if (this.toAddress.length < 42) {
-        return 'Too short.'
-      } else if (this.toAddress.length > 42) {
-        return 'Too long.'
-      } else {
-        if (!calc.isValidAddress(this.toAddress.slice(2))) {
-          if (!calc.onlyAlphanumeric(this.toAddress.slice(2))) {
-            return 'Only A-Z, a-z, 0-9 allowed.'
-          }
-          if (!calc.isEIP55Address(this.toAddress.slice(2))) {
-            return 'Address checksum failed.'
-          }
-        } else {
+      switch (this.addressErrorCode) {
+        case 'ERR_START_WRONG':
+          return 'Should start with 0x'
+        case 'ERR_TOO_SHORT':
+          return 'Too short'
+        case 'ERR_TOO_LONG':
+          return 'Too long'
+        case 'ERR_INVALID_ADDRESS':
+          return 'Invalid Address or checksum failed'
+        case 'ERR_NON_ALPHANUMERIC':
+          return 'Only A-Z, a-z, 0-9 allowed'
+        case 'ERR_CHECKSUM_FAILED':
+          return 'Address checksum failed'
+        default:
           return ''
-        }
       }
-      return null
     }
   }
 }
