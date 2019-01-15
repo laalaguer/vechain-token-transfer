@@ -5,7 +5,7 @@
       <b-container>
         <b-row class="my-2" align-h="center" v-for="address in addresses" :key="address"><!-- Rows of Transfer cards -->
           <b-col sm="12" md="8" lg="6">
-            <transfer-card :address="address" symbol="TIC"/>
+            <transfer-card :address="address" symbol="TIC" contract="0x18081982d752ADd4f402AEAe480d6c90f7644427"/>
           </b-col>
         </b-row>
         <b-row class="my-2" align-h="center"><!-- Row of address input -->

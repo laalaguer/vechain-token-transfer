@@ -3,15 +3,15 @@
   <div>
     <b-card>
       <b-row><!-- Row of info display -->
-        <b-col cols="7">
-          <p class="trim-text">{{address}}</p>
+        <b-col cols="6">
+          <p v-b-tooltip.hover :title="address">{{truncatedAddress}}</p>
         </b-col>
-        <b-col cols="4">
-          <p class="margin-none"><span class="text-primary">123.13</span> {{symbol}}</p>
+        <b-col cols="5">
+          <p class="margin-none"><span class="text-primary">{{tokenValue}}</span> {{symbol}}</p>
           <p class="margin-none"><span class="text-danger">{{vthoValue}}</span> VTHO</p>
         </b-col>
         <b-col cols="1">
-          <p @click="toggleShowOffButton">x</p>
+          <font-awesome-icon @click="toggleShowOffButton" :icon="['fas', arrowChoice]" />
         </b-col>
       </b-row>
 
@@ -102,17 +102,19 @@
 
 <script>
 const calc = require('../calculations.js')
-const network = require('../network.js')
+const operations = require('../operations.js')
+const utils = require('../utils.js')
 
 export default {
   props: {
-    address: String,
-    symbol: String
+    address: String, // Address of token holder.
+    symbol: String, // Symbol of token.
+    contract: String // Contract address.
   },
   data () {
     return {
-      vthoValue: 0,
-      amountOwned: 100, // Amount of token that owned by address.
+      vthoValue: 0, // How many energy this address has.
+      tokenValue: 0, // How many tokens this address has.
       showCollapseOfTransfer: false,
       showCollapseOfConfirmation: false,
       transferToAddressTitle: 'To:',
@@ -127,16 +129,37 @@ export default {
       confirmTransferButton: 'Confirm',
       cancelTransferButton: 'Cancel',
       modalText: '',
-      modalOkButtonText: 'Okay'
+      modalOkButtonText: 'Okay',
+      arrowChoice: 'angle-double-down'
     }
   },
   mounted () {
     this.hideAllCollapse()
-    let accInfo = network.getAccountBalance(this.address)
-    debugger
-    console.log(accInfo)
+    this.clearTransferData()
+    this.refreshVTHOBalance()
+    this.refreshTokenBalance()
   },
   methods: {
+    clearTransferData () { // clear transfer data inside card.
+      this.toAddress = ''
+      this.transferAmount = 0
+    },
+    refreshTokenBalance () {
+      operations.getTokenBalance(this.contract, this.address)
+        .then(result => {
+          this.tokenValue = utils.evmToPrintable(result['decoded']['balance'])
+        })
+        .then(setTimeout(() => { this.refreshTokenBalance() }, 3000))
+    },
+    refreshVTHOBalance () {
+      // Refresh user vtho balance
+      operations.getAccountBalance(this.address)
+        .then(result => {
+          this.vthoValue = utils.evmToPrintable(result['energy'])
+          // this will result in a Promise with undefined as resolve(value).
+        })
+        .then(setTimeout(() => { this.refreshVTHOBalance() }, 3000))
+    },
     setModalText (text) {
       this.modalText = text
     },
@@ -158,7 +181,16 @@ export default {
       this.showCollapseOfTransfer = false
       this.showCollapseOfConfirmation = false
     },
+    toggleArrowIcon () {
+      if (this.arrowChoice === 'angle-double-down'){
+        this.arrowChoice = 'angle-double-up'
+      } else {
+        this.arrowChoice = 'angle-double-down'
+      }
+    },
     toggleShowOffButton () {
+      this.toggleArrowIcon()
+      this.clearTransferData()
       if (this.showCollapseOfTransfer || this.showCollapseOfConfirmation) {
         this.hideAllCollapse()
       } else {
@@ -180,14 +212,17 @@ export default {
     }
   },
   computed: {
+    truncatedAddress () {
+      return this.address.slice(0, 8) + '...' + this.address.slice(-6)
+    },
     maxTransferAllowed () {
-      return this.amountOwned
+      return this.tokenValue
     },
     transferAmountState () {
       if (this.transferAmount === 0) {
         return null
       }
-      return this.transferAmount > 0 && this.transferAmount <= this.amountOwned
+      return this.transferAmount > 0 && this.transferAmount <= this.tokenValue
     },
     toAddressState () { // The state of input box.
       if (this.toAddress.length === 0) {
@@ -222,14 +257,6 @@ export default {
 </script>
 
 <style>
-.trim-text {
-  display: inline-block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-}
-
 .margin-none {
   margin-bottom: 0;
   margin-top: 0;
