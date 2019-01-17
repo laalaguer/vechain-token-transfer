@@ -5,20 +5,38 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    addresses: []
+    isMainNet: null, // default to null, should be true/false.
+    addressSymbolUnions: [] // {address, symbol} unions
   },
   getters: {
-    addresses: function (state) {
-      return state.addresses
+    addressSymbolUnions: function (state) {
+      return state.addressSymbolUnions
+    },
+    isMainNet: function (state) {
+      return state.isMainNet
+    },
+    themeVariant: function (state) {
+      switch (state.isMainNet) {
+        case true:
+          return 'primary'
+        case false:
+          return 'warning'
+        default:
+          return 'danger'
+      }
     }
   },
   // Sync methods.
   // Call by $store.commit('actionName', params)
   mutations: {
-    addAddress: function (state, newAddress) {
-      if (state.addresses.indexOf(newAddress) === -1) {
-        state.addresses.push(newAddress)
-      }
+    addAddressSymbolUnion: function (state, newAddress, relatedSymbol) {
+      state.addressSymbolUnions.push({
+        address: newAddress,
+        symbol: relatedSymbol
+      })
+    },
+    changeNetwork: function (state, isMainNet) {
+      state.isMainNet = isMainNet
     }
   },
   // Async methods.

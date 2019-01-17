@@ -1,16 +1,21 @@
 <template>
   <div class="whole">
-    <top-bar/><!-- Top Bar -->
+    <top-bar :theme-variant="themeVariant"/><!-- Top Bar -->
     <div id="app">
       <b-container>
-        <b-row class="my-2" align-h="center" v-for="address in addresses" :key="address"><!-- Rows of Transfer cards -->
-          <b-col sm="12" md="8" lg="6">
-            <transfer-card :address="address" symbol="TIC" contract="0x18081982d752ADd4f402AEAe480d6c90f7644427"/>
-          </b-col>
-        </b-row>
-        <b-row class="my-2" align-h="center"><!-- Row of address input -->
-          <b-col sm="12" md="8" lg="6">
-            <input-address-card/>
+        <b-row class="my-2" align-h="center">
+          <b-col sm="12" md="10" lg="8">
+            <b-card no-body>
+              <b-tabs card>
+                <b-tab v-for="contract in contracts" :key="contract.symbol" :title="contract.symbol">
+                  <tab-body-view
+                    :symbol="contract.symbol"
+                    :contract-address="contract.contract"
+                    :decimals="contract.decimals"
+                  />
+                </b-tab>
+              </b-tabs>
+            </b-card>
           </b-col>
         </b-row>
       </b-container>
@@ -20,20 +25,49 @@
 
 <script>
 import TopBar from './components/TopBar.vue'
-import InputAddressCard from './components/InputAddressCard.vue'
-import TransferCard from './components/TransferCard.vue'
+import TabBodyView from './components/TabBodyView.vue'
+
+const initData = require('./init')
+const operations = require('./operations')
 
 export default {
   name: 'app',
   data () {
     return {
-      addresses: this.$store.getters.addresses
+      addressSymbolUnions: this.$store.getters.addressSymbolUnions,
+      network: this.$store.getters.network,
+      contracts: []
     }
   },
   components: {
     TopBar,
-    InputAddressCard,
-    TransferCard
+    TabBodyView
+  },
+  beforeMount () {
+    this.initNetwork()
+  },
+  methods: {
+    initNetwork () {
+      operations.isMainNet()
+        .then(result => {
+          this.network = result
+          this.$store.commit('changeNetwork', result)
+        })
+        .then(()=> {
+          this.initTokenTabs()
+        })
+        .catch(e => {
+          // TODO Ask user to F5 refresh the whole app.
+        })
+    },
+    initTokenTabs () {
+      this.contracts = initData.getContracts(this.network)
+    }
+  },
+  computed: {
+    themeVariant () {
+      return this.$store.getters.themeVariant
+    }
   }
 }
 </script>

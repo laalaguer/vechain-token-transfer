@@ -1,7 +1,7 @@
 <!-- Card: Responsible for transferring token -->
 <template>
   <div>
-    <b-card>
+    <b-card border-variant="border" class="shadow-sm">
       <b-row><!-- Row of info display -->
         <b-col cols="6">
           <p v-b-tooltip.hover :title="address">{{truncatedAddress}}</p>
@@ -149,7 +149,7 @@ export default {
         .then(() => {
           // eslint-disable-next-line
           const ticker = connex.thor.ticker()
-          ticker.next().then(() => { this.refreshTokenBalance() })
+          ticker.next().then().then(() => { this.refreshTokenBalance() })
         })
         .catch(e => {
           setTimeout(() => { this.refreshTokenBalance() }, 3000)
@@ -165,7 +165,7 @@ export default {
         .then(() => {
           // eslint-disable-next-line
           const ticker = connex.thor.ticker()
-          ticker.next().then(() => { this.refreshVTHOBalance() })
+          ticker.next().then().then(() => { this.refreshVTHOBalance() })
         })
         .catch(e => { setTimeout(() => { this.refreshVTHOBalance() }, 3000) })
     },
@@ -207,18 +207,20 @@ export default {
       }
     },
     createTransfer () { // Create a transfer, not sending out yet.
-      if (this.canTransfer)
+      if (this.canTransfer) {
         this.showConfirmationHideTransfer()
+      }
     },
     confirmTransfer () { // Confrim and send out a transfer.
-      const emvAmount = utils.humanToEvm(this.transferAmount)
-      operations.transferToken(this.contract, this.address, this.toAddress, emvAmount)
+      const evmAmount = utils.humanToEvm(this.transferAmount.toString())
+      operations.transferToken(this.contract, this.address, this.toAddress, evmAmount, this.transferAmount, this.symbol)
         .then(result => {
           this.setModalText('Transaction sent!')
           this.showModal()
         })
         .catch(e => {
           this.setModalText(e.toString())
+          console.trace(e)
           this.showModal()
         })
     },
@@ -229,6 +231,7 @@ export default {
       this.clearTransferData()
       this.hideAllCollapse()
       this.hideModal()
+      this.toggleArrowIcon()
     }
   },
   computed: {
@@ -250,8 +253,8 @@ export default {
       }
       return null
     },
-    amountErrorCode () {  // Error code of amount
-      if (isNaN(this.transferAmount)){
+    amountErrorCode () { // Error code of amount
+      if (isNaN(this.transferAmount)) {
         return 'ERR_NAN'
       }
       if (this.transferAmount === 0) {
@@ -260,11 +263,11 @@ export default {
       if (this.transferAmount < 0) {
         return 'ERR_NEGATIVE'
       }
-      if (this.transferAmount > this.tokenValue){
+      if (this.transferAmount > this.tokenValue) {
         return 'ERR_BREACH_MAX'
       }
       const p = /^[0-9]+.?[0-9]{0,4}$/
-      if (!this.transferAmount.toString().match(p)){
+      if (!this.transferAmount.toString().match(p)) {
         return 'ERR_DECIMAL_FORMAT'
       }
       return null
@@ -276,7 +279,7 @@ export default {
       return this.tokenValue
     },
     transferAmountState () {
-      switch (this.amountErrorCode){
+      switch (this.amountErrorCode) {
         case 'ERR_ZERO':
           return null
         case 'ERR_NAN':
@@ -299,14 +302,14 @@ export default {
       }
     },
     canTransfer () {
-      if (this.transferAmountState && this.toAddressState){
+      if (this.transferAmountState && this.toAddressState) {
         return true
       } else {
         return false
       }
     },
     invalidAmountFeedback () {
-      switch (this.amountErrorCode){
+      switch (this.amountErrorCode) {
         case 'ERR_ZERO':
           return 'Cannot be 0'
         case 'ERR_NAN':

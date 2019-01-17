@@ -16,7 +16,7 @@ const makeBN = function (aString) {
 /**
  * Turn a BigNumber into a printable string.
  * @param {BigNumer} aBigNumber A big number.
- * @param {Integer} dp An integer of percision.
+ * @param {Integer} dp An integer of percision, default is 2.
  */
 const printBN = function (aBigNumber, dp = 2) {
   return aBigNumber.toFixed(dp)
@@ -33,13 +33,13 @@ const evmToHuman = function (aBigNumber, decimals = DECIMALS) {
 
 /**
  * Turn a human understandable number to an EVM Big number.
- * @param {Number} aNumber A normal float/int from user input.
+ * @param {String} aNumber A normal float/int from user input.
  * @param {BigNumber} decimals Percisions that EVM number has. Default is 10 ** 18.
  * @returns {String} String represented number.
  */
 const humanToEvm = function (aNumber, decimals = DECIMALS) {
   const a = makeBN(aNumber)
-  return a.multipliedBy(decimals).toString()
+  return a.multipliedBy(decimals).toString(10)
 }
 
 /**
