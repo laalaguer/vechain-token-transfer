@@ -44,6 +44,7 @@ export default {
     TabBodyView
   },
   beforeMount () {
+    this.$store.dispatch('populateUnions')
     this.initNetwork()
   },
   methods: {

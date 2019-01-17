@@ -3,7 +3,9 @@
  */
 
 const BigNumber = require('bignumber.js')
-const DECIMALS = new BigNumber(10 ** 18) // Decimals = 18 on VTHO and most contracts.
+const DECIMALS = function (points) {
+  return new BigNumber(10 ** points) // Decimals = 18 on VTHO and most contracts.
+}
 
 /**
  * Turn a string to big number.
@@ -25,32 +27,32 @@ const printBN = function (aBigNumber, dp = 2) {
 /**
  * Turn an EVM big number into normal human understandable percision.
  * @param {BigNumber} aBigNumber An EVM big number.
- * @param {BigNumber} decimals Percisions that EVM number has. Default is 10 ** 18.
+ * @param {Number} decimals Percisions that EVM number has. Default is 18.
  */
-const evmToHuman = function (aBigNumber, decimals = DECIMALS) {
-  return aBigNumber.dividedBy(decimals)
+const evmToHuman = function (aBigNumber, decimals = 18) {
+  return aBigNumber.dividedBy(DECIMALS(decimals))
 }
 
 /**
  * Turn a human understandable number to an EVM Big number.
  * @param {String} aNumber A normal float/int from user input.
- * @param {BigNumber} decimals Percisions that EVM number has. Default is 10 ** 18.
+ * @param {Number} decimals Percisions that EVM number has. Default is 18.
  * @returns {String} String represented number.
  */
-const humanToEvm = function (aNumber, decimals = DECIMALS) {
+const humanToEvm = function (aNumber, decimals = 18) {
   const a = makeBN(aNumber)
-  return a.multipliedBy(decimals).toString(10)
+  return a.multipliedBy(DECIMALS(decimals)).toString(10)
 }
 
 /**
  * Shortcut turing EVM big number string into human readable short format.
  * @param {String} aString String representing the EVM big number.
- * @param {BigNumber} decimals EVM decimals that number has.
+ * @param {Number} decimals Percisions that EVM number has. Default is 18.
  * @param {BigNumber} dp decimal points that result shall keep.
  */
-const evmToPrintable = function (aString, decimals = DECIMALS, dp = 2) {
+const evmToPrintable = function (aString, decimals = 18, dp = 2) {
   const evmNumber = makeBN(aString)
-  const humanNumber = evmToHuman(evmNumber)
+  const humanNumber = evmToHuman(evmNumber, decimals)
   return printBN(humanNumber, dp)
 }
 

@@ -1,59 +1,55 @@
 <!-- Card: Responsible for transferring token -->
 <template>
   <div>
-    <b-card border-variant="border" class="shadow-sm">
-      <b-row><!-- Row of info display -->
-        <b-col cols="6">
-          <p v-b-tooltip.hover :title="address">{{truncatedAddress}}</p>
+    <b-card @mouseenter="imFocused" @mouseleave="imUnFocused" :border-variant="borderChoice" :class="shadowChoice">
+      <!-- Row of address and tokens it holds -->
+      <b-row align-v="center">
+        <b-col cols="1">
+          <avatar :address="address" my-height="16px" my-width="16px"/>
         </b-col>
-        <b-col cols="5">
+        <b-col cols="4">
+          <h6 class="mt-2" ref="exh6" @click="copySourceAddress">
+            {{truncatedAddress}}
+          </h6>
+          <b-tooltip :target="() => $refs.exh6" placement="left">
+            {{address}}
+          </b-tooltip>
+        </b-col>
+        <b-col cols="1" @click="removeAddress">
+          <font-awesome-icon :class="[opacityChoice, 'trash-icon']" :icon="['fas', 'trash']" />
+        </b-col>
+        <b-col cols="5" @click="toggleShowOffButton">
           <p class="margin-none"><span class="text-primary">{{tokenValue}}</span> {{symbol}}</p>
           <p class="margin-none"><span class="text-danger">{{vthoValue}}</span> VTHO</p>
         </b-col>
-        <b-col cols="1">
-          <font-awesome-icon @click="toggleShowOffButton" :icon="['fas', arrowChoice]" />
+        <b-col cols="1" @click="toggleShowOffButton">
+          <font-awesome-icon :class="[opacityChoice]" :icon="['fas', arrowChoice]" />
         </b-col>
       </b-row>
 
+    <!-- Collapse: Area of transfer data input -->
     <b-collapse v-model="showCollapseOfTransfer" id="collapse-transfer">
       <b-row><!-- Row of Address -->
         <b-col cols="12">
-          <b-form-group
-            :label="transferToAddressTitle"
-            label-for="input-address"
-            :invalid-feedback="invalidAddressFeedback"
-            :valid-feedback="validAddressFeedback"
-            :state="toAddressState"
-            >
-              <b-form-input
-                id="input-address"
-                :state="toAddressState"
-                v-model.trim="toAddress"
-              ></b-form-input>
-          </b-form-group>
+          <address-box
+            ref="myAddressBox"
+            :label="toAddressTitle"
+            @addressReady="handleAddressReady" 
+            @addressNotReady="handleAddressNotReady" 
+          />
         </b-col>
       </b-row>
 
       <b-row><!-- Row of Amount -->
         <b-col cols="12">
-          <b-form-group
+          <amount-box 
+            ref="myAmountBox"
             :label="transferAmountTitle"
-            label-for="input-amount"
-            :invalid-feedback="invalidAmountFeedback"
-            :valid-feedback="validAmountFeedback"
-            :state="transferAmountState"
-          >
-            <b-input-group :append="symbol">
-              <b-form-input
-                id="input-amount"
-                type="number"
-                min="0"
-                :max="maxTransferAllowed"
-                :state="transferAmountState"
-                v-model.number="transferAmount">
-              </b-form-input>
-            </b-input-group>
-          </b-form-group>
+            :symbol="symbol"
+            :maxValue="maxTransferAllowed"
+            @amountReady="handleAmountReady"
+            @amountNotReady="handleAmountNotReady"
+          />
         </b-col>
       </b-row>
 
@@ -65,12 +61,14 @@
 
     </b-collapse>
 
+    <!-- Collapse: Area of transfer confirmation information -->
     <b-collapse v-model="showCollapseOfConfirmation" id="collapse-confirmation">
       <div>
-        <p>{{transferToAddressTitle}}</p>
+        <p>{{toAddressTitle}}</p>
         <p>{{toAddress}}</p>
         <p>{{transferAmountTitle}}</p>
         <p>{{transferAmount}} {{symbol}}</p>
+        <p class="text-warning" v-if="this.$store.getters.isMainNet">{{mainNetWarning}}</p>
       </div>
       <b-row style="text-align: center;">
         <b-col cols="6">
@@ -83,6 +81,7 @@
     </b-collapse>
     </b-card>
 
+    <!-- Transfer result modal -->
     <b-modal
       ref="transferResultModal"
       size="sm"
@@ -93,12 +92,17 @@
       :ok-title="modalOkButtonText"
       @ok="handleModalOk">
       {{modalText}}
-    </b-modal><!-- Enter new address modal -->
+    </b-modal>
 
   </div>
 </template>
 
 <script>
+import AddressBox from './AddressBox.vue'
+import AmountBox from './AmountBox.vue'
+import Avatar from './Avatar.vue'
+import copy from 'copy-to-clipboard'
+
 const calc = require('../calculations.js')
 const operations = require('../operations.js')
 const utils = require('../utils.js')
@@ -107,15 +111,21 @@ export default {
   props: {
     address: String, // Address of token holder.
     symbol: String, // Symbol of token.
-    contract: String // Contract address.
+    contract: String, // Contract address.
+    decimals: Number // Contract decimals setting.
+  },
+  components: {
+    AddressBox,
+    AmountBox,
+    Avatar
   },
   data () {
     return {
-      vthoValue: 0, // How many energy this address has.
-      tokenValue: 0, // How many tokens this address has.
+      vthoValue: 0, // How many energy this address has, is a String type.
+      tokenValue: 0, // How many tokens this address has, is a String type.
       showCollapseOfTransfer: false,
       showCollapseOfConfirmation: false,
-      transferToAddressTitle: 'To:',
+      toAddressTitle: 'To:',
       toAddress: '',
       validAddressFeedback: 'Looks good.',
       transferAmount: 0,
@@ -126,24 +136,66 @@ export default {
       cancelTransferButton: 'Cancel',
       modalText: '',
       modalOkButtonText: 'Okay',
-      arrowChoice: 'angle-double-down'
+      arrowChoice: 'angle-double-down',
+      borderChoice: 'border',
+      shadowChoice: 'shadow-sm',
+      opacityChoice: 'half-dim',
+      copyAddressToastText: 'Address Copied',
+      mainNetWarning: '* If above info is correct, click Confirm to continue.'
     }
+  },
+  beforeMount () {
+    this.refreshTokenBalance()
+    this.refreshVTHOBalance()
   },
   mounted () {
     this.hideAllCollapse()
     this.clearTransferData()
-    this.refreshVTHOBalance()
-    this.refreshTokenBalance()
   },
   methods: {
+    removeAddress () {
+      this.$emit('removeAddress', this.address)
+    },
+    copySourceAddress () {
+      copy(this.address)
+      this.$toasted.show(this.copyAddressToastText, {
+        theme: "primary", 
+        position: "bottom-center",
+        duration : 500
+      })
+    },
+    imFocused () {
+      this.borderChoice = 'border border-' + this.$store.getters.themeVariant
+      this.shadowChoice = 'shadow'
+      this.opacityChoice = 'full'
+    },
+    imUnFocused () {
+      this.borderChoice = 'border'
+      this.shadowChoice = 'shadow-sm'
+      this.opacityChoice = 'half-dim'
+    },
+    handleAddressReady (value) {
+      this.toAddress = value
+    },
+    handleAddressNotReady () {
+      this.toAddress = ''
+    },
+    handleAmountReady (value) {
+      this.transferAmount = value
+    },
+    handleAmountNotReady () {
+      this.transferAmount = 0
+    },
     clearTransferData () { // clear transfer data inside card.
       this.toAddress = ''
+      this.$refs.myAddressBox.clearBox()
       this.transferAmount = 0
+      this.$refs.myAmountBox.clearBox()
     },
     refreshTokenBalance () {
       operations.getTokenBalance(this.contract, this.address)
         .then(result => {
-          this.tokenValue = utils.evmToPrintable(result['decoded']['balance'])
+          this.tokenValue = utils.evmToPrintable(result['decoded']['balance'], this.decimals)
           // this will result in a Promise with undefined as resolve(value).
         })
         .then(() => {
@@ -159,7 +211,7 @@ export default {
       // Refresh user vtho balance
       operations.getAccountBalance(this.address)
         .then(result => {
-          this.vthoValue = utils.evmToPrintable(result['energy'])
+          this.vthoValue = utils.evmToPrintable(result['energy'], this.decimals)
           // this will result in a Promise with undefined as resolve(value).
         })
         .then(() => {
@@ -212,7 +264,7 @@ export default {
       }
     },
     confirmTransfer () { // Confrim and send out a transfer.
-      const evmAmount = utils.humanToEvm(this.transferAmount.toString())
+      const evmAmount = utils.humanToEvm(this.transferAmount.toString(), this.decimals)
       operations.transferToken(this.contract, this.address, this.toAddress, evmAmount, this.transferAmount, this.symbol)
         .then(result => {
           this.setModalText('Transaction sent!')
@@ -235,112 +287,14 @@ export default {
     }
   },
   computed: {
-    addressErrorCode () { // Error code of address
-      if (!this.toAddress.startsWith('0x')) {
-        return 'ERR_START_WRONG'
-      }
-      if (this.toAddress.length < 42) {
-        return 'ERR_TOO_SHORT'
-      }
-      if (this.toAddress.length > 42) {
-        return 'ERR_TOO_LONG'
-      }
-      if (!calc.onlyAlphanumeric(this.toAddress.slice(2))) {
-        return 'ERR_NON_ALPHANUMERIC'
-      }
-      if (!calc.isValidAddress(this.toAddress.slice(2))) {
-        return 'ERR_INVALID_ADDRESS'
-      }
-      return null
-    },
-    amountErrorCode () { // Error code of amount
-      if (isNaN(this.transferAmount)) {
-        return 'ERR_NAN'
-      }
-      if (this.transferAmount === 0) {
-        return 'ERR_ZERO'
-      }
-      if (this.transferAmount < 0) {
-        return 'ERR_NEGATIVE'
-      }
-      if (this.transferAmount > this.tokenValue) {
-        return 'ERR_BREACH_MAX'
-      }
-      const p = /^[0-9]+.?[0-9]{0,4}$/
-      if (!this.transferAmount.toString().match(p)) {
-        return 'ERR_DECIMAL_FORMAT'
-      }
-      return null
-    },
     truncatedAddress () {
-      return this.address.slice(0, 8) + '...' + this.address.slice(-6)
+      return this.address.slice(0, 6) + '...' + this.address.slice(-6)
     },
     maxTransferAllowed () {
-      return this.tokenValue
-    },
-    transferAmountState () {
-      switch (this.amountErrorCode) {
-        case 'ERR_ZERO':
-          return null
-        case 'ERR_NAN':
-        case 'ERR_NEGATIVE':
-        case 'ERR_BREACH_MAX':
-        case 'ERR_DECIMAL_FORMAT':
-          return false
-        default:
-          return true
-      }
-    },
-    toAddressState () { // The state of address input box.
-      if (this.toAddress.length === 0) {
-        return null
-      }
-      if (this.addressErrorCode) {
-        return false
-      } else {
-        return true
-      }
+      return parseFloat(this.tokenValue)
     },
     canTransfer () {
-      if (this.transferAmountState && this.toAddressState) {
-        return true
-      } else {
-        return false
-      }
-    },
-    invalidAmountFeedback () {
-      switch (this.amountErrorCode) {
-        case 'ERR_ZERO':
-          return 'Cannot be 0'
-        case 'ERR_NAN':
-          return 'Must be a number'
-        case 'ERR_NEGATIVE':
-          return 'Must be positive'
-        case 'ERR_BREACH_MAX':
-          return 'Too large'
-        case 'ERR_DECIMAL_FORMAT':
-          return 'Max 4 decimal digits allowed'
-        default:
-          return ''
-      }
-    },
-    invalidAddressFeedback () { // Input feedback message.
-      switch (this.addressErrorCode) {
-        case 'ERR_START_WRONG':
-          return 'Should start with 0x'
-        case 'ERR_TOO_SHORT':
-          return 'Too short'
-        case 'ERR_TOO_LONG':
-          return 'Too long'
-        case 'ERR_INVALID_ADDRESS':
-          return 'Invalid Address or checksum failed'
-        case 'ERR_NON_ALPHANUMERIC':
-          return 'Only A-Z, a-z, 0-9 allowed'
-        case 'ERR_CHECKSUM_FAILED':
-          return 'Address checksum failed'
-        default:
-          return ''
-      }
+      return (this.transferAmount !== 0) && (this.toAddress !== '')
     }
   }
 }
@@ -350,6 +304,18 @@ export default {
 .margin-none {
   margin-bottom: 0;
   margin-top: 0;
+}
+
+.half-dim {
+  opacity: 0.3;
+}
+
+.full {
+  opacity: 1.0;
+}
+
+.trash-icon {
+  color: salmon;
 }
 
 </style>
