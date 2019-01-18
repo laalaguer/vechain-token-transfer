@@ -49,10 +49,10 @@ export default {
     }
   },
   methods: {
-    mouseOver() {
+    mouseOver () {
       this.showtooltip = true
     },
-    mouseLeave() {
+    mouseLeave () {
       this.showtooltip = false
     },
     showModal () {

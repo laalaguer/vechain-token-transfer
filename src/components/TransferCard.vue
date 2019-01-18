@@ -1,29 +1,30 @@
 <!-- Card: Responsible for transferring token -->
 <template>
   <div>
-    <b-card @mouseenter="imFocused" @mouseleave="imUnFocused" :border-variant="borderChoice" :class="shadowChoice">
+    <b-card @mouseenter="imFocused" @mouseleave="imUnFocused" :border-variant="borderChoice" :class="[shadowChoice, 'bg-light']">
       <!-- Row of address and tokens it holds -->
       <b-row align-v="center">
         <b-col cols="1">
           <avatar :address="address" my-height="16px" my-width="16px"/>
         </b-col>
         <b-col cols="4">
-          <h6 class="mt-2" ref="exh6" @click="copySourceAddress">
+          <h6 class="mt-2 cursor-default" ref="exh6" @click="copySourceAddress">
             {{truncatedAddress}}
           </h6>
           <b-tooltip :target="() => $refs.exh6" placement="left">
             {{address}}
           </b-tooltip>
         </b-col>
-        <b-col cols="1" @click="removeAddress">
-          <font-awesome-icon :class="[opacityChoice, 'trash-icon']" :icon="['fas', 'trash']" />
+        <b-col cols="1" @click="showDeleteAddressModal">
+          <font-awesome-icon class="trash-icon" :icon="['fas', 'trash']" />
         </b-col>
-        <b-col cols="5" @click="toggleShowOffButton">
+        <b-col cols="4" @click="toggleShowOffButton" class="show-hand">
           <p class="margin-none"><span class="text-primary">{{tokenValue}}</span> {{symbol}}</p>
           <p class="margin-none"><span class="text-danger">{{vthoValue}}</span> VTHO</p>
         </b-col>
-        <b-col cols="1" @click="toggleShowOffButton">
-          <font-awesome-icon :class="[opacityChoice]" :icon="['fas', arrowChoice]" />
+        <b-col cols="2" @click="toggleShowOffButton">
+          <b-button style="width: 68px" v-if="showTransferButton" variant="link" size="sm">Transfer</b-button>
+          <b-button style="width: 68px" v-if="!showTransferButton" variant="link" size="sm"><font-awesome-icon v-if="!showTransferButton" :icon="['fas', arrowChoice]"/></b-button>
         </b-col>
       </b-row>
 
@@ -34,15 +35,15 @@
           <address-box
             ref="myAddressBox"
             :label="toAddressTitle"
-            @addressReady="handleAddressReady" 
-            @addressNotReady="handleAddressNotReady" 
+            @addressReady="handleAddressReady"
+            @addressNotReady="handleAddressNotReady"
           />
         </b-col>
       </b-row>
 
       <b-row><!-- Row of Amount -->
         <b-col cols="12">
-          <amount-box 
+          <amount-box
             ref="myAmountBox"
             :label="transferAmountTitle"
             :symbol="symbol"
@@ -84,7 +85,6 @@
     <!-- Transfer result modal -->
     <b-modal
       ref="transferResultModal"
-      size="sm"
       centered
       hide-header-close
       hide-header
@@ -92,6 +92,17 @@
       :ok-title="modalOkButtonText"
       @ok="handleModalOk">
       {{modalText}}
+    </b-modal>
+
+    <b-modal
+      ref="deleteAddressModal"
+      centered
+      hide-header-close
+      :title="deleteAddressModalTitle"
+      :ok-title="modalOkButtonText"
+      @ok="handleDeleteAddressOk"
+      :cancel-title="modalCancelButtonText">
+      {{address}}
     </b-modal>
 
   </div>
@@ -103,7 +114,6 @@ import AmountBox from './AmountBox.vue'
 import Avatar from './Avatar.vue'
 import copy from 'copy-to-clipboard'
 
-const calc = require('../calculations.js')
 const operations = require('../operations.js')
 const utils = require('../utils.js')
 
@@ -136,7 +146,10 @@ export default {
       cancelTransferButton: 'Cancel',
       modalText: '',
       modalOkButtonText: 'Okay',
-      arrowChoice: 'angle-double-down',
+      modalCancelButtonText: 'Cancel',
+      deleteAddressModalTitle: 'Delete Address?',
+      arrowChoice: 'angle-double-up',
+      showTransferButton: true,
       borderChoice: 'border',
       shadowChoice: 'shadow-sm',
       opacityChoice: 'half-dim',
@@ -153,19 +166,22 @@ export default {
     this.clearTransferData()
   },
   methods: {
+    handleDeleteAddressOk () {
+      this.removeAddress()
+    },
     removeAddress () {
       this.$emit('removeAddress', this.address)
     },
     copySourceAddress () {
       copy(this.address)
       this.$toasted.show(this.copyAddressToastText, {
-        theme: "primary", 
-        position: "bottom-center",
-        duration : 500
+        theme: 'toasted-primary',
+        position: 'bottom-center',
+        duration: 500
       })
     },
     imFocused () {
-      this.borderChoice = 'border border-' + this.$store.getters.themeVariant
+      // this.borderChoice = 'border border-' + this.$store.getters.themeVariant
       this.shadowChoice = 'shadow'
       this.opacityChoice = 'full'
     },
@@ -224,6 +240,9 @@ export default {
     setModalText (text) {
       this.modalText = text
     },
+    showDeleteAddressModal () {
+      this.$refs.deleteAddressModal.show()
+    },
     showModal () {
       this.$refs.transferResultModal.show()
     },
@@ -242,15 +261,11 @@ export default {
       this.showCollapseOfTransfer = false
       this.showCollapseOfConfirmation = false
     },
-    toggleArrowIcon () {
-      if (this.arrowChoice === 'angle-double-down') {
-        this.arrowChoice = 'angle-double-up'
-      } else {
-        this.arrowChoice = 'angle-double-down'
-      }
+    toggleTransferButton () {
+      this.showTransferButton = !this.showTransferButton
     },
     toggleShowOffButton () {
-      this.toggleArrowIcon()
+      this.toggleTransferButton()
       this.clearTransferData()
       if (this.showCollapseOfTransfer || this.showCollapseOfConfirmation) {
         this.hideAllCollapse()
@@ -283,12 +298,12 @@ export default {
       this.clearTransferData()
       this.hideAllCollapse()
       this.hideModal()
-      this.toggleArrowIcon()
+      this.toggleTransferButton()
     }
   },
   computed: {
     truncatedAddress () {
-      return this.address.slice(0, 6) + '...' + this.address.slice(-6)
+      return this.address.slice(0, 6) + '...' + this.address.slice(-5)
     },
     maxTransferAllowed () {
       return parseFloat(this.tokenValue)
@@ -307,7 +322,7 @@ export default {
 }
 
 .half-dim {
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 .full {
@@ -318,4 +333,19 @@ export default {
   color: salmon;
 }
 
+.trash-icon:hover {
+  opacity: 1.0;
+}
+
+.trash-icon:not(:hover){
+  opacity: 0.0;
+}
+
+.show-hand {
+  cursor: pointer;
+}
+
+.cursor-default {
+  cursor: default;
+}
 </style>

@@ -29,7 +29,7 @@ export default {
   },
   mounted () {
     let allAddresses = this.$store.getters.addressSymbolUnions
-    for (let i = 0; i < allAddresses.length;i ++){
+    for (let i = 0; i < allAddresses.length; i++) {
       if (allAddresses[i].symbol === this.symbol) {
         this.addresses.push(allAddresses[i].address)
       }
@@ -51,7 +51,7 @@ export default {
     addNewAddress (value) {
       if (this.addresses.indexOf(value) === -1) {
         this.addresses.push(value)
-        this.$store.dispatch('setUnion', {address:value, symbol:this.symbol, owned:false})
+        this.$store.dispatch('setUnion', { address: value, symbol: this.symbol, owned: false })
       }
     }
   }

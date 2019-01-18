@@ -21,7 +21,7 @@ export default {
   computed: {
     myStyle () {
       const bg = this.createBackground(this.address)
-      return `border-radius: 10px; height: ${this.myHeight}; width: ${this.myWidth}; background: ${bg}`
+      return `border-radius: 12px; height: ${this.myHeight}; width: ${this.myWidth}; background: ${bg}`
     }
   }
 }
