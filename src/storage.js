@@ -55,8 +55,24 @@ const getAllUnions = function () {
   return returnList
 }
 
+const setLanguage = function (name) {
+  if (name) {
+    localStorage.setItem(
+      [version, 'language'].join(separater),
+      name.toString()
+    )
+  }
+}
+
+const getLanguage = function () {
+  const item = localStorage.getItem([version, 'language'].join(separater))
+  return item
+}
+
 export {
   setUnion,
   removeUnion,
-  getAllUnions
+  getAllUnions,
+  setLanguage,
+  getLanguage
 }

@@ -23,8 +23,8 @@
           <p class="margin-none"><span class="text-danger">{{vthoValue}}</span> VTHO</p>
         </b-col>
         <b-col cols="2" @click="toggleShowOffButton">
-          <b-button style="width: 68px" v-if="showTransferButton" variant="link" size="sm">Transfer</b-button>
-          <b-button style="width: 68px" v-if="!showTransferButton" variant="link" size="sm"><font-awesome-icon v-if="!showTransferButton" :icon="['fas', arrowChoice]"/></b-button>
+          <b-button style="width: 80px" v-if="showTransferButton" variant="link" size="sm">{{transferText}}</b-button>
+          <b-button style="width: 80px" v-if="!showTransferButton" variant="link" size="sm"><font-awesome-icon v-if="!showTransferButton" :icon="['fas', 'angle-double-up']"/></b-button>
         </b-col>
       </b-row>
 
@@ -90,7 +90,7 @@
       hide-header
       ok-only
       :ok-title="modalOkButtonText"
-      @ok="handleModalOk">
+      @ok="handleTransferFail">
       {{modalText}}
     </b-modal>
 
@@ -135,26 +135,13 @@ export default {
       tokenValue: 0, // How many tokens this address has, is a String type.
       showCollapseOfTransfer: false,
       showCollapseOfConfirmation: false,
-      toAddressTitle: 'To:',
       toAddress: '',
-      validAddressFeedback: 'Looks good.',
       transferAmount: 0,
-      transferAmountTitle: 'Amount:',
-      validAmountFeedback: 'Looks good.',
-      createTransferButton: 'Next Step',
-      confirmTransferButton: 'Confirm',
-      cancelTransferButton: 'Cancel',
       modalText: '',
-      modalOkButtonText: 'Okay',
-      modalCancelButtonText: 'Cancel',
-      deleteAddressModalTitle: 'Delete Address?',
-      arrowChoice: 'angle-double-up',
-      showTransferButton: true,
       borderChoice: 'border',
       shadowChoice: 'shadow-sm',
       opacityChoice: 'half-dim',
-      copyAddressToastText: 'Address Copied',
-      mainNetWarning: '* If above info is correct, click Confirm to continue.'
+      showTransferButton: true
     }
   },
   beforeMount () {
@@ -282,23 +269,32 @@ export default {
       const evmAmount = utils.humanToEvm(this.transferAmount.toString(), this.decimals)
       operations.transferToken(this.contract, this.address, this.toAddress, evmAmount, this.transferAmount, this.symbol)
         .then(result => {
-          this.setModalText('Transaction sent!')
-          this.showModal()
+          this.handleTransferOk()
+          this.$toasted.show(this.transactionSent, {
+            theme: 'toasted-primary',
+            position: 'bottom-center',
+            duration: 3000
+          })
         })
         .catch(e => {
           this.setModalText(e.toString())
-          console.trace(e)
           this.showModal()
         })
     },
     cancelTransfer () {
       this.showTransferHideConfirmation()
     },
-    handleModalOk () {
+    handleTransferOk () {
       this.clearTransferData()
       this.hideAllCollapse()
       this.hideModal()
       this.toggleTransferButton()
+    },
+    handleTransferFail () {
+      // this.clearTransferData()
+      // this.hideAllCollapse()
+      this.hideModal()
+      // this.toggleTransferButton()
     }
   },
   computed: {
@@ -310,7 +306,19 @@ export default {
     },
     canTransfer () {
       return (this.transferAmount !== 0) && (this.toAddress !== '')
-    }
+    },
+    transferText () { return this.$t('transferCard.transferText') },
+    toAddressTitle () { return this.$t('transferCard.toAddressTitle') },
+    transferAmountTitle () { return this.$t('transferCard.transferAmountTitle') },
+    createTransferButton () { return this.$t('transferCard.createTransferButton') },
+    confirmTransferButton () { return this.$t('transferCard.confirmTransferButton') },
+    cancelTransferButton () { return this.$t('transferCard.cancelTransferButton') },
+    modalOkButtonText () { return this.$t('transferCard.modalOkButtonText') },
+    modalCancelButtonText () { return this.$t('transferCard.modalCancelButtonText') },
+    deleteAddressModalTitle () { return this.$t('transferCard.deleteAddressModalTitle') },
+    copyAddressToastText () { return this.$t('transferCard.copyAddressToastText') },
+    mainNetWarning () { return this.$t('transferCard.mainNetWarning') },
+    transactionSent () { return this.$t('transferCard.transactionSent') }
   }
 }
 </script>
@@ -338,7 +346,7 @@ export default {
 }
 
 .trash-icon:not(:hover){
-  opacity: 0.0;
+  opacity: 0.3;
 }
 
 .show-hand {

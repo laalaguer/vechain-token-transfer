@@ -30,8 +30,7 @@ export default {
   },
   data () {
     return {
-      amount: 0,
-      validAmountFeedback: 'Looks good'
+      amount: 0
     }
   },
   methods: {
@@ -82,18 +81,21 @@ export default {
     invalidAmountFeedback () {
       switch (this.amountErrorCode) {
         case 'ERR_ZERO':
-          return 'Cannot be 0'
+          return this.$t('amountBox.ERR_ZERO')
         case 'ERR_NAN':
-          return 'Must be a number'
+          return this.$t('amountBox.ERR_NAN')
         case 'ERR_NEGATIVE':
-          return 'Must be positive'
+          return this.$t('amountBox.ERR_NEGATIVE')
         case 'ERR_BREACH_MAX':
-          return 'Too large'
+          return this.$t('amountBox.ERR_BREACH_MAX')
         case 'ERR_DECIMAL_FORMAT':
-          return 'Max 4 decimal digits allowed'
+          return this.$t('amountBox.ERR_DECIMAL_FORMAT')
         default:
           return ''
       }
+    },
+    validAmountFeedback () {
+      return this.$t('amountBox.validAmountFeedback')
     }
   }
 }

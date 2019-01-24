@@ -3,12 +3,12 @@
     <b-container>
       <b-row align-h="center">
         <b-col cols="4" class="put-center">
-          <b-button id="inputaddressbutton" :variant="themeVariant" @click="showModal">{{buttonText}}</b-button>
+          <b-button style="width: 140px" id="inputaddressbutton" :variant="themeVariant" @click="showModal">{{ buttonText }}</b-button>
         </b-col>
       </b-row>
     </b-container>
     <b-tooltip :show.sync="showtooltip" :target="() => $refs.exButton3" placement="top">
-      {{hintText}}
+      {{ hintText }}
     </b-tooltip>
     <b-modal
       ref="addaddressmodal"
@@ -25,7 +25,7 @@
         ref="myInputBox"
         @addressReady="handleAddressReady"
         @addressNotReady="handleAddressNotReady"
-        label="Enter a new address:"/>
+        :label="modalBoxTitle"/>
 
     </b-modal><!-- Enter new address modal -->
   </div>
@@ -42,9 +42,6 @@ export default {
   data () {
     return {
       address: '',
-      buttonText: 'Add address',
-      modalOkText: 'Okay',
-      modalCancelText: 'Cancel',
       showtooltip: false
     }
   },
@@ -80,14 +77,18 @@ export default {
   computed: {
     hintText () {
       if (this.empty) {
-        return `Empty watchlist, Add some ${this.symbol} address:`
+        return this.$t('inputArea.hintText1').replace('symbol', this.symbol)
       } else {
-        return `Have more ${this.symbol} tokens? Add them:`
+        return this.$t('inputArea.hintText2').replace('symbol', this.symbol)
       }
     },
     themeVariant () {
       return this.$store.getters.themeVariant
-    }
+    },
+    buttonText () { return this.$t('inputArea.buttonText') },
+    modalOkText () { return this.$t('inputArea.modalOkText') },
+    modalCancelText () { return this.$t('inputArea.modalCancelText') },
+    modalBoxTitle () { return this.$t('inputArea.modalBoxTitle') }
   },
   components: {
     AddressBox

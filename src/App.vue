@@ -1,7 +1,7 @@
 <template>
   <div class="whole">
     <!-- Top Bar -->
-    <top-bar :theme-variant="themeVariant"/>
+    <top-bar :theme-variant="themeVariant" :is-mainnet="$store.getters.isMainNet"/>
     <!-- Top Bar -->
 
     <!-- app -->
@@ -47,8 +47,17 @@
 
     <!-- footer -->
     <footer>
-      <div class="text-center py-3"><font-awesome-icon class="github-icon" :icon="['fab','github']" /> Github:
-        <a href="https://github.com/laalaguer/VeChain-Token-Transfer" target="_blank"> source code</a>
+      <div class="text-center py-3 d-flex flex-row justify-content-center align-items-baseline">
+        <div class="mx-2">
+          <font-awesome-icon :icon="['fab','github']"/>
+          Github:
+          <a class="mx-1" href="https://github.com/laalaguer/VeChain-Token-Transfer" target="_blank">{{ $t('app.code') }}</a>
+        </div>
+
+        <div class="d-flex flex-row align-items-baseline mx-2">
+          <p class="mx-1"><span><font-awesome-icon :icon="['fas','language']"/></span></p>
+          <b-form-select @input="changeLanguage" v-model="selectedLanguage" :options="languageOptions" size="sm" />
+        </div>
       </div>
     </footer>
     <!-- footer -->
@@ -61,6 +70,7 @@ import TabBodyView from './components/TabBodyView.vue'
 
 const initData = require('./init')
 const operations = require('./operations')
+const mstorage = require('./storage')
 
 export default {
   name: 'app',
@@ -69,10 +79,15 @@ export default {
       addressSymbolUnions: this.$store.getters.addressSymbolUnions,
       network: this.$store.getters.network,
       contracts: [],
-      noEnvModalTitle: 'Environement Incorrect',
-      noEnvModalText: 'This web page runs in VeChain Sync Browser.',
-      noEnvModalOkayButtonText: 'Download Sync',
-      downloadSyncUrl: 'https://github.com/vechain/thor-sync.electron'
+      noEnvModalTitle: this.$t('app.noEnvModalTitle'),
+      noEnvModalText: this.$t('app.noEnvModalText'),
+      noEnvModalOkayButtonText: this.$t('app.noEnvModalOkayButtonText'),
+      downloadSyncUrl: 'https://github.com/vechain/thor-sync.electron',
+      selectedLanguage: mstorage.getLanguage(),
+      languageOptions: [
+        { value: 'en', text: 'English' },
+        { value: 'zh', text: '中文' }
+      ]
     }
   },
   components: {
@@ -115,6 +130,10 @@ export default {
     },
     iconSrc (value) { // Return icon image source file
       return require('./assets/' + value)
+    },
+    changeLanguage () {
+      this.$i18n.locale = this.selectedLanguage
+      mstorage.setLanguage(this.selectedLanguage)
     }
   },
   computed: {

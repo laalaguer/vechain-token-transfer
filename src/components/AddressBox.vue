@@ -26,8 +26,7 @@ export default {
   },
   data () {
     return {
-      address: '',
-      validAddressFeedback: 'Looks good'
+      address: ''
     }
   },
   methods: {
@@ -74,20 +73,23 @@ export default {
     invalidAddressFeedback () { // Input feedback message.
       switch (this.addressErrorCode) {
         case 'ERR_START_WRONG':
-          return 'Should start with 0x'
+          return this.$t('addressBox.ERR_START_WRONG')
         case 'ERR_TOO_SHORT':
-          return 'Too short'
+          return this.$t('addressBox.ERR_TOO_SHORT')
         case 'ERR_TOO_LONG':
-          return 'Too long'
+          return this.$t('addressBox.ERR_TOO_LONG')
         case 'ERR_INVALID_ADDRESS':
-          return 'Invalid Address or checksum failed'
+          return this.$t('addressBox.ERR_INVALID_ADDRESS')
         case 'ERR_NON_ALPHANUMERIC':
-          return 'Only A-Z, a-z, 0-9 allowed'
+          return this.$t('addressBox.ERR_NON_ALPHANUMERIC')
         case 'ERR_CHECKSUM_FAILED':
-          return 'Address checksum failed'
+          return this.$t('addressBox.ERR_CHECKSUM_FAILED')
         default:
           return ''
       }
+    },
+    validAddressFeedback () {
+      return this.$t('addressBox.validAddressFeedback')
     }
   }
 }
