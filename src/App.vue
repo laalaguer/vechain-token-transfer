@@ -97,8 +97,17 @@ export default {
   beforeMount () {
     this.$store.dispatch('populateUnions')
     this.initNetwork()
+    this.initLanguage()
   },
   methods: {
+    initLanguage () {
+      if (navigator.language.toLowerCase() === 'zh-CN'.toLowerCase()) {
+        this.selectedLanguage = 'zh'
+      } else {
+        this.selectedLanguage = 'en'
+      }
+      this.changeLanguage()
+    },
     initNetwork () {
       operations.isMainNet()
         .then(result => {
