@@ -1,7 +1,7 @@
 # VeChain-Token-Transfer
 
 ## Demo
-[VeChain-Token-Transfer](https://laalaguer.github.io/VeChain-Token-Transfer/)
+[vechain-token-transfer](https://laalaguer.github.io/vechain-token-transfer/)
 
 ## Token Transfer in Thor Sync
 1. Runs in [VeChain-Thor-Sync](https://github.com/vechain/thor-sync.electron)
