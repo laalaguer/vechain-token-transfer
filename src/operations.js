@@ -87,7 +87,7 @@ async function transferToken (addressContract, signerAddress, toAddress, amountE
   const signingService = connex.vendor.sign('tx')
   signingService
     .signer(signerAddress) // Enforce signer
-    .gas(200000) // Set maximum gas
+    // .gas(200000) // Set maximum gas
     .comment('Token transfer: ' + amountHuman.toString() + ' ' + symbol)
 
   let transactionInfo = await signingService.request([
