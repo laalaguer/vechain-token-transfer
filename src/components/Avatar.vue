@@ -15,13 +15,18 @@ export default {
   methods: {
     createBackground (address) {
       const mySVG = picasso(address)
-      return `no-repeat url('data:image/svg+xml;utf8,${mySVG}')`
+      return `no-repeat url('data:image/svg+xml,${mySVG}')`
     }
   },
   computed: {
     myStyle () {
       const bg = this.createBackground(this.address)
-      return `border-radius: 12px; height: ${this.myHeight}; width: ${this.myWidth}; background: ${bg}`
+      return {
+        'border-radius': '12px',
+        height: this.myHeight,
+        width: this.myWidth,
+        background: bg
+      }
     }
   }
 }
