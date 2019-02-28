@@ -44,6 +44,13 @@ const MAIN_NET_CONTRACTS = [
     'contract': '0x1b8ec6c2a45cca481da6f243df0d7a5744afc1f8',
     'decimals': 18,
     'icon': 'dbet.png'
+  },
+  {
+    'name': 'Bitarora Token',
+    'symbol': 'BAG',
+    'contract': '0x2182aa52adB1b27903d089e4432538A695effE3d',
+    'decimals': 18,
+    'icon': 'bag.png'
   }
 ]
 
@@ -89,6 +96,13 @@ const TEST_NET_CONTRACTS = [
     'contract': '0x18081982d752ADd4f402AEAe480d6c90f7644427',
     'decimals': 18,
     'icon': 'dbet.png'
+  },
+  {
+    'name': 'Bitarora Token',
+    'symbol': 'BAG',
+    'contract': '0x18081982d752ADd4f402AEAe480d6c90f7644427',
+    'decimals': 18,
+    'icon': 'bag.png'
   }
 ]
 
