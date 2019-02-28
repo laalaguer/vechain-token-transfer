@@ -46,7 +46,7 @@ export default {
     modalCancelButtonText: '取消',
     deleteAddressModalTitle: '确认删除该地址?',
     copyAddressToastText: '地址已经拷贝',
-    mainNetWarning: '* 现在处在主网上，任何交易都不可逆，按确认按钮继续.',
-    transactionSent: 'Transaction sent!'
+    mainNetWarning: '* 现在处在主网上，任何交易都不可逆，按“确认”按钮继续.',
+    transactionSent: '交易已经发送!'
   }
 }

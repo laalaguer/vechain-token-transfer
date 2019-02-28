@@ -46,7 +46,7 @@ export default {
     modalCancelButtonText: 'Cancel',
     deleteAddressModalTitle: 'Delete Address?',
     copyAddressToastText: 'Address Copied',
-    mainNetWarning: '* If above info is correct, click Confirm to continue.',
-    transactionSent: '交易已经发送!'
+    mainNetWarning: '* The transaction would be irreversible on mainnet, click "Confirm" to continue.',
+    transactionSent: 'Transaction sent!'
   }
 }
