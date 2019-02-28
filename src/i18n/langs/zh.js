@@ -11,7 +11,7 @@ export default {
     testnet: '测试网'
   },
   addressBox: {
-    validAddressFeedback: '看上去不错',
+    validAddressFeedback: '',
     ERR_START_WRONG: '地址必须以 0x 开头',
     ERR_TOO_SHORT: '太短了',
     ERR_TOO_LONG: '太长了',
@@ -20,11 +20,11 @@ export default {
     ERR_CHECKSUM_FAILED: '地址校验和错误，请检查'
   },
   amountBox: {
-    validAmountFeedback: '看上去不错',
+    validAmountFeedback: '',
     ERR_ZERO: '不能为 0',
     ERR_NAN: '必须是一个数字',
     ERR_NEGATIVE: '必须是正数',
-    ERR_BREACH_MAX: '太大',
+    ERR_BREACH_MAX: '超过了本账户存有的最大数量',
     ERR_DECIMAL_FORMAT: '最多小数点4位'
   },
   inputArea: {
@@ -36,7 +36,7 @@ export default {
     hintText2: '持有更多 symbol 代币? 添加对应的钱包地址:'
   },
   transferCard: {
-    transferText: '发起转账',
+    transferText: '转出',
     toAddressTitle: '转账给:',
     transferAmountTitle: '数量:',
     createTransferButton: '下一步',

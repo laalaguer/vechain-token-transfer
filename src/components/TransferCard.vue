@@ -8,28 +8,29 @@
           <avatar :address="address" my-height="16px" my-width="16px"/>
         </b-col>
         <b-col cols="4">
-          <h6 class="mt-2 cursor-default" ref="exh6" @click="copySourceAddress">
-            {{truncatedAddress}}
-          </h6>
+          <p class="margin-none cursor-default">{{truncatedAddress}}</p>
           <b-tooltip :target="() => $refs.exh6" placement="left">
             {{address}}
           </b-tooltip>
         </b-col>
-        <b-col cols="1" @click="showDeleteAddressModal">
+        <!-- <b-col cols="1" @click="showDeleteAddressModal">
           <font-awesome-icon class="trash-icon" :icon="['fas', 'trash']" />
-        </b-col>
-        <b-col cols="4" @click="toggleShowOffButton" class="show-hand">
-          <p class="margin-none"><span class="text-primary">{{tokenValue}}</span> {{symbol}}</p>
-          <p class="margin-none"><span class="text-danger">{{vthoValue}}</span> VTHO</p>
+        </b-col> -->
+        <b-col cols="5" @click="toggleShowOffButton" class="show-hand">
+          <p class="margin-none text-right"><span class="text-primary">{{tokenValue}}</span> {{symbol}}</p>
         </b-col>
         <b-col cols="2" @click="toggleShowOffButton">
-          <b-button style="width: 80px" v-if="showTransferButton" variant="link" size="sm">{{transferText}}</b-button>
-          <b-button style="width: 80px" v-if="!showTransferButton" variant="link" size="sm"><font-awesome-icon v-if="!showTransferButton" :icon="['fas', 'angle-double-up']"/></b-button>
+          <b-button v-if="showTransferButton" variant="outline-primary" size="sm">
+            <font-awesome-icon :icon="['fas', 'hand-holding-usd']" />
+          </b-button>
+          <b-button v-if="!showTransferButton" variant="link" size="sm">
+            <font-awesome-icon v-if="!showTransferButton" :icon="['fas', 'angle-double-up']"/>
+          </b-button>
         </b-col>
       </b-row>
 
     <!-- Collapse: Area of transfer data input -->
-    <b-collapse v-model="showCollapseOfTransfer" id="collapse-transfer">
+    <b-collapse class="mt-3" v-model="showCollapseOfTransfer" id="collapse-transfer">
       <b-row><!-- Row of Address -->
         <b-col cols="12">
           <address-box
@@ -69,7 +70,7 @@
         <p>{{toAddress}}</p>
         <p>{{transferAmountTitle}}</p>
         <p>{{transferAmount}} {{symbol}}</p>
-        <p class="text-warning" v-if="this.$store.getters.isMainNet">{{mainNetWarning}}</p>
+        <p class="text-danger" v-if="this.$store.getters.isMainNet">{{mainNetWarning}}</p>
       </div>
       <b-row style="text-align: center;">
         <b-col cols="6">
@@ -299,7 +300,7 @@ export default {
   },
   computed: {
     truncatedAddress () {
-      return this.address.slice(0, 6) + '...' + this.address.slice(-5)
+      return this.address.slice(0, 6) + '...' + this.address.slice(-6)
     },
     maxTransferAllowed () {
       return parseFloat(this.tokenValue)

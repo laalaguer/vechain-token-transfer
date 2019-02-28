@@ -1,13 +1,11 @@
 <template>
-  <b-navbar toggleable="md" type="dark" :variant="themeVariant">
-    <b-navbar-toggle target="nav_text_collapse"></b-navbar-toggle>
-    <b-navbar-brand>{{ $t('topBar.title') }}</b-navbar-brand>
-    <b-collapse is-nav id="nav_text_collapse">
-      <b-navbar-nav>
-          <b-nav-text><b-badge variant="light">{{ network }}</b-badge></b-nav-text>
-      </b-navbar-nav>
-    </b-collapse>
-  </b-navbar>
+  <b-container style="margin-top:40px;">
+    <b-row align-h="center" class="my-2">
+      <b-col cols="12" class="text-center">
+        <h3>{{ $t('topBar.title') }} <b-badge :variant="themeVariant">{{ network }}</b-badge></h3>
+      </b-col>
+    </b-row>
+  </b-container>
 </template>
 
 <script>

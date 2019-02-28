@@ -11,7 +11,7 @@ export default {
     testnet: 'testnet'
   },
   addressBox: {
-    validAddressFeedback: 'Looks good',
+    validAddressFeedback: '',
     ERR_START_WRONG: 'Should start with 0x',
     ERR_TOO_SHORT: 'Too short',
     ERR_TOO_LONG: 'Too long',
@@ -20,11 +20,11 @@ export default {
     ERR_CHECKSUM_FAILED: 'Address checksum failed'
   },
   amountBox: {
-    validAmountFeedback: 'Looks good',
+    validAmountFeedback: '',
     ERR_ZERO: 'Cannot be 0',
     ERR_NAN: 'Must be a number',
     ERR_NEGATIVE: 'Must be positive',
-    ERR_BREACH_MAX: 'Too large',
+    ERR_BREACH_MAX: 'Exceeded maximum amount this account holds',
     ERR_DECIMAL_FORMAT: 'Max 4 decimal digits allowed'
   },
   inputArea: {

@@ -7,6 +7,16 @@
     <!-- app -->
     <div id="app">
       <b-container>
+        <b-row>
+          <b-col lg="2" offset-lg="1" md="3" sm="2">
+            <!-- col of language -->
+            <div class="d-flex flex-row align-items-baseline">
+              <p class="mr-2"><span><font-awesome-icon :icon="['fas','language']"/></span></p>
+              <b-form-select @input="changeLanguage" v-model="selectedLanguage" :options="languageOptions" size="sm" />
+            </div>
+          </b-col>
+        </b-row>
+
         <b-row class="my-2" align-h="center">
           <b-col sm="12" md="12" lg="10">
             <b-card no-body>
@@ -44,29 +54,14 @@
       </b-modal>
     </div>
     <!-- app -->
-
-    <!-- footer -->
-    <footer>
-      <div class="text-center py-3 d-flex flex-row justify-content-center align-items-baseline">
-        <div class="mx-2">
-          <font-awesome-icon :icon="['fab','github']"/>
-          Github:
-          <a class="mx-1" href="https://github.com/laalaguer/VeChain-Token-Transfer" target="_blank">{{ $t('app.code') }}</a>
-        </div>
-
-        <div class="d-flex flex-row align-items-baseline mx-2">
-          <p class="mx-1"><span><font-awesome-icon :icon="['fas','language']"/></span></p>
-          <b-form-select @input="changeLanguage" v-model="selectedLanguage" :options="languageOptions" size="sm" />
-        </div>
-      </div>
-    </footer>
-    <!-- footer -->
   </div>
 </template>
 
 <script>
 import TopBar from './components/TopBar.vue'
 import TabBodyView from './components/TabBodyView.vue'
+import AddNewAddress from './components/AddNewAddress.vue'
+import {GlobalEventBus} from './events.js'
 
 const initData = require('./init')
 const operations = require('./operations')
@@ -92,7 +87,8 @@ export default {
   },
   components: {
     TopBar,
-    TabBodyView
+    TabBodyView,
+    AddNewAddress
   },
   beforeMount () {
     this.$store.dispatch('populateUnions')
@@ -149,6 +145,11 @@ export default {
     themeVariant () {
       return this.$store.getters.themeVariant
     }
+  },
+  mounted() {
+    GlobalEventBus.$on('myglobalevent', () => {
+            console.log('hahahaha')
+    });
   }
 }
 </script>
