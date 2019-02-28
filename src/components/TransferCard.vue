@@ -21,7 +21,7 @@
         </b-col>
         <b-col cols="2" @click="toggleShowOffButton">
           <b-button v-if="showTransferButton" variant="outline-primary" size="sm">
-            <font-awesome-icon :icon="['fas', 'hand-holding-usd']" />
+            {{transferText}}
           </b-button>
           <b-button v-if="!showTransferButton" variant="link" size="sm">
             <font-awesome-icon v-if="!showTransferButton" :icon="['fas', 'angle-double-up']"/>
