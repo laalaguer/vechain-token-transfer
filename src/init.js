@@ -79,7 +79,7 @@ const TEST_NET_CONTRACTS = [
   {
     'name': 'Plair',
     'symbol': 'PLA',
-    'contract': '0x18081982d752ADd4f402AEAe480d6c90f7644427',
+    'contract': '0x645d2019ed39e58db76af602317d177b53ba8b9d',
     'decimals': 18,
     'icon': 'pla.png'
   },
