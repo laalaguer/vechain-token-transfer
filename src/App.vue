@@ -8,9 +8,9 @@
     <div id="app">
       <b-container>
         <b-row class="my-2" align-h="center">
-          <b-col sm="12" md="10" lg="8">
+          <b-col sm="12" md="12" lg="10">
             <b-card no-body>
-              <b-tabs card>
+              <b-tabs pills card vertical>
                 <b-tab v-for="contract in contracts" :key="contract.symbol">
                   <template slot="title">
                     <div>
