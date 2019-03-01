@@ -100,7 +100,7 @@ const TEST_NET_CONTRACTS = [
   {
     'name': 'Bitarora Token',
     'symbol': 'BAG',
-    'contract': '0x18081982d752ADd4f402AEAe480d6c90f7644427',
+    'contract': '0x4D9a463b28284228Ce260887F7D0C3A63a8150b9',
     'decimals': 18,
     'icon': 'bag.png'
   }
