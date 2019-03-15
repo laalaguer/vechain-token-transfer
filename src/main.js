@@ -2,8 +2,10 @@ import Vue from 'vue'
 import BootstrapVue from 'bootstrap-vue'
 import App from './App.vue'
 import store from './store'
+
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
@@ -14,10 +16,10 @@ import Toasted from 'vue-toasted'
 Vue.use(Toasted)
 Vue.use(BootstrapVue)
 
+library.add(faGithub)
+library.add(faTrash)
 library.add(faAngleDoubleDown)
 library.add(faAngleDoubleUp)
-library.add(faTrash)
-library.add(faGithub)
 library.add(faLanguage)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)

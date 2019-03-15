@@ -2,11 +2,11 @@ export default {
   app: {
     code: 'code',
     noEnvModalTitle: 'Environement Incorrect',
-    noEnvModalText: 'This web page runs in VeChain Sync Browser.',
+    noEnvModalText: 'This web page needs VeChain Sync.',
     noEnvModalOkayButtonText: 'Download Sync'
   },
   topBar: {
-    title: 'VeChain Token Transfer',
+    title: 'VeChain Tokens',
     mainnet: 'mainnet',
     testnet: 'testnet'
   },

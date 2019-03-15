@@ -6,7 +6,7 @@ export default {
     noEnvModalOkayButtonText: '下载 Sync'
   },
   topBar: {
-    title: '唯链代币转账神器',
+    title: '唯链代币神器',
     mainnet: '主网',
     testnet: '测试网'
   },

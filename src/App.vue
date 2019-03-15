@@ -77,7 +77,7 @@ export default {
       noEnvModalTitle: this.$t('app.noEnvModalTitle'),
       noEnvModalText: this.$t('app.noEnvModalText'),
       noEnvModalOkayButtonText: this.$t('app.noEnvModalOkayButtonText'),
-      downloadSyncUrl: 'https://github.com/vechain/thor-sync.electron',
+      downloadSyncUrl: 'https://env.vechain.org/r/#' + encodeURIComponent(location.href),
       selectedLanguage: mstorage.getLanguage(),
       languageOptions: [
         { value: 'en', text: 'English' },
