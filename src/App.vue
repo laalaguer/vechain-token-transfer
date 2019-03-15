@@ -61,7 +61,7 @@
 import TopBar from './components/TopBar.vue'
 import TabBodyView from './components/TabBodyView.vue'
 import AddNewAddress from './components/AddNewAddress.vue'
-import {GlobalEventBus} from './events.js'
+import { GlobalEventBus } from './events.js'
 
 const initData = require('./init')
 const operations = require('./operations')
@@ -146,10 +146,10 @@ export default {
       return this.$store.getters.themeVariant
     }
   },
-  mounted() {
+  mounted () {
     GlobalEventBus.$on('myglobalevent', () => {
-            console.log('hahahaha')
-    });
+      console.log('hahahaha')
+    })
   }
 }
 </script>

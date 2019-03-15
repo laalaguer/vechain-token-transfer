@@ -12,7 +12,7 @@ export default {
     return {}
   },
   methods: {
-    clickMe() {
+    clickMe () {
       GlobalEventBus.$emit('myglobalevent')
     }
   }
