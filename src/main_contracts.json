@@ -1,5 +1,12 @@
 [
   {
+    "name": "Yeet Coin",
+    "symbol": "YEET",
+    "contract": "0xae4c53b120cba91a44832f875107cbc8fbee185c",
+    "decimals": 18,
+    "icon": "YEET.png"
+  },
+  {
     "name": "TicTalk Token",
     "symbol": "TIC",
     "contract": "0xa94a33f776073423e163088a5078feac31373990",
