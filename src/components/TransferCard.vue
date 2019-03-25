@@ -13,13 +13,10 @@
             {{address}}
           </b-tooltip>
         </b-col>
-        <!-- <b-col cols="1" @click="showDeleteAddressModal">
-          <font-awesome-icon class="trash-icon" :icon="['fas', 'trash']" />
-        </b-col> -->
-        <b-col cols="5" @click="toggleShowOffButton" class="show-hand">
+        <b-col cols="5">
           <p class="margin-none text-right"><span class="text-primary">{{tokenValue}}</span> {{symbol}}</p>
         </b-col>
-        <b-col cols="2" @click="toggleShowOffButton">
+        <b-col cols="2" v-if="isOwned" @click="toggleShowOffButton">
           <b-button v-if="showTransferButton" variant="outline-primary" size="sm">
             {{transferText}}
           </b-button>
@@ -142,12 +139,14 @@ export default {
       borderChoice: 'border',
       shadowChoice: 'shadow-sm',
       opacityChoice: 'half-dim',
-      showTransferButton: true
+      showTransferButton: true,
+      isOwned: false // if self is owned address
     }
   },
   beforeMount () {
     this.refreshTokenBalance()
     this.refreshVTHOBalance()
+    this.refreshIsOwned()
   },
   mounted () {
     this.hideAllCollapse()
@@ -195,6 +194,10 @@ export default {
       this.$refs.myAddressBox.clearBox()
       this.transferAmount = 0
       this.$refs.myAmountBox.clearBox()
+    },
+    refreshIsOwned() {
+      this.isOwned = operations.isOwned(this.address)
+      setTimeout(()=>{this.refreshIsOwned()}, 3000)
     },
     refreshTokenBalance () {
       operations.getTokenBalance(this.contract, this.address)

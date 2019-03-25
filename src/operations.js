@@ -1,6 +1,7 @@
 /**
  * Connex related operations.
  */
+const semver = require('semver')
 const initData = require('./init.js')
 /**
  * Return a Promise which will be resolved to {energy, balance, hasCode}
@@ -107,9 +108,24 @@ async function isMainNet () {
   return connex.thor.genesis.id === initData.MAIN_NET_ID 
 }
 
+/**
+ * Return if the address is owned by user in vendor in Connex environment.
+ * @param {String} address The VET/ETH address that to be checked.
+ */
+function isOwned (address) {
+  // eslint-disable-next-line
+  if (semver.gte(connex.version, "1.2.2")) {
+    // eslint-disable-next-line
+    return connex.vendor.owned(address)
+  } else {
+    return true
+  }
+}
+
 export {
   getAccountBalance,
   getTokenBalance,
   transferToken,
-  isMainNet
+  isMainNet,
+  isOwned
 }
