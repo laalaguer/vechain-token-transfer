@@ -195,9 +195,9 @@ export default {
       this.transferAmount = 0
       this.$refs.myAmountBox.clearBox()
     },
-    refreshIsOwned() {
+    refreshIsOwned () {
       this.isOwned = operations.isOwned(this.address)
-      setTimeout(()=>{this.refreshIsOwned()}, 3000)
+      setTimeout(() => { this.refreshIsOwned() }, 3000)
     },
     refreshTokenBalance () {
       operations.getTokenBalance(this.contract, this.address)
