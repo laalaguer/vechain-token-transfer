@@ -314,7 +314,7 @@ export default {
   },
   computed: {
     truncatedAddress () {
-      return this.address.slice(0, 6) + '...' + this.address.slice(-6)
+      return this.address.slice(0, 9) + '...'
     },
     maxTransferAllowed () {
       return parseFloat(this.tokenValue)
