@@ -36,7 +36,7 @@ export default {
     hintText2: 'Have more symbol tokens? Add them:'
   },
   transferCard: {
-    transferText: 'Transfer',
+    transferText: 'Transfer Out',
     toAddressTitle: 'To:',
     transferAmountTitle: 'Amount:',
     createTransferButton: 'Next Step',
@@ -47,6 +47,8 @@ export default {
     deleteAddressModalTitle: 'Delete Address?',
     copyAddressToastText: 'Address Copied',
     mainNetWarning: '* The transaction would be irreversible on mainnet, click "Confirm" to continue.',
-    transactionSent: 'Transaction sent!'
+    transactionSent: 'Transaction sent!',
+    copyText: 'click to copy:',
+    addWalletText: 'Add to Wallet'
   }
 }

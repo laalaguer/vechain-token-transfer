@@ -47,6 +47,8 @@ export default {
     deleteAddressModalTitle: '确认删除该地址?',
     copyAddressToastText: '地址已经拷贝',
     mainNetWarning: '* 现在处在主网上，任何交易都不可逆，按“确认”按钮继续.',
-    transactionSent: '交易已经发送!'
+    transactionSent: '交易已经发送!',
+    copyText: '单击拷贝地址:',
+    addWalletText: '添加以转账'
   }
 }

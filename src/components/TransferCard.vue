@@ -7,21 +7,29 @@
         <b-col cols="1">
           <avatar :address="address" my-height="16px" my-width="16px"/>
         </b-col>
-        <b-col cols="4">
-          <p class="margin-none cursor-default">{{truncatedAddress}}</p>
-          <b-tooltip :target="() => $refs.exh6" placement="left">
-            {{address}}
+        <b-col cols="3">
+          <p ref="exh6" class="margin-none cursor-default" @click="copySourceAddress">{{truncatedAddress}}</p>
+          <b-tooltip :target="() => $refs.exh6" placement="top">
+            {{copyText + " " +address}}
           </b-tooltip>
         </b-col>
-        <b-col cols="5">
+        <b-col cols="1">
+          <font-awesome-icon class="trash-icon" :icon="['fas', 'trash']" @click="showDeleteAddressModal"/>
+        </b-col>
+        <b-col cols="4">
           <p class="margin-none text-right"><span class="text-primary">{{tokenValue}}</span> {{symbol}}</p>
         </b-col>
-        <b-col cols="2" v-if="isOwned" @click="toggleShowOffButton">
+        <b-col cols="3" v-if="isOwned" @click="toggleShowOffButton">
           <b-button v-if="showTransferButton" variant="outline-primary" size="sm">
             {{transferText}}
           </b-button>
           <b-button v-if="!showTransferButton" variant="link" size="sm">
             <font-awesome-icon v-if="!showTransferButton" :icon="['fas', 'angle-double-up']"/>
+          </b-button>
+        </b-col>
+        <b-col cols="3" v-if="!isOwned">
+          <b-button variant="outline-danger" size="sm" @click="openWallets">
+            {{addWalletText}}
           </b-button>
         </b-col>
       </b-row>
@@ -299,6 +307,9 @@ export default {
       // this.hideAllCollapse()
       this.hideModal()
       // this.toggleTransferButton()
+    },
+    openWallets() {
+      window.open('sync://wallets', '_blank');
     }
   },
   computed: {
@@ -322,7 +333,9 @@ export default {
     deleteAddressModalTitle () { return this.$t('transferCard.deleteAddressModalTitle') },
     copyAddressToastText () { return this.$t('transferCard.copyAddressToastText') },
     mainNetWarning () { return this.$t('transferCard.mainNetWarning') },
-    transactionSent () { return this.$t('transferCard.transactionSent') }
+    transactionSent () { return this.$t('transferCard.transactionSent') },
+    copyText () { return this.$t('transferCard.copyText') },
+    addWalletText () { return this.$t('transferCard.addWalletText')}
   }
 }
 </script>
