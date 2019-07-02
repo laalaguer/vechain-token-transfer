@@ -60,7 +60,6 @@
 <script>
 import TopBar from './components/TopBar.vue'
 import TabBodyView from './components/TabBodyView.vue'
-import AddNewAddress from './components/AddNewAddress.vue'
 import { GlobalEventBus } from './events.js'
 
 const initData = require('./init')
@@ -87,8 +86,7 @@ export default {
   },
   components: {
     TopBar,
-    TabBodyView,
-    AddNewAddress
+    TabBodyView
   },
   beforeMount () {
     this.$store.dispatch('populateUnions')

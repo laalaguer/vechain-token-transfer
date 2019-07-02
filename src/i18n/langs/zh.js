@@ -38,17 +38,18 @@ export default {
   transferCard: {
     transferText: '转出',
     toAddressTitle: '转账给:',
-    transferAmountTitle: '数量:',
+    transferAmountTitle: '总计:',
     createTransferButton: '下一步',
     confirmTransferButton: '确认',
     cancelTransferButton: '取消',
     modalOkButtonText: '好',
     modalCancelButtonText: '取消',
-    deleteAddressModalTitle: '确认删除该地址?',
+    deleteAddressModalTitle: '确认删除该账户?',
     copyAddressToastText: '地址已经拷贝',
     mainNetWarning: '* 现在处在主网上，任何交易都不可逆，按“确认”按钮继续.',
     transactionSent: '交易已经发送!',
-    copyText: '单击拷贝地址:',
-    addWalletText: '添加以转账'
+    copyText: '点击拷贝地址:',
+    addWalletText: '添加以转账',
+    addAnotherReceiver: '再增加一个收款人'
   }
 }

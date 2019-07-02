@@ -1,11 +1,11 @@
 <!-- Amount Box, responsible for amount input status -->
 <template>
   <b-form-group
-    :label="label"
+    :label="computedLabel"
     label-for="input-amount"
     :invalid-feedback="invalidAmountFeedback"
     :valid-feedback="validAmountFeedback"
-    :state="amountState"
+    :state="showState"
     class="noselect"
   >
     <b-input-group :append="symbol">
@@ -13,7 +13,7 @@
         id="input-amount"
         type="number"
         min="0"
-        :state="amountState"
+        :state="showState"
         v-model.number="amount"
         v-on:change="boxChange">
       </b-form-input>
@@ -26,7 +26,8 @@ export default {
   props: {
     label: String,
     symbol: String,
-    maxValue: Number
+    breachedMax: Boolean,
+    uniqueID: String
   },
   data () {
     return {
@@ -36,9 +37,9 @@ export default {
   methods: {
     boxChange () {
       if (this.amountState === true) {
-        this.$emit('amountReady', this.amount) // Pass amount to parent.
+        this.$emit('amountReady', this.amount, this.uniqueID) // Pass amount to parent when it is a valid number.
       } else {
-        this.$emit('amountNotReady')
+        this.$emit('amountNotReady', this.uniqueID)
       }
     },
     clearBox () {
@@ -46,7 +47,21 @@ export default {
     }
   },
   computed: {
-    amountErrorCode () { // Error code of amount
+    showState () {
+      if (this.breachedMax){
+        return false
+      } else {
+        return this.amountState
+      }
+    },
+    computedLabel () {
+      if (this.amount == 0){
+        return '...'
+      } else {
+        return this.amount.toString()
+      }
+    },
+    amountErrorCode () { // Error code generated from the input number.
       if (isNaN(this.amount)) {
         return 'ERR_NAN'
       }
@@ -56,7 +71,7 @@ export default {
       if (this.amount < 0) {
         return 'ERR_NEGATIVE'
       }
-      if (this.amount > this.maxValue) {
+      if (this.breachedMax) {
         return 'ERR_BREACH_MAX'
       }
       const p = /^[0-9]+.?[0-9]{0,4}$/
@@ -65,15 +80,15 @@ export default {
       }
       return null
     },
-    amountState () {
+    amountState () { // if amount is a valid number state.
       switch (this.amountErrorCode) {
         case 'ERR_ZERO':
           return null
         case 'ERR_NAN':
         case 'ERR_NEGATIVE':
-        case 'ERR_BREACH_MAX':
         case 'ERR_DECIMAL_FORMAT':
           return false
+        case 'ERR_BREACH_MAX':
         default:
           return true
       }

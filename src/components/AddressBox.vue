@@ -1,7 +1,7 @@
 <!-- Address Box, responsible for the address status -->
 <template>
   <b-form-group
-    :label="label"
+    :label="computedLabel"
     label-for="input-address"
     :invalid-feedback="invalidAddressFeedback"
     :valid-feedback="validAddressFeedback"
@@ -22,7 +22,8 @@ const calc = require('../calculations.js')
 
 export default {
   props: {
-    label: String
+    label: String,
+    uniqueID: String
   },
   data () {
     return {
@@ -32,9 +33,9 @@ export default {
   methods: {
     boxChange () {
       if (this.addressState === true) {
-        this.$emit('addressReady', this.address) // Pass address to parent.
+        this.$emit('addressReady', this.address, this.uniqueID) // Pass address to parent.
       } else {
-        this.$emit('addressNotReady')
+        this.$emit('addressNotReady', this.uniqueID)
       }
     },
     clearBox () {
@@ -42,6 +43,9 @@ export default {
     }
   },
   computed: {
+    computedLabel () {
+      return this.label + ' ' + this.address.slice(0, 7) + '...' + this.address.slice(-7)
+    },
     addressErrorCode () { // Error code of address
       if (!this.address.startsWith('0x')) {
         return 'ERR_START_WRONG'

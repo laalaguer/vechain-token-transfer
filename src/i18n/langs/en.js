@@ -38,17 +38,18 @@ export default {
   transferCard: {
     transferText: 'Transfer Out',
     toAddressTitle: 'To:',
-    transferAmountTitle: 'Amount:',
+    transferAmountTitle: 'Total:',
     createTransferButton: 'Next Step',
     confirmTransferButton: 'Confirm',
     cancelTransferButton: 'Cancel',
     modalOkButtonText: 'Okay',
     modalCancelButtonText: 'Cancel',
-    deleteAddressModalTitle: 'Delete Address?',
+    deleteAddressModalTitle: 'Delete this wallet?',
     copyAddressToastText: 'Address Copied',
     mainNetWarning: '* The transaction would be irreversible on mainnet, click "Confirm" to continue.',
     transactionSent: 'Transaction sent!',
     copyText: 'click to copy:',
-    addWalletText: 'Add to Wallet'
+    addWalletText: 'Add to Wallet',
+    addAnotherReceiver: 'add a receiver'
   }
 }
