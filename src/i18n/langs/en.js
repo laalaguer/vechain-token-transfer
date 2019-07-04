@@ -3,7 +3,8 @@ export default {
     code: 'code',
     noEnvModalTitle: 'Environement Incorrect',
     noEnvModalText: 'This web page needs VeChain Sync.',
-    noEnvModalOkayButtonText: 'Download Sync'
+    noEnvModalOkayButtonText: 'Download Sync',
+    donateText: 'Support me'
   },
   topBar: {
     title: 'VeChain Tokens',

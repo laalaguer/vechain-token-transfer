@@ -3,7 +3,8 @@ export default {
     code: '源代码',
     noEnvModalTitle: '运行环境不完整',
     noEnvModalText: '本网页运行在 VeChain Sync 浏览器中.',
-    noEnvModalOkayButtonText: '下载 Sync'
+    noEnvModalOkayButtonText: '下载 Sync',
+    donateText: '捐赠、支持作者'
   },
   topBar: {
     title: '唯链代币神器',

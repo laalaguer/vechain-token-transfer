@@ -37,6 +37,15 @@
             </b-card>
           </b-col>
         </b-row>
+
+        <b-row>
+          <b-col cols="12" style="text-align: center;">
+            <p>
+              {{donateText}}:
+              <a href="https://bmac.vecha.in/donate?name=laalaguer&addr=0x422D582C08d7965cD5Fefef1572faaA15783f473&amount=500&msg=Thank%20you%20for%20using%20this%20token%20tool.">0x422D582C08d7965cD5Fefef1572faaA15783f473</a>
+            </p>
+          </b-col>
+        </b-row>
       </b-container>
 
       <!-- Transfer result modal -->
@@ -142,7 +151,8 @@ export default {
   computed: {
     themeVariant () {
       return this.$store.getters.themeVariant
-    }
+    },
+    donateText () { return this.$t('app.donateText') }
   },
   mounted () {
     GlobalEventBus.$on('myglobalevent', () => {
