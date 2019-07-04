@@ -50,6 +50,9 @@ export default {
   },
   computed: {
     computedLabel () {
+      if (this.address === ''){
+        return this.label + ' ' + '...'
+      }
       return this.label + ' ' + this.address.slice(0, 7) + '...' + this.address.slice(-7)
     },
     addressErrorCode () { // Error code of address
