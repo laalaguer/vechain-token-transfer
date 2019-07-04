@@ -23,9 +23,12 @@
 
       <address-box
         ref="myInputBox"
+        :label="modalBoxTitle"
+        uniqueID=""
+        forcedAddress=""
         @addressReady="handleAddressReady"
         @addressNotReady="handleAddressNotReady"
-        :label="modalBoxTitle"/>
+      />
 
     </b-modal><!-- Enter new address modal -->
   </div>
