@@ -20,11 +20,11 @@
           <p class="margin-none text-right"><span class="text-primary">{{tokenValue}}</span> {{symbol}}</p>
         </b-col>
         <b-col cols="3" v-if="isOwned" @click="toggleShowOffButton">
-          <b-button v-if="showTransferButton" variant="outline-primary" size="sm">
-            {{transferText}}
+          <b-button v-if="showTransferButton" variant="primary" size="sm">
+            {{ transferText }}
           </b-button>
-          <b-button v-if="!showTransferButton" variant="link" size="sm">
-            <font-awesome-icon v-if="!showTransferButton" :icon="['fas', 'angle-double-up']"/>
+          <b-button v-if="!showTransferButton" variant="outline-danger" size="sm">
+            {{ modalCancelButtonText }}
           </b-button>
         </b-col>
         <b-col cols="3" v-if="!isOwned">
@@ -41,6 +41,7 @@
           <address-box
             :label="toAddressTitle"
             :uniqueID="item.uniqueID"
+            :forcedAddress="item.toAddress"
             @addressReady="handleAddressReady"
             @addressNotReady="handleAddressNotReady"
           />
@@ -51,6 +52,7 @@
             :uniqueID="item.uniqueID"
             :symbol="symbol"
             :breachedMax="isBreachedMax"
+            :forcedAmount="item.transferAmount"
             @amountReady="handleAmountReady"
             @amountNotReady="handleAmountNotReady"
           />
@@ -68,10 +70,20 @@
 
       <b-row>
         <b-col cols="4">
-          <p @click="addAReceiver"><font-awesome-icon id="plus-icon" :icon="['fas', 'plus-circle']"/> {{ addAnotherReceiverText }}</p>
+          <p class="show-hand" @click="addAReceiver">
+            <font-awesome-icon  id="plus-icon" :icon="['fas', 'plus-circle']"/> {{ addAnotherReceiverText }}
+          </p>
         </b-col>
         <b-col cols="8" style="text-align: center;">
           <p>{{transferAmountTitle}} <span class="font-weight-bold">{{totalTransferAmount}}</span> </p>
+        </b-col>
+      </b-row>
+
+      <b-row>
+        <b-col cols="5">
+          <p class="show-hand" @click="showUploadCSVModal">
+            <font-awesome-icon  id="plus-icon" :icon="['fas', 'plus-circle']"/> {{ addByUploadFileText }}
+          </p>
         </b-col>
       </b-row>
 
@@ -108,7 +120,7 @@
              <p>{{totalTransferAmount}} {{symbol}}</p>
           </b-col>
         </b-row>
-        
+
         <p class="text-danger" v-if="this.$store.getters.isMainNet">{{mainNetWarning}}</p>
       </div>
       <b-row style="text-align: center;">
@@ -134,6 +146,7 @@
       {{modalText}}
     </b-modal>
 
+    <!-- Delete Wallet modal -->
     <b-modal
       ref="deleteAddressModal"
       centered
@@ -145,6 +158,7 @@
       {{address}}
     </b-modal>
 
+    <upload-c-s-v-modal :ref="uniqueCSVModalID" @csvReceiversReady="handleCSVReceivers"/>
   </div>
 </template>
 
@@ -152,6 +166,7 @@
 import AddressBox from './AddressBox.vue'
 import AmountBox from './AmountBox.vue'
 import Avatar from './Avatar.vue'
+import UploadCSVModal from './UploadCSVModal.vue'
 import copy from 'copy-to-clipboard'
 
 const operations = require('../operations.js')
@@ -168,7 +183,8 @@ export default {
   components: {
     AddressBox,
     AmountBox,
-    Avatar
+    Avatar,
+    UploadCSVModal
   },
   data () {
     return {
@@ -182,7 +198,8 @@ export default {
       shadowChoice: 'shadow-sm',
       opacityChoice: 'half-dim',
       showTransferButton: true,
-      isOwned: false // if self is owned address
+      isOwned: false, // if self is owned address
+      uniqueCSVModalID: randomBytes(7).toString('hex')
     }
   },
   beforeMount () {
@@ -196,6 +213,16 @@ export default {
     this.clearTransferData()
   },
   methods: {
+    handleCSVReceivers (receiverList) {
+      // console.log(receiverList)
+      if (this.receiverList.length === 1 && this.receiverList[0].hasTouched === false) {
+        this.receiverList = []
+      }
+
+      for (let i = 0; i < receiverList.length; i++) {
+        this.receiverList.push(receiverList[i])
+      }
+    },
     deleteReceiver (uniqueID) {
       let position = -1
       for (let i = 0; i < this.receiverList.length; i++) {
@@ -205,7 +232,7 @@ export default {
         }
       }
 
-      if (position != -1){
+      if (position !== -1) {
         this.receiverList.splice(position, 1)
       }
     },
@@ -321,6 +348,9 @@ export default {
     showDeleteAddressModal () {
       this.$refs.deleteAddressModal.show()
     },
+    showUploadCSVModal () {
+      this.$refs[this.uniqueCSVModalID].showMe()
+    },
     showModal () {
       this.$refs.transferResultModal.show()
     },
@@ -407,30 +437,34 @@ export default {
       for (let i = 0; i < this.receiverList.length; i++) {
         total += this.receiverList[i].transferAmount
       }
-      return total
+      return total.toFixed(4)
     },
     isBreachedMax () {
       return this.totalTransferAmount > this.maxTransferAllowed
     },
     canTransfer () {
-      if (this.totalTransferAmount == 0){
+      if (this.totalTransferAmount === 0) {
+        console.log('total transfer amount', this.totalTransferAmount)
         return false
       }
       // Max breached?
-      if (this.isBreachedMax){
+      if (this.isBreachedMax) {
+        console.log('isBreachedMax', this.isBreachedMax)
         return false
       }
 
       // any element that is not ready?
       for (let i = 0; i < this.receiverList.length; i++) {
-        if (this.receiverList[i].isReady != true){
+        if (this.receiverList[i].isReady !== true) {
+          console.log(`this.receiverList[${i}].isReady`, i)
           return false
         }
       }
 
       // any element that is fresh? (not touched by user)
       for (let i = 0; i < this.receiverList.length; i++) {
-        if (this.receiverList[i].hasTouched == false){
+        if (this.receiverList[i].hasTouched === false) {
+          console.log(`this.receiverList[${i}].hasTouched`, i)
           return false
         }
       }
@@ -451,7 +485,8 @@ export default {
     transactionSent () { return this.$t('transferCard.transactionSent') },
     copyText () { return this.$t('transferCard.copyText') },
     addWalletText () { return this.$t('transferCard.addWalletText') },
-    addAnotherReceiverText() { return this.$t('transferCard.addAnotherReceiver')}
+    addAnotherReceiverText () { return this.$t('transferCard.addAnotherReceiver') },
+    addByUploadFileText () { return this.$t('transferCard.addByUploadFile') }
   }
 }
 </script>

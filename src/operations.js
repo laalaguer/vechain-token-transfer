@@ -132,7 +132,7 @@ async function transferTokenBulk (addressContract, signerAddress, receiverList, 
     'type': 'function'
   }
 
-    // eslint-disable-next-line
+  // eslint-disable-next-line
   const signingService = connex.vendor.sign('tx')
   signingService
     .signer(signerAddress) // Enforce signer
@@ -141,11 +141,10 @@ async function transferTokenBulk (addressContract, signerAddress, receiverList, 
 
   // eslint-disable-next-line
   const transferMethod = connex.thor.account(addressContract).method(transferABI)
-  
+
   let transferClauses = []
 
   for (let i = 0; i < receiverList.length; i++) {
-
     let transferClause = transferMethod.asClause(receiverList[i].toAddress, receiverList[i].amountEVM)
     let comment = `To: ${receiverList[i].toAddress} Amount:${receiverList[i].transferAmount} ${symbol}`
     transferClauses.push({

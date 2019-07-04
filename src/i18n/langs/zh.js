@@ -50,6 +50,8 @@ export default {
     transactionSent: '交易已经发送!',
     copyText: '点击拷贝地址:',
     addWalletText: '添加以转账',
-    addAnotherReceiver: '再增加一个收款人'
+    addAnotherReceiver: '再增加一个收款人',
+    addByUploadFile: '上传 .csv 文件添加收款人',
+    uploadCSVModalTitle: '上传一个 .csv 文件添加多个收款人'
   }
 }

@@ -23,11 +23,17 @@ const calc = require('../calculations.js')
 export default {
   props: {
     label: String,
-    uniqueID: String
+    uniqueID: String,
+    forcedAddress: String
   },
   data () {
     return {
       address: ''
+    }
+  },
+  beforeMount () {
+    if (this.forcedAddress !== '') {
+      this.address = this.forcedAddress
     }
   },
   methods: {

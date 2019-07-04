@@ -27,11 +27,17 @@ export default {
     label: String,
     symbol: String,
     breachedMax: Boolean,
-    uniqueID: String
+    uniqueID: String,
+    forcedAmount: Number
   },
   data () {
     return {
       amount: 0
+    }
+  },
+  beforeMount () {
+    if (this.forcedAmount !== 0) {
+      this.amount = this.forcedAmount
     }
   },
   methods: {
@@ -48,14 +54,14 @@ export default {
   },
   computed: {
     showState () {
-      if (this.breachedMax){
+      if (this.breachedMax) {
         return false
       } else {
         return this.amountState
       }
     },
     computedLabel () {
-      if (this.amount == 0){
+      if (this.amount === 0) {
         return '...'
       } else {
         return this.amount.toString()
