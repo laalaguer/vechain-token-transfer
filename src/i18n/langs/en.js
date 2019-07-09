@@ -1,7 +1,7 @@
 export default {
   app: {
     code: 'code',
-    noEnvModalTitle: 'Environement Incorrect',
+    noEnvModalTitle: 'Environment Incorrect',
     noEnvModalText: 'This web page needs VeChain Sync.',
     noEnvModalOkayButtonText: 'Download Sync',
     donateText: 'Support me'
