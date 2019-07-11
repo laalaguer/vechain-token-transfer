@@ -33,7 +33,7 @@ export default {
     modalOkText: '好',
     modalCancelText: '取消',
     modalBoxTitle: '输入一个新的观察地址 (钱包地址):',
-    hintText1: '还没有观察地址, 添加一些 symbol 钱包地址:',
+    hintText1: '看上去你关注的symbol列表是空的？添加一个你感兴趣/持有的地址吧',
     hintText2: '持有更多 symbol 代币? 添加对应的钱包地址:'
   },
   transferCard: {
@@ -45,7 +45,7 @@ export default {
     cancelTransferButton: '取消',
     modalOkButtonText: '好',
     modalCancelButtonText: '取消',
-    deleteAddressModalTitle: '确认删除该账户?',
+    deleteAddressModalTitle: '不再关注该账户吗?（仍可以随时添加）',
     copyAddressToastText: '地址已经拷贝',
     mainNetWarning: '* 现在处在主网上，任何交易都不可逆，按“确认”按钮继续.',
     transactionSent: '交易已经发送!',

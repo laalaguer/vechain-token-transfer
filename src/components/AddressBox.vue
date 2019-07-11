@@ -13,6 +13,7 @@
         :state="addressState"
         v-model.trim="address"
         v-on:change="boxChange"
+        placeholder="0x"
       ></b-form-input>
   </b-form-group>
 </template>

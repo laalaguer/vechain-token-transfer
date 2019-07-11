@@ -7,12 +7,18 @@
     <!-- app -->
     <div id="app">
       <b-container>
-        <b-row>
-          <b-col lg="2" offset-lg="1" md="3" sm="2">
-            <!-- col of language -->
+        <b-row align-h="start">
+          <b-col offset-lg="1" lg="2" md="3" sm="2"><!-- col of language -->
             <div class="d-flex flex-row align-items-baseline">
               <p class="mr-2"><span><font-awesome-icon :icon="['fas','language']"/></span></p>
               <b-form-select @input="changeLanguage" v-model="selectedLanguage" :options="languageOptions" size="sm" />
+            </div>
+          </b-col>
+          <b-col lg="6">
+            <div class="d-flex flex-row align-items-baseline">
+              <github-button class="mx-1" href="https://github.com/laalaguer/vechain-token-transfer" data-size="large" data-show-count="true" aria-label="Star laalaguer/vechain-token-transfer on GitHub">Star</github-button>
+              <github-button class="mx-1" href="https://github.com/laalaguer/vechain-token-transfer/fork" data-size="large" data-show-count="true" aria-label="Fork laalaguer/vechain-token-transfer on GitHub">Fork</github-button>
+              <github-button class="mx-1" href="https://github.com/laalaguer" data-size="large" data-show-count="true" aria-label="Follow @laalaguer on GitHub">Follow @laalaguer</github-button>
             </div>
           </b-col>
         </b-row>
@@ -70,6 +76,7 @@
 import TopBar from './components/TopBar.vue'
 import TabBodyView from './components/TabBodyView.vue'
 import { GlobalEventBus } from './events.js'
+import GithubButton from 'vue-github-button'
 
 const initData = require('./init')
 const operations = require('./operations')
@@ -94,6 +101,7 @@ export default {
     }
   },
   components: {
+    GithubButton,
     TopBar,
     TabBodyView
   },
@@ -137,7 +145,8 @@ export default {
     downloadSync (evt) { // Tell user to download sync
       evt.preventDefault()
       if (window) {
-        window.open(this.downloadSyncUrl, '_blank')
+        // window.open(this.downloadSyncUrl, '_blank')
+        window.open('https://env.vechain.org/', '_blank')
       }
     },
     iconSrc (value) { // Return icon image source file

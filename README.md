@@ -1,10 +1,12 @@
-# VeChain-Token-Transfer
+# VeChain Tokens
 
 ## Demo
-[vechain-token-transfer](https://laalaguer.github.io/vechain-token-transfer/)
+[https://vechaintokens.abyteahead.com/](https://vechaintokens.abyteahead.com/)
 
-## Token Transfer in Thor Sync
-1. Runs in [VeChain-Thor-Sync](https://github.com/vechain/thor-sync.electron)
+<img src="./interface.png" style="max-width:500px;"/>
+
+## Token Viewer/Transfer on Sync
+1. Runs in [VeChain-Sync-Browser](https://github.com/vechain/thor-sync.electron)
 2. Depends on web page environment [Connex](https://github.com/vechain/connex)
 
 ## Project setup

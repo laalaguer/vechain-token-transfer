@@ -33,7 +33,7 @@ export default {
     modalOkText: 'Okay',
     modalCancelText: 'Cancel',
     modalBoxTitle: 'Enter a new address:',
-    hintText1: 'Empty watchlist, Add some symbol address:',
+    hintText1: 'Empty watchlist of symbol? Add an address to start watching/transferring:',
     hintText2: 'Have more symbol tokens? Add them:'
   },
   transferCard: {
@@ -45,7 +45,7 @@ export default {
     cancelTransferButton: 'Cancel',
     modalOkButtonText: 'Okay',
     modalCancelButtonText: 'Cancel',
-    deleteAddressModalTitle: 'Delete this wallet?',
+    deleteAddressModalTitle: 'Remove this wallet from watchlist?',
     copyAddressToastText: 'Address Copied',
     mainNetWarning: '* The transaction would be irreversible on mainnet, click "Confirm" to continue.',
     transactionSent: 'Transaction sent!',

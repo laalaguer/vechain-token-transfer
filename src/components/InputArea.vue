@@ -1,8 +1,15 @@
 <template>
   <div ref="exButton3" class="my-2" @mouseover="mouseOver" @mouseleave="mouseLeave">
     <b-container>
+      <b-row v-if="empty" class="my-5">
+      </b-row>
+      <b-row v-if="empty" class="mb-5">
+        <b-col cols="12" class="put-center">
+          <h6>{{ hintText }}</h6>
+        </b-col>
+      </b-row>
       <b-row align-h="center">
-        <b-col cols="4" class="put-center">
+        <b-col cols="12" class="put-center">
           <b-button style="width: 140px" id="inputaddressbutton" :variant="themeVariant" @click="showModal">{{ buttonText }}</b-button>
         </b-col>
       </b-row>
