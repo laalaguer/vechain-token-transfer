@@ -7,7 +7,8 @@
     </b-row>
     <b-row>
       <b-col class="my-2" cols="12" v-for="address in addresses" :key="address">
-        <transfer-card @removeAddress="removeAddress" :address="address" :symbol="symbol" :contract="contractAddress" :decimals="decimals"/>
+        <transfer-card v-if="isContract" @removeAddress="removeAddress" :address="address" :symbol="symbol" :contract="contractAddress" :decimals="decimals"/>
+        <vet-transfer-card v-if="!isContract" @removeAddress="removeAddress" :address="address" :symbol="symbol"/>
       </b-col>
     </b-row>
   </b-container>
@@ -16,6 +17,7 @@
 <script>
 import InputArea from './InputArea.vue'
 import TransferCard from './TransferCard.vue'
+import VetTransferCard from './VetTransferCard.vue'
 
 export default {
   props: {
@@ -25,7 +27,8 @@ export default {
   },
   components: {
     InputArea,
-    TransferCard
+    TransferCard,
+    VetTransferCard
   },
   mounted () {
     let allAddresses = this.$store.getters.addressSymbolUnions
@@ -53,6 +56,11 @@ export default {
         this.addresses.push(value)
         this.$store.dispatch('setUnion', { address: value, symbol: this.symbol, owned: false })
       }
+    }
+  },
+  computed: {
+    isContract () {
+      return this.contractAddress !== ''
     }
   }
 }
