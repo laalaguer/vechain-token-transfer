@@ -158,6 +158,35 @@ async function transferTokenBulk (addressContract, signerAddress, receiverList, 
 }
 
 /**
+ * Transfer VET in bulk manner from one to a lot of receivers.
+ * @param {String} signerAddress Enforce who signs the transaction.
+ * @param {Array} receiverList Receivers of transfer. {amountEVM:String, toAddress:String, transferAmount:Number}
+ * @param {String} symbol Symbol of the transferred token.
+ */
+async function transferVETBulk (signerAddress, receiverList, symbol) {
+  // eslint-disable-next-line
+  const signingService = connex.vendor.sign('tx')
+  signingService
+    .signer(signerAddress) // Enforce signer
+    // .gas(200000) // Set maximum gas
+    .comment('VET: Token transfer tool by laalaguer.')
+
+  let transferClauses = []
+
+  for (let i = 0; i < receiverList.length; i++) {
+    let transferClause = { 'to': receiverList[i].toAddress, 'value': receiverList[i].amountEVM, 'data': '' }
+    let comment = `To: ${receiverList[i].toAddress} Amount:${receiverList[i].transferAmount} ${symbol}`
+    transferClauses.push({
+      comment: comment,
+      ...transferClause
+    })
+  }
+
+  let transactionInfo = await signingService.request(transferClauses)
+  return transactionInfo
+}
+
+/**
  * @returns {Boolean} Is on mainnet or testnet.
  */
 async function isMainNet () {
@@ -184,6 +213,7 @@ export {
   getTokenBalance,
   transferToken,
   transferTokenBulk,
+  transferVETBulk,
   isMainNet,
   isOwned
 }

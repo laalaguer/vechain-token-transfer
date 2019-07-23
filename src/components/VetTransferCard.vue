@@ -1,4 +1,4 @@
-<!-- Card: Responsible for transferring token -->
+<!-- Card: Responsible for transferring VET -->
 <template>
   <div>
     <b-card @mouseenter="imFocused" @mouseleave="imUnFocused" :border-variant="borderChoice" :class="[shadowChoice, 'bg-light']">
@@ -17,7 +17,7 @@
           <font-awesome-icon class="trash-icon" :icon="['fas', 'trash']" @click="showDeleteAddressModal"/>
         </b-col>
         <b-col cols="4">
-          <p class="margin-none text-right"><span class="text-primary">{{tokenValue}}</span> {{symbol}}</p>
+          <p class="margin-none text-right"><span class="text-primary">{{vetValue}}</span> {{symbol}}</p>
         </b-col>
         <b-col cols="3" v-if="isOwned" @click="toggleShowOffButton">
           <b-button v-if="showTransferButton" variant="primary" size="sm">
@@ -176,9 +176,7 @@ const randomBytes = require('randombytes')
 export default {
   props: {
     address: String, // Address of token holder.
-    symbol: String, // Symbol of token.
-    contract: String, // Contract address.
-    decimals: Number // Contract decimals setting.
+    symbol: String // Symbol of token.
   },
   components: {
     AddressBox,
@@ -190,7 +188,6 @@ export default {
     return {
       vetValue: 0, // How many vet this address has, is a String type.
       vthoValue: 0, // How many energy this address has, is a String type.
-      tokenValue: 0, // How many tokens this address has, is a String type.
       showCollapseOfTransfer: false,
       showCollapseOfConfirmation: false,
       receiverList: [],
@@ -204,7 +201,6 @@ export default {
     }
   },
   beforeMount () {
-    this.refreshTokenBalance()
     this.refreshWalletBalance()
     this.refreshIsOwned()
     this.addAReceiver()
@@ -314,21 +310,6 @@ export default {
       this.isOwned = operations.isOwned(this.address)
       setTimeout(() => { this.refreshIsOwned() }, 3000)
     },
-    refreshTokenBalance () {
-      operations.getTokenBalance(this.contract, this.address)
-        .then(result => {
-          this.tokenValue = utils.evmToPrintable(result['decoded']['balance'], this.decimals)
-          // this will result in a Promise with undefined as resolve(value).
-        })
-        .then(() => {
-          // eslint-disable-next-line
-          const ticker = connex.thor.ticker()
-          ticker.next().then().then(() => { this.refreshTokenBalance() })
-        })
-        .catch(e => {
-          setTimeout(() => { this.refreshTokenBalance() }, 3000)
-        })
-    },
     refreshWalletBalance () {
       // Refresh user vtho balance
       operations.getAccountBalance(this.address)
@@ -393,7 +374,7 @@ export default {
         this.receiverList[i].amountEVM = utils.humanToEvm(this.receiverList[i].transferAmount.toString(), this.decimals)
         console.log(this.receiverList[i])
       }
-      operations.transferTokenBulk(this.contract, this.address, this.receiverList, this.symbol)
+      operations.transferVETBulk(this.address, this.receiverList, this.symbol)
       // operations.transferToken(this.contract, this.address, this.toAddress, evmAmount, this.transferAmount, this.symbol)
         .then(result => {
           this.handleTransferOk()
@@ -432,7 +413,7 @@ export default {
       return this.address.slice(0, 9) + '...'
     },
     maxTransferAllowed () {
-      return parseFloat(this.tokenValue)
+      return parseFloat(this.vetValue)
     },
     totalTransferAmount () {
       let total = 0

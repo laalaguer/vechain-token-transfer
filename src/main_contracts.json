@@ -61,5 +61,12 @@
     "contract": "0x2182aa52adB1b27903d089e4432538A695effE3d",
     "decimals": 18,
     "icon": "bag.png"
+  },
+  {
+    "name": "Vechain",
+    "symbol": "VET",
+    "contract": "",
+    "decimals": 18,
+    "icon": "vet.png"
   }
 ]

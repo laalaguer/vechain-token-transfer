@@ -1,6 +1,6 @@
 {
   "name": "vechain-token-transfer",
-  "version": "2.1.4",
+  "version": "2.2.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
