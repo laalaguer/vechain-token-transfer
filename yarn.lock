@@ -5792,10 +5792,10 @@ pako@~1.0.5:
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.7.tgz#2473439021b57f1516c82f58be7275ad8ef1bb27"
   integrity sha512-3HNK5tW4x8o5mO8RuHZp3Ydw9icZXx0RANAOMzlMzx7LVXhMJ4mo3MOBpzyd7r/+RUu8BmndP47LXT+vzjtWcQ==
 
-papaparse@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-5.0.0.tgz#026f66f85b7f59378719c8cc130f8fce3d71f396"
-  integrity sha512-gCqNseOMB5RInYXR051oWfCIZZI9ldhijkeMj0kNYLpE/hSRLHaW8ctoK4h3IuS1v8l+PovsV96LjXtgmzHRxA==
+papaparse@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-5.0.1.tgz#5243710e5468e659e23c77db0e0b010912960c15"
+  integrity sha512-LoM77aP/xSfZP645H3x1X0Qrf7klhGqHUfJH2KHIPvmB4uzezB/1bfvJKI0vp6zD5AfQF46J3URB7uz4Iqe0lg==
 
 parallel-transform@^1.1.0:
   version "1.1.0"
