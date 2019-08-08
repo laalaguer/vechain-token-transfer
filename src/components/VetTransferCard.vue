@@ -239,7 +239,8 @@ export default {
           uniqueID: randomBytes(7).toString('hex'),
           toAddress: '',
           transferAmount: 0,
-          isReady: true,
+          isAddressReady: false,
+          isAmountReady: false,
           hasTouched: false // if this element is fresh, or has been touched.
         }
       )
@@ -272,6 +273,7 @@ export default {
       for (let i = 0; i < this.receiverList.length; i++) {
         if (this.receiverList[i].uniqueID === uniqueID) {
           this.receiverList[i].toAddress = value
+          this.receiverList[i].isAddressReady = true
           this.receiverList[i].hasTouched = true
         }
       }
@@ -280,7 +282,7 @@ export default {
       for (let i = 0; i < this.receiverList.length; i++) {
         if (this.receiverList[i].uniqueID === uniqueID) {
           this.receiverList[i].toAddress = ''
-          this.receiverList[i].isReady = false
+          this.receiverList[i].isAddressReady = false
           this.receiverList[i].hasTouched = true
         }
       }
@@ -289,6 +291,7 @@ export default {
       for (let i = 0; i < this.receiverList.length; i++) {
         if (this.receiverList[i].uniqueID === uniqueID) {
           this.receiverList[i].transferAmount = value
+          this.receiverList[i].isAmountReady = true
           this.receiverList[i].hasTouched = true
         }
       }
@@ -297,12 +300,12 @@ export default {
       for (let i = 0; i < this.receiverList.length; i++) {
         if (this.receiverList[i].uniqueID === uniqueID) {
           this.receiverList[i].transferAmount = 0
-          this.receiverList[i].isReady = false
+          this.receiverList[i].isAmountReady = false
           this.receiverList[i].hasTouched = true
         }
       }
     },
-    clearTransferData () { // clear all transfer data inside card.
+    clearTransferData () { // clear all transfer receviers inside card.
       this.receiverList = []
       this.addAReceiver()
     },
@@ -426,6 +429,10 @@ export default {
       return this.totalTransferAmount > this.maxTransferAllowed
     },
     canTransfer () {
+      if (this.receiverList.length === 0){
+        console.log('receiver list is empty')
+        return false
+      }
       if (this.totalTransferAmount === 0) {
         console.log('total transfer amount', this.totalTransferAmount)
         return false
@@ -436,22 +443,25 @@ export default {
         return false
       }
 
-      // any element that is not ready?
       for (let i = 0; i < this.receiverList.length; i++) {
-        if (this.receiverList[i].isReady !== true) {
-          console.log(`this.receiverList[${i}].isReady`, i)
+        // any address that is not ready?
+        if (this.receiverList[i].isAddressReady !== true) {
+          console.log(`this.receiverList[${i}].isAddressReady`, this.receiverList[i].isAddressReady)
           return false
         }
-      }
 
-      // any element that is fresh? (not touched by user)
-      for (let i = 0; i < this.receiverList.length; i++) {
-        if (this.receiverList[i].hasTouched === false) {
-          console.log(`this.receiverList[${i}].hasTouched`, i)
+        // any amount that is not ready?
+        if (this.receiverList[i].isAmountReady !== true) {
+          console.log(`this.receiverList[${i}].isAmountReady`, this.receiverList[i].isAmountReady)
           return false
         }
-      }
+        // any element that is fresh? (not touched by user)
+        if (this.receiverList[i].hasTouched !== true) {
+          console.log(`this.receiverList[${i}].hasTouched`, this.receiverList[i].hasTouched)
+          return false
+        }
 
+      }
       return true
     },
     transferText () { return this.$t('transferCard.transferText') },

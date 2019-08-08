@@ -63,6 +63,8 @@ export default {
     computedLabel () {
       if (this.amount === 0) {
         return '...'
+      } else if (this.amount === ''){
+        return '...'
       } else {
         return this.amount.toString()
       }

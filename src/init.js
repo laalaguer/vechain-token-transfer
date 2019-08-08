@@ -10,11 +10,23 @@ const MAIN_NET_CONTRACTS = require('./main_contracts.json')
 
 const TEST_NET_CONTRACTS = require('./test_contracts.json')
 
+const sortFunction = function (a, b) {
+  if (a.symbol < b.symbol) {
+    return -1
+  }
+
+  if (a.symbol > b.symbol) {
+    return 1
+  }
+  
+  return 0
+}
+
 const getContracts = function (isMainNet) {
   if (isMainNet) {
-    return MAIN_NET_CONTRACTS
+    return MAIN_NET_CONTRACTS.sort(sortFunction)
   } else {
-    return TEST_NET_CONTRACTS
+    return TEST_NET_CONTRACTS.sort(sortFunction)
   }
 }
 
