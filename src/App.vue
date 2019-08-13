@@ -17,7 +17,7 @@
           <b-col lg="6">
             <div class="d-flex flex-row align-items-baseline">
               <github-button class="mx-1" href="https://github.com/laalaguer/vechain-token-transfer" data-size="large" data-show-count="true" aria-label="Star laalaguer/vechain-token-transfer on GitHub">Star</github-button>
-              <github-button class="mx-1" href="https://github.com/laalaguer/vechain-token-transfer/fork" data-size="large" data-show-count="true" aria-label="Fork laalaguer/vechain-token-transfer on GitHub">Fork</github-button>
+              <!-- <github-button class="mx-1" href="https://github.com/laalaguer/vechain-token-transfer/fork" data-size="large" data-show-count="true" aria-label="Fork laalaguer/vechain-token-transfer on GitHub">Fork</github-button> -->
               <github-button class="mx-1" href="https://github.com/laalaguer" data-size="large" data-show-count="true" aria-label="Follow @laalaguer on GitHub">Follow @laalaguer</github-button>
             </div>
           </b-col>
@@ -26,7 +26,7 @@
         <b-row class="my-2" align-h="center">
           <b-col sm="12" md="12" lg="10">
             <b-card no-body>
-              <b-tabs pills card vertical>
+              <b-tabs card pills fill>
                 <b-tab v-for="contract in contracts" :key="contract.symbol">
                   <template slot="title">
                     <div>

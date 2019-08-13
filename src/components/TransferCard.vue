@@ -4,22 +4,30 @@
     <b-card @mouseenter="imFocused" @mouseleave="imUnFocused" :border-variant="borderChoice" :class="[shadowChoice, 'bg-light']">
       <!-- Row of address and tokens it holds -->
       <b-row align-v="center">
-        <b-col cols="1">
+        <!-- Avatar -->
+        <b-col offset="2" cols="1" offset-sm="0" sm="1">
           <avatar :address="address" my-height="16px" my-width="16px"/>
         </b-col>
-        <b-col cols="3">
+        <!-- Address -->
+        <b-col offset="1" cols="7" offset-sm="0" sm="3" md="3" lg="3" xl="3">
           <p ref="exh6" class="margin-none cursor-default" @click="copySourceAddress">{{truncatedAddress}}</p>
           <b-tooltip :target="() => $refs.exh6" placement="top">
             {{copyText + " " +address}}
           </b-tooltip>
         </b-col>
-        <b-col cols="1">
+        <!-- Trash icon visible >= sm devices -->
+        <b-col class="d-none d-sm-block" offset-sm="0" sm="1" md="1" lg="1" xl="1">
           <font-awesome-icon class="trash-icon" :icon="['fas', 'trash']" @click="showDeleteAddressModal"/>
         </b-col>
-        <b-col cols="4">
+        <!-- Token value, on xm center and take whole space, on above take 4 cols. -->
+        <b-col class="d-block d-sm-none my-3" cols="12">
+          <p class="margin-none text-center"><span class="text-primary">{{tokenValue}}</span> {{symbol}}</p>
+        </b-col>
+        <b-col class="d-none d-sm-block" offset-sm="0" sm="4" md="4" lg="4" xl="4">
           <p class="margin-none text-right"><span class="text-primary">{{tokenValue}}</span> {{symbol}}</p>
         </b-col>
-        <b-col cols="3" v-if="isOwned" @click="toggleShowOffButton">
+        <!-- if owned show transfer button -->
+        <b-col class="text-center" v-if="isOwned" offset-sm="0" sm="4" md="3" lg="3" xl="3"  @click="toggleShowOffButton">
           <b-button v-if="showTransferButton" variant="primary" size="sm">
             {{ transferText }}
           </b-button>
@@ -27,7 +35,8 @@
             {{ modalCancelButtonText }}
           </b-button>
         </b-col>
-        <b-col cols="3" v-if="!isOwned">
+        <!-- if not owned show add wallet button -->
+        <b-col class="text-center" v-if="!isOwned" offset-sm="0" sm="3" md="3" lg="3" xl="3">
           <b-button variant="outline-danger" size="sm" @click="openWallets">
             {{addWalletText}}
           </b-button>
@@ -448,7 +457,7 @@ export default {
       return this.totalTransferAmount > this.maxTransferAllowed
     },
     canTransfer () {
-      if (this.receiverList.length === 0){
+      if (this.receiverList.length === 0) {
         console.log('receiver list is empty')
         return false
       }
