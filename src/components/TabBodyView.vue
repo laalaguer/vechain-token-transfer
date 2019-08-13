@@ -6,7 +6,7 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col class="my-2" cols="12" v-for="address in addresses" :key="address">
+      <b-col class="my-2 px-0" cols="12" v-for="address in addresses" :key="address">
         <transfer-card v-if="isContract" @removeAddress="removeAddress" :address="address" :symbol="symbol" :contract="contractAddress" :decimals="decimals"/>
         <vet-transfer-card v-if="!isContract" @removeAddress="removeAddress" :address="address" :symbol="symbol"/>
       </b-col>
