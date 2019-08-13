@@ -5,29 +5,36 @@
       <!-- Row of address and tokens it holds -->
       <b-row align-v="center">
         <!-- Avatar -->
-        <b-col offset="2" cols="1" offset-sm="0" sm="1">
-          <avatar :address="address" my-height="16px" my-width="16px"/>
+        <b-col class="d-block d-md-none" offset="0" cols="12">
+          <div class="d-flex justify-content-center">
+            <avatar :address="address" my-height="64px" my-width="64px"/>
+          </div>
+        </b-col>
+        <b-col class="d-none d-md-block" offset-sm="0" sm="1">
+          <div class="d-flex justify-content-center">
+            <avatar :address="address" my-height="32px" my-width="32px"/>
+          </div>
         </b-col>
         <!-- Address -->
-        <b-col offset="1" cols="7" offset-sm="0" sm="3" md="3" lg="3" xl="3">
+        <b-col class="d-none d-md-block" offset="4" cols="4" offset-md="0" md="3" lg="3" xl="3">
           <p ref="exh6" class="margin-none cursor-default" @click="copySourceAddress">{{truncatedAddress}}</p>
           <b-tooltip :target="() => $refs.exh6" placement="top">
             {{copyText + " " +address}}
           </b-tooltip>
         </b-col>
         <!-- Trash icon visible >= sm devices -->
-        <b-col class="d-none d-sm-block" offset-sm="0" sm="1" md="1" lg="1" xl="1">
+        <b-col class="d-none d-md-block" offset-md="0" md="1" lg="1" xl="1">
           <font-awesome-icon class="trash-icon" :icon="['fas', 'trash']" @click="showDeleteAddressModal"/>
         </b-col>
         <!-- VET value, on xm center and take whole space, on above take 4 cols. -->
-        <b-col class="d-block d-sm-none my-3" cols="12">
+        <b-col class="d-block d-md-none my-3" cols="12">
           <p class="margin-none text-center"><span class="text-primary">{{vetValue}}</span> {{symbol}}</p>
         </b-col>
-        <b-col class="d-none d-sm-block" offset-sm="0" sm="4" md="4" lg="4" xl="4">
+        <b-col class="d-none d-md-block" offset-md="0" md="4" lg="4" xl="4">
           <p class="margin-none text-right"><span class="text-primary">{{vetValue}}</span> {{symbol}}</p>
         </b-col>
         <!-- if owned show transfer button -->
-        <b-col class="text-center" v-if="isOwned" offset-sm="0" sm="4" md="3" lg="3" xl="3"  @click="toggleShowOffButton">
+        <b-col class="text-center" v-if="isOwned" offset-md="0" md="4" lg="3" xl="3"  @click="toggleShowOffButton">
           <b-button v-if="showTransferButton" variant="primary" size="sm">
             {{ transferText }}
           </b-button>
@@ -36,7 +43,7 @@
           </b-button>
         </b-col>
         <!-- if not owned show add wallet button -->
-        <b-col class="text-center" v-if="!isOwned" offset-sm="0" sm="3" md="3" lg="3" xl="3">
+        <b-col class="text-center" v-if="!isOwned" offset-md="0" md="3" lg="3" xl="3">
           <b-button variant="outline-danger" size="sm" @click="openWallets">
             {{addWalletText}}
           </b-button>
@@ -46,7 +53,7 @@
     <!-- Collapse: Area of transfer data input -->
     <b-collapse class="mt-3" v-model="showCollapseOfTransfer" id="collapse-transfer">
       <b-row v-for="item in receiverList" :key="item.uniqueID"><!-- Row of Address && Amount-->
-        <b-col cols="6">
+        <b-col cols="12" sm="6">
           <address-box
             :label="toAddressTitle"
             :uniqueID="item.uniqueID"
@@ -55,7 +62,7 @@
             @addressNotReady="handleAddressNotReady"
           />
         </b-col>
-        <b-col cols="5" class="pl-0">
+        <b-col cols="12" sm="5">
           <amount-box
             :label="transferAmountTitle"
             :uniqueID="item.uniqueID"
@@ -66,7 +73,7 @@
             @amountNotReady="handleAmountNotReady"
           />
         </b-col>
-        <b-col cols="1">
+        <b-col class="d-none d-sm-block" cols="1">
           <b-form-group
             label=" "
             label-for="ban-icon"
@@ -77,19 +84,20 @@
         </b-col>
       </b-row>
 
+      <hr/>
       <b-row>
-        <b-col cols="4">
+        <b-col cols="7">
           <p class="show-hand" @click="addAReceiver">
             <font-awesome-icon  id="plus-icon" :icon="['fas', 'plus-circle']"/> {{ addAnotherReceiverText }}
           </p>
         </b-col>
-        <b-col cols="8" style="text-align: center;">
+        <b-col cols="5" style="text-align: center;">
           <p>{{transferAmountTitle}} <span class="font-weight-bold">{{totalTransferAmount}}</span> </p>
         </b-col>
       </b-row>
 
       <b-row>
-        <b-col cols="5">
+        <b-col cols="12">
           <p class="show-hand" @click="showUploadCSVModal">
             <font-awesome-icon  id="plus-icon" :icon="['fas', 'plus-circle']"/> {{ addByUploadFileText }}
           </p>
@@ -97,8 +105,8 @@
       </b-row>
 
       <b-row style="text-align: center;">
-        <b-col cols="12">
-          <b-button variant="primary" @click="createTransfer">{{ createTransferButton }}</b-button>
+        <b-col offset="0" cols="12" offset-md="4" md="4">
+          <b-button block size="lg" variant="primary" @click="createTransfer">{{ createTransferButton }}</b-button>
         </b-col>
       </b-row>
 
@@ -108,6 +116,7 @@
     <b-collapse v-model="showCollapseOfConfirmation" id="collapse-confirmation">
       <div class="mt-3">
         <h5>{{toAddressTitle}}</h5>
+        <hr/>
       </div>
       <div v-for="item in receiverList" :key="item.uniqueID">
         <b-row style="text-align: center;">
@@ -121,11 +130,9 @@
       </div>
       <div class="mt-1">
         <h5>{{transferAmountTitle}}</h5>
+        <hr/>
         <b-row style="text-align: center;">
-          <b-col cols="8">
-            <p> </p>
-          </b-col>
-          <b-col cols="4">
+          <b-col offset="8" cols="4">
              <p>{{totalTransferAmount}} {{symbol}}</p>
           </b-col>
         </b-row>
@@ -134,10 +141,10 @@
       </div>
       <b-row style="text-align: center;">
         <b-col cols="6">
-          <b-button variant="primary" @click="confirmTransfer">{{confirmTransferButton}}</b-button>
+          <b-button size="lg" variant="primary" @click="confirmTransfer">{{confirmTransferButton}}</b-button>
         </b-col>
         <b-col cols="6">
-          <b-button @click="cancelTransfer">{{cancelTransferButton}}</b-button>
+          <b-button size="lg" @click="cancelTransfer">{{cancelTransferButton}}</b-button>
         </b-col>
       </b-row>
     </b-collapse>
