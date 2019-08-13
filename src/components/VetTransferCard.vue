@@ -7,25 +7,27 @@
         <!-- Avatar -->
         <b-col class="d-block d-md-none" offset="0" cols="12">
           <div class="d-flex justify-content-center">
-            <avatar :address="address" my-height="64px" my-width="64px"/>
+            <avatar :id="address+'sm'+symbol" :address="address" my-height="64px" my-width="64px"/>
           </div>
+          <address-popover :target="address+'sm'+symbol" :title="truncatedAddress" @deleteMe="showDeleteAddressModal"/>
         </b-col>
         <b-col class="d-none d-md-block" offset-sm="0" sm="1">
           <div class="d-flex justify-content-center">
-            <avatar :address="address" my-height="32px" my-width="32px"/>
+            <avatar :id="address+'md'+symbol" :address="address" my-height="32px" my-width="32px"/>
           </div>
+          <address-popover :target="address+'md'+symbol" :title="truncatedAddress" @deleteMe="showDeleteAddressModal"/>
         </b-col>
         <!-- Address -->
-        <b-col class="d-none d-md-block" offset="4" cols="4" offset-md="0" md="3" lg="3" xl="3">
+        <b-col class="d-none d-md-block" offset="4" cols="4" offset-md="0" md="4" lg="4" xl="4">
           <p ref="exh6" class="margin-none cursor-default" @click="copySourceAddress">{{truncatedAddress}}</p>
           <b-tooltip :target="() => $refs.exh6" placement="top">
-            {{copyText + " " +address}}
+            {{copyText}}
           </b-tooltip>
         </b-col>
         <!-- Trash icon visible >= sm devices -->
-        <b-col class="d-none d-md-block" offset-md="0" md="1" lg="1" xl="1">
+        <!-- <b-col class="d-none d-md-block" offset-md="0" md="1" lg="1" xl="1">
           <font-awesome-icon class="trash-icon" :icon="['fas', 'trash']" @click="showDeleteAddressModal"/>
-        </b-col>
+        </b-col> -->
         <!-- VET value, on xm center and take whole space, on above take 4 cols. -->
         <b-col class="d-block d-md-none my-3" cols="12">
           <p class="margin-none text-center"><span class="text-primary">{{vetValue}}</span> {{symbol}}</p>
@@ -179,6 +181,7 @@
 </template>
 
 <script>
+import AddressPopover from './AddressPopover.vue'
 import AddressBox from './AddressBox.vue'
 import AmountBox from './AmountBox.vue'
 import Avatar from './Avatar.vue'
@@ -195,6 +198,7 @@ export default {
     symbol: String // Symbol of token.
   },
   components: {
+    AddressPopover,
     AddressBox,
     AmountBox,
     Avatar,
@@ -429,7 +433,7 @@ export default {
   },
   computed: {
     truncatedAddress () {
-      return this.address.slice(0, 9) + '...'
+      return this.address.slice(0, 9) + '...' + this.address.slice(-7)
     },
     maxTransferAllowed () {
       return parseFloat(this.vetValue)

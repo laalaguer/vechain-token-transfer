@@ -49,10 +49,12 @@ export default {
     copyAddressToastText: '地址已经拷贝',
     mainNetWarning: '* 现在处在主网上，任何交易都不可逆，按“确认”按钮继续.',
     transactionSent: '交易已经发送!',
-    copyText: '点击拷贝地址:',
+    copyText: '点击拷贝地址',
     addWalletText: '添加以转账',
     addAnotherReceiver: '增加一个收款人',
     addByUploadFile: '上传 .csv 文件添加多个收款人',
-    uploadCSVModalTitle: '上传一个 .csv 文件添加多个收款人'
+    uploadCSVModalTitle: '上传一个 .csv 文件添加多个收款人',
+    goBackText: '返回',
+    deleteText: '删除'
   }
 }

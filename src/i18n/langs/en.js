@@ -49,10 +49,12 @@ export default {
     copyAddressToastText: 'Address Copied',
     mainNetWarning: '* The transaction would be irreversible on mainnet, click "Confirm" to continue.',
     transactionSent: 'Transaction sent!',
-    copyText: 'click to copy:',
+    copyText: 'click to copy address',
     addWalletText: 'Add to Wallet',
     addAnotherReceiver: 'add another receiver',
     addByUploadFile: 'add mulitple receivers by .csv file',
-    uploadCSVModalTitle: 'Upload a .csv file'
+    uploadCSVModalTitle: 'Upload a .csv file',
+    goBackText: 'Go back',
+    deleteText: 'Delete'
   }
 }

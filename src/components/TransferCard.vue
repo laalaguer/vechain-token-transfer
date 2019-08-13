@@ -7,25 +7,27 @@
         <!-- Avatar -->
         <b-col class="d-block d-md-none" offset="0" cols="12">
           <div class="d-flex justify-content-center">
-            <avatar :address="address" my-height="64px" my-width="64px"/>
+            <avatar :id="address+'sm'+symbol" :address="address" my-height="64px" my-width="64px"/>
           </div>
+          <address-popover :target="address+'sm'+symbol" :title="truncatedAddress" @deleteMe="showDeleteAddressModal"/>
         </b-col>
         <b-col class="d-none d-md-block" offset-sm="0" sm="1">
           <div class="d-flex justify-content-center">
-            <avatar :address="address" my-height="32px" my-width="32px"/>
+            <avatar :id="address+'md'+symbol" :address="address" my-height="32px" my-width="32px"/>
           </div>
+          <address-popover :target="address+'md'+symbol" :title="truncatedAddress" @deleteMe="showDeleteAddressModal"/>
         </b-col>
         <!-- Address -->
-        <b-col class="d-none d-md-block" offset="4" cols="4" offset-md="0" md="3" lg="3" xl="3">
+        <b-col class="d-none d-md-block" offset="4" cols="4" offset-md="0" md="4" lg="4" xl="4">
           <p ref="exh6" class="margin-none cursor-default" @click="copySourceAddress">{{truncatedAddress}}</p>
           <b-tooltip :target="() => $refs.exh6" placement="top">
-            {{copyText + " " +address}}
+            {{copyText}}
           </b-tooltip>
         </b-col>
         <!-- Trash icon visible >= sm devices -->
-        <b-col class="d-none d-md-block" offset-md="0" md="1" lg="1" xl="1">
+        <!-- <b-col class="d-none d-md-block" offset-md="0" md="1" lg="1" xl="1">
           <font-awesome-icon class="trash-icon" :icon="['fas', 'trash']" @click="showDeleteAddressModal"/>
-        </b-col>
+        </b-col> -->
         <!-- Token value, on xm center and take whole space, on above take 4 cols. -->
         <b-col class="d-block d-md-none my-3" cols="12">
           <p class="margin-none text-center"><span class="text-primary">{{tokenValue}}</span> {{symbol}}</p>
@@ -50,104 +52,104 @@
         </b-col>
       </b-row>
 
-    <!-- Collapse: Area of transfer data input -->
-    <b-collapse class="mt-3" v-model="showCollapseOfTransfer" id="collapse-transfer">
-      <b-row v-for="item in receiverList" :key="item.uniqueID"><!-- Row of Address && Amount-->
-        <b-col cols="12" md="6">
-          <address-box
-            :label="toAddressTitle"
-            :uniqueID="item.uniqueID"
-            :forcedAddress="item.toAddress"
-            @addressReady="handleAddressReady"
-            @addressNotReady="handleAddressNotReady"
-          />
-        </b-col>
-        <b-col cols="12" md="5">
-          <amount-box
-            :label="transferAmountTitle"
-            :uniqueID="item.uniqueID"
-            :symbol="symbol"
-            :breachedMax="isBreachedMax"
-            :forcedAmount="item.transferAmount"
-            @amountReady="handleAmountReady"
-            @amountNotReady="handleAmountNotReady"
-          />
-        </b-col>
-        <b-col class="d-none d-md-block" cols="1">
-          <b-form-group
-            label=" "
-            label-for="ban-icon"
-            class="noselect py-3"
-            >
-            <font-awesome-icon id="ban-icon" :icon="['fas', 'ban']" @click="deleteReceiver(item.uniqueID)"/>
-          </b-form-group>
-        </b-col>
-      </b-row>
-
-      <hr/>
-      <b-row>
-        <b-col cols="7">
-          <p class="show-hand" @click="addAReceiver">
-            <font-awesome-icon  id="plus-icon" :icon="['fas', 'plus-circle']"/> {{ addAnotherReceiverText }}
-          </p>
-        </b-col>
-        <b-col cols="5" style="text-align: center;">
-          <p>{{transferAmountTitle}} <span class="font-weight-bold">{{totalTransferAmount}}</span> </p>
-        </b-col>
-      </b-row>
-
-      <b-row>
-        <b-col cols="12">
-          <p class="show-hand" @click="showUploadCSVModal">
-            <font-awesome-icon  id="plus-icon" :icon="['fas', 'plus-circle']"/> {{ addByUploadFileText }}
-          </p>
-        </b-col>
-      </b-row>
-
-      <b-row style="text-align: center;">
-        <b-col offset="0" cols="12" offset-md="4" md="4">
-          <b-button block size="lg" variant="primary" @click="createTransfer">{{ createTransferButton }}</b-button>
-        </b-col>
-      </b-row>
-
-    </b-collapse>
-
-    <!-- Collapse: Area of transfer confirmation information -->
-    <b-collapse v-model="showCollapseOfConfirmation" id="collapse-confirmation">
-      <div class="mt-3">
-        <h5>{{toAddressTitle}}</h5>
-        <hr/>
-      </div>
-      <div v-for="item in receiverList" :key="item.uniqueID">
-        <b-row style="text-align: center;">
-          <b-col cols="8">
-            <p>{{item.toAddress}}</p>
+      <!-- Collapse: Area of transfer data input -->
+      <b-collapse class="mt-3" v-model="showCollapseOfTransfer" id="collapse-transfer">
+        <b-row v-for="item in receiverList" :key="item.uniqueID"><!-- Row of Address && Amount-->
+          <b-col cols="12" md="6">
+            <address-box
+              :label="toAddressTitle"
+              :uniqueID="item.uniqueID"
+              :forcedAddress="item.toAddress"
+              @addressReady="handleAddressReady"
+              @addressNotReady="handleAddressNotReady"
+            />
           </b-col>
-          <b-col cols="4">
-             <p>{{item.transferAmount}}</p>
+          <b-col cols="12" md="5">
+            <amount-box
+              :label="transferAmountTitle"
+              :uniqueID="item.uniqueID"
+              :symbol="symbol"
+              :breachedMax="isBreachedMax"
+              :forcedAmount="item.transferAmount"
+              @amountReady="handleAmountReady"
+              @amountNotReady="handleAmountNotReady"
+            />
           </b-col>
-        </b-row>
-      </div>
-      <div class="mt-1">
-        <h5>{{transferAmountTitle}}</h5>
-        <hr/>
-        <b-row style="text-align: center;">
-          <b-col offset="8" cols="4">
-             <p>{{totalTransferAmount}} {{symbol}}</p>
+          <b-col class="d-none d-md-block" cols="1">
+            <b-form-group
+              label=" "
+              label-for="ban-icon"
+              class="noselect py-3"
+              >
+              <font-awesome-icon id="ban-icon" :icon="['fas', 'ban']" @click="deleteReceiver(item.uniqueID)"/>
+            </b-form-group>
           </b-col>
         </b-row>
 
-        <p class="text-danger" v-if="this.$store.getters.isMainNet">{{mainNetWarning}}</p>
-      </div>
-      <b-row style="text-align: center;">
-        <b-col cols="6">
-          <b-button size="lg" variant="primary" @click="confirmTransfer">{{confirmTransferButton}}</b-button>
-        </b-col>
-        <b-col cols="6">
-          <b-button size="lg" @click="cancelTransfer">{{cancelTransferButton}}</b-button>
-        </b-col>
-      </b-row>
-    </b-collapse>
+        <hr/>
+        <b-row>
+          <b-col cols="7">
+            <p class="show-hand" @click="addAReceiver">
+              <font-awesome-icon  id="plus-icon" :icon="['fas', 'plus-circle']"/> {{ addAnotherReceiverText }}
+            </p>
+          </b-col>
+          <b-col cols="5" style="text-align: center;">
+            <p>{{transferAmountTitle}} <span class="font-weight-bold">{{totalTransferAmount}}</span> </p>
+          </b-col>
+        </b-row>
+
+        <b-row>
+          <b-col cols="12">
+            <p class="show-hand" @click="showUploadCSVModal">
+              <font-awesome-icon  id="plus-icon" :icon="['fas', 'plus-circle']"/> {{ addByUploadFileText }}
+            </p>
+          </b-col>
+        </b-row>
+
+        <b-row style="text-align: center;">
+          <b-col offset="0" cols="12" offset-md="4" md="4">
+            <b-button block size="lg" variant="primary" @click="createTransfer">{{ createTransferButton }}</b-button>
+          </b-col>
+        </b-row>
+
+      </b-collapse>
+
+      <!-- Collapse: Area of transfer confirmation information -->
+      <b-collapse v-model="showCollapseOfConfirmation" id="collapse-confirmation">
+        <div class="mt-3">
+          <h5>{{toAddressTitle}}</h5>
+          <hr/>
+        </div>
+        <div v-for="item in receiverList" :key="item.uniqueID">
+          <b-row style="text-align: center;">
+            <b-col cols="8">
+              <p>{{item.toAddress}}</p>
+            </b-col>
+            <b-col cols="4">
+              <p>{{item.transferAmount}}</p>
+            </b-col>
+          </b-row>
+        </div>
+        <div class="mt-1">
+          <h5>{{transferAmountTitle}}</h5>
+          <hr/>
+          <b-row style="text-align: center;">
+            <b-col offset="8" cols="4">
+              <p>{{totalTransferAmount}} {{symbol}}</p>
+            </b-col>
+          </b-row>
+
+          <p class="text-danger" v-if="this.$store.getters.isMainNet">{{mainNetWarning}}</p>
+        </div>
+        <b-row style="text-align: center;">
+          <b-col cols="6">
+            <b-button size="lg" variant="primary" @click="confirmTransfer">{{confirmTransferButton}}</b-button>
+          </b-col>
+          <b-col cols="6">
+            <b-button size="lg" @click="cancelTransfer">{{cancelTransferButton}}</b-button>
+          </b-col>
+        </b-row>
+      </b-collapse>
     </b-card>
 
     <!-- Transfer result modal -->
@@ -179,6 +181,7 @@
 </template>
 
 <script>
+import AddressPopover from './AddressPopover.vue'
 import AddressBox from './AddressBox.vue'
 import AmountBox from './AmountBox.vue'
 import Avatar from './Avatar.vue'
@@ -197,6 +200,7 @@ export default {
     decimals: Number // Contract decimals setting.
   },
   components: {
+    AddressPopover,
     AddressBox,
     AmountBox,
     Avatar,
@@ -448,7 +452,7 @@ export default {
   },
   computed: {
     truncatedAddress () {
-      return this.address.slice(0, 9) + '...'
+      return this.address.slice(0, 9) + '...' + this.address.slice(-7)
     },
     maxTransferAllowed () {
       return parseFloat(this.tokenValue)
