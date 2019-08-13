@@ -174,7 +174,7 @@ async function transferVETBulk (signerAddress, receiverList, symbol) {
   let transferClauses = []
 
   for (let i = 0; i < receiverList.length; i++) {
-    let transferClause = { 'to': receiverList[i].toAddress, 'value': receiverList[i].amountEVM, 'data': '' }
+    let transferClause = { 'to': receiverList[i].toAddress, 'value': receiverList[i].amountEVM}
     let comment = `To: ${receiverList[i].toAddress} Amount:${receiverList[i].transferAmount} ${symbol}`
     transferClauses.push({
       comment: comment,
