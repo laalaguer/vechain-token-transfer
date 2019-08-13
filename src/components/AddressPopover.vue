@@ -4,7 +4,7 @@
     :title="title"
     :show.sync="show"
     triggers="click blur"
-    placement="auto"
+    placement="top"
   >
 
   <div class="d-flex justify-content-between">
