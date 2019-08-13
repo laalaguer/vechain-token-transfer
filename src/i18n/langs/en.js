@@ -51,8 +51,8 @@ export default {
     transactionSent: 'Transaction sent!',
     copyText: 'click to copy:',
     addWalletText: 'Add to Wallet',
-    addAnotherReceiver: 'add a receiver',
-    addByUploadFile: 'add by .csv file',
+    addAnotherReceiver: 'add another receiver',
+    addByUploadFile: 'add mulitple receivers by .csv file',
     uploadCSVModalTitle: 'Upload a .csv file'
   }
 }

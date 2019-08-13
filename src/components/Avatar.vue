@@ -22,7 +22,7 @@ export default {
     myStyle () {
       const bg = this.createBackground(this.address)
       return {
-        'border-radius': '12px',
+        'border-radius': '4px',
         height: this.myHeight,
         width: this.myWidth,
         background: bg
