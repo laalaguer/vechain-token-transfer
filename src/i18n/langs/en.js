@@ -4,7 +4,7 @@ export default {
     noEnvModalTitle: 'Environment Incorrect',
     noEnvModalText: 'This web page needs VeChain Sync.',
     noEnvModalOkayButtonText: 'Download Sync',
-    donateText: 'Support me'
+    donateText: 'Donate to author'
   },
   topBar: {
     title: 'VeChain Tokens',
