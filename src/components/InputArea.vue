@@ -16,8 +16,8 @@
         </b-col>
       </b-row>
     </b-container>
-    <b-tooltip :show.sync="showtooltip" :target="() => $refs.exButton3" placement="bottom">
-      {{ hintText }}
+    <b-tooltip :show.sync="showtooltip" :target="() => $refs.exButton3" placement="left">
+      {{ hintText3 }}
     </b-tooltip>
     <b-modal
       ref="addaddressmodal"
@@ -60,6 +60,7 @@ export default {
   methods: {
     mouseOver () {
       this.showtooltip = true
+      setTimeout(this.mouseLeave, 5000)
     },
     mouseLeave () {
       this.showtooltip = false
@@ -93,6 +94,9 @@ export default {
       } else {
         return this.$t('inputArea.hintText2').replace('symbol', this.symbol)
       }
+    },
+    hintText3 () {
+      return this.$t('inputArea.hintText3').replace('symbol', this.symbol)
     },
     themeVariant () {
       return this.$store.getters.themeVariant
