@@ -29,7 +29,7 @@ export default {
     ERR_DECIMAL_FORMAT: 'Max 4 decimal digits allowed'
   },
   inputArea: {
-    buttonText: 'Add address',
+    buttonText: '+',
     modalOkText: 'Okay',
     modalCancelText: 'Cancel',
     modalBoxTitle: 'Enter a new address:',

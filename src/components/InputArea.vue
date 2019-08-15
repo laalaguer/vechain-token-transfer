@@ -1,20 +1,22 @@
 <template>
-  <div ref="exButton3" class="my-2" @mouseover="mouseOver" @mouseleave="mouseLeave">
+  <div class="my-2" @mouseover="mouseOver" @mouseleave="mouseLeave">
     <b-container>
       <b-row v-if="empty" class="my-3">
       </b-row>
-      <b-row v-if="empty" class="mb-5">
+      <b-row v-if="empty" class="mb-3">
         <b-col cols="12" class="put-center">
           <h6>{{ hintText }}</h6>
         </b-col>
       </b-row>
       <b-row align-h="center">
         <b-col cols="12" class="put-center">
-          <b-button style="width: 140px" id="inputaddressbutton" :variant="themeVariant" @click="showModal">{{ buttonText }}</b-button>
+          <b-card style="border: 2px dashed grey;">
+            <b-button class="btn-circle btn-xl" ref="exButton3" id="inputaddressbutton" :variant="themeVariant" @click="showModal">{{ buttonText }}</b-button>
+          </b-card>
         </b-col>
       </b-row>
     </b-container>
-    <b-tooltip :show.sync="showtooltip" :target="() => $refs.exButton3" placement="bottom">
+    <b-tooltip :show.sync="showtooltip" :target="() => $refs.exButton3" placement="top">
       {{ hintText }}
     </b-tooltip>
     <b-modal
@@ -109,5 +111,25 @@ export default {
 <style>
 .put-center {
   text-align: center;
+}
+
+.btn-circle.btn-xl {
+    width: 70px;
+    height: 70px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 36px;
+    line-height: 1.33;
+    /* border: 1px solid grey; */
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
 }
 </style>

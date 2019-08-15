@@ -7,19 +7,19 @@
         <!-- Avatar -->
         <b-col class="d-block d-md-none" offset="0" cols="12">
           <div class="d-flex justify-content-center">
-            <avatar :id="address+'sm'+symbol" :address="address" my-height="64px" my-width="64px"/>
+            <avatar class="show-hand" :id="address+'sm'+symbol" :address="address" my-height="64px" my-width="64px"/>
           </div>
           <address-popover :target="address+'sm'+symbol" :title="truncatedAddress" @deleteMe="showDeleteAddressModal"/>
         </b-col>
         <b-col class="d-none d-md-block" offset-sm="0" sm="1">
           <div class="d-flex justify-content-center">
-            <avatar :id="address+'md'+symbol" :address="address" my-height="32px" my-width="32px"/>
+            <avatar class="show-hand" :id="address+'md'+symbol" :address="address" my-height="32px" my-width="32px"/>
           </div>
           <address-popover :target="address+'md'+symbol" :title="truncatedAddress" @deleteMe="showDeleteAddressModal"/>
         </b-col>
         <!-- Address -->
         <b-col class="d-none d-md-block" offset="4" cols="4" offset-md="0" md="4" lg="4" xl="4">
-          <p ref="exh6" class="margin-none cursor-default" @click="copySourceAddress">{{truncatedAddress}}</p>
+          <p ref="exh6" class="truncatetext margin-none show-hand" @click="copySourceAddress">{{truncatedAddress}}</p>
           <b-tooltip :target="() => $refs.exh6" placement="top">
             {{copyText}}
           </b-tooltip>
@@ -330,7 +330,9 @@ export default {
       this.addAReceiver()
     },
     refreshIsOwned () {
-      this.isOwned = operations.isOwned(this.address)
+      operations.isOwned(this.address).then(res => {
+        this.isOwned = res
+      })
       setTimeout(() => { this.refreshIsOwned() }, 3000)
     },
     refreshWalletBalance () {
@@ -433,7 +435,8 @@ export default {
   },
   computed: {
     truncatedAddress () {
-      return this.address.slice(0, 9) + '...' + this.address.slice(-7)
+      // return this.address.slice(0, 9) + '...' + this.address.slice(-7)
+      return this.address
     },
     maxTransferAllowed () {
       return parseFloat(this.vetValue)
@@ -535,5 +538,11 @@ export default {
 
 .cursor-default {
   cursor: default;
+}
+
+.truncatetext {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

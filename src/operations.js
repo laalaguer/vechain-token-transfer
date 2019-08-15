@@ -174,7 +174,7 @@ async function transferVETBulk (signerAddress, receiverList, symbol) {
   let transferClauses = []
 
   for (let i = 0; i < receiverList.length; i++) {
-    let transferClause = { 'to': receiverList[i].toAddress, 'value': receiverList[i].amountEVM}
+    let transferClause = { 'to': receiverList[i].toAddress, 'value': receiverList[i].amountEVM }
     let comment = `To: ${receiverList[i].toAddress} Amount:${receiverList[i].transferAmount} ${symbol}`
     transferClauses.push({
       comment: comment,
@@ -198,11 +198,18 @@ async function isMainNet () {
  * Return if the address is owned by user in vendor in Connex environment.
  * @param {String} address The VET/ETH address that to be checked.
  */
-function isOwned (address) {
+async function isOwned (address) {
   // eslint-disable-next-line
   if (semver.gte(connex.version, "1.2.2")) {
     // eslint-disable-next-line
-    return connex.vendor.owned(address)
+    let temp = connex.vendor.owned(address)
+    if (typeof (temp) === 'object') { // a promise
+      let result = await temp
+      return result
+    }
+    if (typeof (temp) === 'boolean') { // a boolean
+      return temp
+    }
   } else {
     return true
   }

@@ -7,18 +7,10 @@
     <!-- app -->
     <div id="app">
       <b-container>
-        <b-row align-h="start">
-          <b-col offset-lg="1" lg="2" md="3" sm="2"><!-- col of language -->
-            <div class="d-flex flex-row align-items-baseline">
-              <p class="mr-2"><span><font-awesome-icon :icon="['fas','language']"/></span></p>
-              <b-form-select @input="changeLanguage" v-model="selectedLanguage" :options="languageOptions" size="sm" />
-            </div>
-          </b-col>
-          <b-col lg="6">
-            <div class="d-flex flex-row align-items-baseline">
-              <github-button class="mx-1" href="https://github.com/laalaguer/vechain-token-transfer" data-size="large" data-show-count="true" aria-label="Star laalaguer/vechain-token-transfer on GitHub">Star</github-button>
-              <!-- <github-button class="mx-1" href="https://github.com/laalaguer/vechain-token-transfer/fork" data-size="large" data-show-count="true" aria-label="Fork laalaguer/vechain-token-transfer on GitHub">Fork</github-button> -->
-              <github-button class="mx-1" href="https://github.com/laalaguer" data-size="large" data-show-count="true" aria-label="Follow @laalaguer on GitHub">Follow @laalaguer</github-button>
+        <b-row>
+          <b-col cols="12" class="mt-2 mb-2">
+            <div class="d-flex justify-content-center">
+              <a href="#" @click="setLanguage('zh')">中文 </a> || <a href="#" @click="setLanguage('en')">English</a>
             </div>
           </b-col>
         </b-row>
@@ -48,8 +40,15 @@
           <b-col cols="12" style="text-align: center;">
             <p>
               {{donateText}}:
-              <a href="https://bmac.vecha.in/donate?name=laalaguer&addr=0x422D582C08d7965cD5Fefef1572faaA15783f473&amount=500&msg=Thank%20you%20for%20using%20this%20token%20tool.">0x422D582C08d7965cD5Fefef1572faaA15783f473</a>
+              <a target="_blank" href="https://bmac.vecha.in/donate?name=laalaguer&addr=0x422D582C08d7965cD5Fefef1572faaA15783f473&amount=500&msg=Thank%20you%20for%20using%20this%20token%20tool.">0x422D582C08d7965cD5Fefef1572faaA15783f473</a>
             </p>
+          </b-col>
+          <b-col cols="12" style="text-align: center;">
+            <div class="d-flex flex-row justify-content-center align-items-stretch">
+              <p>Github Repo</p>
+              <github-button class="mx-1" href="https://github.com/laalaguer/vechain-token-transfer" data-size="small" data-show-count="true" aria-label="Star laalaguer/vechain-token-transfer on GitHub">Star</github-button>
+              <github-button class="mx-1" href="https://github.com/laalaguer" data-size="small" data-show-count="true" aria-label="Follow @laalaguer on GitHub">Follow</github-button>
+            </div>
           </b-col>
         </b-row>
       </b-container>
@@ -155,6 +154,10 @@ export default {
     changeLanguage () {
       this.$i18n.locale = this.selectedLanguage
       mstorage.setLanguage(this.selectedLanguage)
+    },
+    setLanguage (value) {
+      this.selectedLanguage = value
+      this.changeLanguage()
     }
   },
   computed: {
@@ -176,9 +179,5 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-#app {
-  margin-top: 30px;
 }
 </style>

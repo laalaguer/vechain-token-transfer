@@ -29,12 +29,12 @@ export default {
     ERR_DECIMAL_FORMAT: '最多小数点4位'
   },
   inputArea: {
-    buttonText: '添加新观察地址',
+    buttonText: '+',
     modalOkText: '好',
     modalCancelText: '取消',
     modalBoxTitle: '输入一个新的观察地址 (钱包地址):',
     hintText1: '看上去你关注的symbol列表是空的？添加一个你感兴趣/持有的地址吧',
-    hintText2: '持有更多 symbol 代币? 添加对应的钱包地址:'
+    hintText2: '持有更多 symbol 代币? 添加对应的钱包地址'
   },
   transferCard: {
     transferText: '转出',

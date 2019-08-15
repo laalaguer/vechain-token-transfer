@@ -1,14 +1,15 @@
 <template>
   <b-container>
     <b-row>
-      <b-col>
-        <input-area @addaddress="addNewAddress" :symbol="symbol" :empty="addresses.length === 0"/>
-      </b-col>
-    </b-row>
-    <b-row>
       <b-col class="my-2 px-0" cols="12" v-for="address in addresses" :key="address">
         <transfer-card v-if="isContract" @removeAddress="removeAddress" :address="address" :symbol="symbol" :contract="contractAddress" :decimals="decimals"/>
         <vet-transfer-card v-if="!isContract" @removeAddress="removeAddress" :address="address" :symbol="symbol"/>
+      </b-col>
+    </b-row>
+
+    <b-row>
+      <b-col>
+        <input-area @addaddress="addNewAddress" :symbol="symbol" :empty="addresses.length === 0"/>
       </b-col>
     </b-row>
   </b-container>

@@ -2,7 +2,7 @@
   <b-container style="margin-top:40px;">
     <b-row align-h="center" class="my-2">
       <b-col cols="12" class="text-center">
-        <h3>{{ $t('topBar.title') }} <b-badge :variant="themeVariant">{{ network }}</b-badge></h3>
+        <h3>{{ $t('topBar.title') }} <b-badge class="align-top" :variant="themeVariant">{{ network }}</b-badge></h3>
       </b-col>
     </b-row>
   </b-container>
