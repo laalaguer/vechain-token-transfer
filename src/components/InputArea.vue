@@ -16,7 +16,7 @@
         </b-col>
       </b-row>
     </b-container>
-    <b-tooltip :show.sync="showtooltip" :target="() => $refs.exButton3" placement="top">
+    <b-tooltip :show.sync="showtooltip" :target="() => $refs.exButton3" placement="bottom">
       {{ hintText }}
     </b-tooltip>
     <b-modal
