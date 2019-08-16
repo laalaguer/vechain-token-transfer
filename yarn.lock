@@ -720,10 +720,10 @@
   resolved "https://registry.yarnpkg.com/@vechain/connex/-/connex-0.6.1.tgz#2ab1b1864e0facd6330afca0fe797c6ef4261b60"
   integrity sha512-LNM0BQMizmFNAeKn7cQA8BByAXPHW+Ml3FVNlr2ZWU3vXBR8v/QIDN5z1EJtnwjkjHZDhcgViqSSJSQuC/+Yrw==
 
-"@vechain/picasso@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@vechain/picasso/-/picasso-1.0.4.tgz#46a1af685ad0d686558baf997ce59e54d365f7d0"
-  integrity sha512-AOKnN7ufyQoYt0vV7utBwYsIM8ppUR6aHMWUxvcpfKknqrAa01nt3Y3YS1FbAtAiYLn8gzJInv8m8rei11aoDQ==
+"@vechain/picasso@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@vechain/picasso/-/picasso-1.1.2.tgz#f17ac7cc451e50a709eec43775d3d9c85d043225"
+  integrity sha512-46mdp+nwTcQBUGc+1wMcsNyACyTaD/nmKnSIxzZd8+EZEmOx36KfzUBHPLSNi+JMaeNC29PbP4ItwVbvGBz4iw==
   dependencies:
     mersenne-twister "^1.1.0"
 
