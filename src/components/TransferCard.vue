@@ -52,6 +52,10 @@
         </b-col>
       </b-row>
 
+      <div v-if="!isMobile" style="position: absolute; right: -8px; top: -12px;" :class="trashChoice">
+        <button type="button" class="close" @click="showDeleteAddressModal"><span aria-hidden="true">×</span></button>
+      </div>
+
       <!-- Collapse: Area of transfer data input -->
       <b-collapse class="mt-3" v-model="showCollapseOfTransfer" id="collapse-transfer">
         <b-row v-for="item in receiverList" :key="item.uniqueID"><!-- Row of Address && Amount-->
@@ -218,6 +222,7 @@ export default {
       borderChoice: 'border',
       shadowChoice: 'shadow-sm',
       opacityChoice: 'half-dim',
+      trashChoice: 'trash-none',
       showTransferButton: true,
       isOwned: false, // if self is owned address
       uniqueCSVModalID: randomBytes(7).toString('hex')
@@ -287,11 +292,13 @@ export default {
       // this.borderChoice = 'border border-' + this.$store.getters.themeVariant
       this.shadowChoice = 'shadow'
       this.opacityChoice = 'full'
+      this.trashChoice = 'trash-block'
     },
     imUnFocused () {
       this.borderChoice = 'border'
       this.shadowChoice = 'shadow-sm'
       this.opacityChoice = 'half-dim'
+      this.trashChoice = 'trash-none'
     },
     handleAddressReady (value, uniqueID) {
       for (let i = 0; i < this.receiverList.length; i++) {
@@ -453,6 +460,7 @@ export default {
     }
   },
   computed: {
+    isMobile () { return window.innerWidth < 768 },
     truncatedAddress () {
       // return this.address.slice(0, 9) + '...' + this.address.slice(-7)
       return this.address
@@ -565,5 +573,13 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.trash-block {
+  display: block;
+}
+
+.trash-none {
+  display: none;
 }
 </style>

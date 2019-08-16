@@ -1,5 +1,5 @@
 <template>
-  <div class="my-2" @mouseover="mouseOver" @mouseleave="mouseLeave">
+  <div class="my-2">
     <b-container>
       <b-row v-if="empty" class="my-3">
       </b-row>
@@ -16,7 +16,7 @@
         </b-col>
       </b-row>
     </b-container>
-    <b-tooltip :show.sync="showtooltip" :target="() => $refs.exButton3" placement="left">
+    <b-tooltip @mouseover="mouseOver" @mouseleave="mouseLeave" :show.sync="showtooltip" :target="() => $refs.exButton3" placement="left">
       {{ hintText3 }}
     </b-tooltip>
     <b-modal

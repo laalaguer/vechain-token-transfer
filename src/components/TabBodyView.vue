@@ -31,7 +31,7 @@ export default {
     TransferCard,
     VetTransferCard
   },
-  mounted () {
+  beforeMount () {
     let allAddresses = this.$store.getters.addressSymbolUnions
     for (let i = 0; i < allAddresses.length; i++) {
       if (allAddresses[i].symbol === this.symbol) {

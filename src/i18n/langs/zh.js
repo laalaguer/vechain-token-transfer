@@ -46,7 +46,7 @@ export default {
     cancelTransferButton: '取消',
     modalOkButtonText: '好',
     modalCancelButtonText: '取消',
-    deleteAddressModalTitle: '不再关注该账户吗?（仍可以随时添加）',
+    deleteAddressModalTitle: '不再关注该账户吗?',
     copyAddressToastText: '地址已经拷贝',
     mainNetWarning: '* 现在处在主网上，任何交易都不可逆，按“确认”按钮继续.',
     transactionSent: '交易已经发送!',

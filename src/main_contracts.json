@@ -63,6 +63,13 @@
     "icon": "bag.png"
   },
   {
+    "name": "SneakerCoin",
+    "symbol": "SNK",
+    "contract": "0x540768b909782c430cc321192e6c2322f77494ec",
+    "decimals": 18,
+    "icon": "snk.png"
+  },
+  {
     "name": "Vechain",
     "symbol": "VET",
     "contract": "",

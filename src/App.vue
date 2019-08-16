@@ -18,11 +18,12 @@
         <b-row class="my-2" align-h="center">
           <b-col sm="12" md="12" lg="10">
             <b-card no-body>
-              <b-tabs card pills fill>
+              <b-tabs card :pills="isMobile" fill>
                 <b-tab v-for="contract in contracts" :key="contract.symbol">
                   <template slot="title">
-                    <div>
-                      <img class="align-baseline" style="width: 12px; height: 12px;" :src="iconSrc(contract.icon)"/> {{contract.symbol}}
+                    <div style="text-align: center">
+                      <img style="height: 18px;" :src="iconSrc(contract.icon)"/>
+                      <p class="mt-1 pb-0 mb-0">{{contract.symbol}}</p>
                     </div>
                   </template>
                   <tab-body-view
@@ -44,7 +45,7 @@
             </b-col>
             <b-col cols="12" md="8" lg="4">
               <h5>{{donateText}}</h5>
-              <a class="d-block mb-3" target="_blank" href="https://bmac.vecha.in/donate?name=laalaguer&addr=0x422D582C08d7965cD5Fefef1572faaA15783f473&amount=500&msg=Thank%20you%20for%20using%20this%20token%20tool.">0x422D582C08d7965cD5Fefef1572faaA15783f473</a>
+              <a class="d-block mb-3" target="_blank" href="https://bmac.vecha.in/donate?name=laalaguer&addr=0x422D582C08d7965cD5Fefef1572faaA15783f473&amount=1000&msg=Thank%20you!%0AIf%20you%20want%20new%20features,%20email%20to%20laalaguer@gmail.com%0A%E8%8B%A5%E6%9C%89%E6%96%B0%E9%9C%80%E6%B1%82%EF%BC%8C%E8%AF%B7email%E5%88%B0%20laalaguer@gmail.com">0x422D582C08d7965cD5Fefef1572faaA15783f473</a>
             </b-col>
             <b-col cols="12" md="12" lg="3">
               <h5>Github</h5>
@@ -168,7 +169,8 @@ export default {
     themeVariant () {
       return this.$store.getters.themeVariant
     },
-    donateText () { return this.$t('app.donateText') }
+    donateText () { return this.$t('app.donateText') },
+    isMobile () { return window.innerWidth < 768 }
   },
   mounted () {
     GlobalEventBus.$on('myglobalevent', () => {
