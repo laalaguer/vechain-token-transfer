@@ -24,16 +24,12 @@
             {{copyText}}
           </b-tooltip>
         </b-col>
-        <!-- Trash icon visible >= sm devices -->
-        <!-- <b-col class="d-none d-md-block" offset-md="0" md="1" lg="1" xl="1">
-          <font-awesome-icon class="trash-icon" :icon="['fas', 'trash']" @click="showDeleteAddressModal"/>
-        </b-col> -->
         <!-- Token value, on xm center and take whole space, on above take 4 cols. -->
         <b-col class="d-block d-md-none my-3" cols="12">
-          <p class="margin-none text-center"><span class="text-primary">{{tokenValue}}</span> {{symbol}}</p>
+          <p class="margin-none text-center"><span class="text-primary">{{tokenValue || '--'}}</span> {{symbol}}</p>
         </b-col>
         <b-col class="d-none d-md-block" offset-md="0" md="4" lg="4" xl="4">
-          <p class="margin-none text-right"><span class="text-primary">{{tokenValue}}</span> {{symbol}}</p>
+          <p class="margin-none text-right"><span class="text-primary">{{tokenValue || '--'}}</span> {{symbol}}</p>
         </b-col>
         <!-- if owned show transfer button -->
         <b-col class="text-center" v-if="isOwned" offset-md="0" md="4" lg="3" xl="3"  @click="toggleShowOffButton">

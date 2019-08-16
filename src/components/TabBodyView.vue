@@ -9,7 +9,7 @@
 
     <b-row>
       <b-col>
-        <input-area @addaddress="addNewAddress" :symbol="symbol" :empty="addresses.length === 0"/>
+        <input-area :contracts="contracts" @addaddress="addNewAddress" :symbol="symbol" :empty="addresses.length === 0"/>
       </b-col>
     </b-row>
   </b-container>
@@ -19,12 +19,14 @@
 import InputArea from './InputArea.vue'
 import TransferCard from './TransferCard.vue'
 import VetTransferCard from './VetTransferCard.vue'
+import { GlobalEventBus } from '../events.js'
 
 export default {
   props: {
     symbol: String,
     contractAddress: String,
-    decimals: Number
+    decimals: Number,
+    contracts: Array
   },
   components: {
     InputArea,
@@ -32,12 +34,14 @@ export default {
     VetTransferCard
   },
   beforeMount () {
-    let allAddresses = this.$store.getters.addressSymbolUnions
-    for (let i = 0; i < allAddresses.length; i++) {
-      if (allAddresses[i].symbol === this.symbol) {
-        this.addresses.push(allAddresses[i].address)
+    this.syncAddressFromStore()
+  },
+  mounted () {
+    GlobalEventBus.$on('ADDRESS_ADDED', (payload) => {
+      if (payload.symbol === this.symbol && this.addresses.indexOf(payload.address) === -1) {
+        this.addresses.push(payload.address)
       }
-    }
+    })
   },
   data () {
     return {
@@ -45,6 +49,14 @@ export default {
     }
   },
   methods: {
+    syncAddressFromStore () {
+      let allAddresses = this.$store.getters.addressSymbolUnions
+      for (let i = 0; i < allAddresses.length; i++) {
+        if (allAddresses[i].symbol === this.symbol && this.addresses.indexOf(allAddresses[i].address) === -1) {
+          this.addresses.push(allAddresses[i].address)
+        }
+      }
+    },
     removeAddress (value) {
       let index = this.addresses.indexOf(value)
       if (index !== -1) {
@@ -52,10 +64,14 @@ export default {
         this.$store.dispatch('removeUnion', { address: value, symbol: this.symbol })
       }
     },
-    addNewAddress (value) {
-      if (this.addresses.indexOf(value) === -1) {
-        this.addresses.push(value)
-        this.$store.dispatch('setUnion', { address: value, symbol: this.symbol, owned: false })
+    addNewAddress (value, symbolsToWatch) {
+      for (let i = 0; i < symbolsToWatch.length; i++) {
+        // if symbol is of current tab, and address is new, push to local array
+        if (symbolsToWatch[i] === this.symbol && this.addresses.indexOf(value) === -1) {
+          this.addresses.push(value)
+        }
+        this.$store.dispatch('setUnion', { address: value, symbol: symbolsToWatch[i], owned: false })
+        GlobalEventBus.$emit('ADDRESS_ADDED', { address: value, symbol: symbolsToWatch[i] })
       }
     }
   },

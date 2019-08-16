@@ -30,6 +30,7 @@
                     :symbol="contract.symbol"
                     :contract-address="contract.contract"
                     :decimals="contract.decimals"
+                    :contracts="contracts"
                   />
                 </b-tab>
               </b-tabs>
@@ -79,7 +80,6 @@
 <script>
 import TopBar from './components/TopBar.vue'
 import TabBodyView from './components/TabBodyView.vue'
-import { GlobalEventBus } from './events.js'
 import GithubButton from 'vue-github-button'
 
 const initData = require('./init')
@@ -171,11 +171,6 @@ export default {
     },
     donateText () { return this.$t('app.donateText') },
     isMobile () { return window.innerWidth < 768 }
-  },
-  mounted () {
-    GlobalEventBus.$on('myglobalevent', () => {
-      console.log('hahahaha')
-    })
   }
 }
 </script>

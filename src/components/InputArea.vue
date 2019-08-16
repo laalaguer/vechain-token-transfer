@@ -19,6 +19,7 @@
     <b-tooltip @mouseover="mouseOver" @mouseleave="mouseLeave" :show.sync="showtooltip" :target="() => $refs.exButton3" placement="left">
       {{ hintText3 }}
     </b-tooltip>
+
     <b-modal
       ref="addaddressmodal"
       centered
@@ -39,6 +40,18 @@
         @addressNotReady="handleAddressNotReady"
       />
 
+      <b-form-group :label="modalTokensTitle">
+        <div v-for="option in options" :key="option.value" class="my-3" style="font-size: 16px;">
+          <b-form-checkbox
+            v-model="selected"
+            :key="option.value"
+            :value="option.value"
+          >
+            {{ option.text }}
+          </b-form-checkbox>
+        </div>
+    </b-form-group>
+
     </b-modal><!-- Enter new address modal -->
   </div>
 </template>
@@ -49,13 +62,28 @@ import AddressBox from './AddressBox.vue'
 export default {
   props: {
     empty: Boolean,
-    symbol: String
+    symbol: String,
+    contracts: Array
   },
   data () {
     return {
       address: '',
-      showtooltip: false
+      showtooltip: false,
+      selected: [],
+      options: []
     }
+  },
+  beforeMount () {
+    let temp = []
+    for (let i = 0; i < this.contracts.length; i++) {
+      temp.push({
+        text: this.contracts[i].symbol,
+        value: this.contracts[i].symbol
+      })
+    }
+    this.options = temp
+
+    this.selected.push(this.symbol)
   },
   methods: {
     mouseOver () {
@@ -77,10 +105,16 @@ export default {
     handleAddressNotReady () {
       this.address = ''
     },
-    handleModalOk () {
-      if (this.address.length !== 0) {
-        this.$emit('addaddress', this.address.toLowerCase())
+    handleModalOk (bvModalEvt) {
+      if (this.address.length !== 0 && this.selected.length !== 0) {
+        let temp = []
+        this.selected.forEach(element => {
+          temp.push(element)
+        })
+        this.$emit('addaddress', this.address.toLowerCase(), temp)
         this.$refs.myInputBox.clearBox()
+      } else {
+        bvModalEvt.preventDefault()
       }
     },
     handelModalCancel () {
@@ -104,7 +138,8 @@ export default {
     buttonText () { return this.$t('inputArea.buttonText') },
     modalOkText () { return this.$t('inputArea.modalOkText') },
     modalCancelText () { return this.$t('inputArea.modalCancelText') },
-    modalBoxTitle () { return this.$t('inputArea.modalBoxTitle') }
+    modalBoxTitle () { return this.$t('inputArea.modalBoxTitle') },
+    modalTokensTitle () { return this.$t('inputArea.modalTokensTitle') }
   },
   components: {
     AddressBox

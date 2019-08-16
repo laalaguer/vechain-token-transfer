@@ -56,12 +56,12 @@ export default new Vuex.Store({
   // Call by $store.dispatch('actionName', params)
   actions: {
     setUnion ({ commit }, { address, symbol, owned }) {
-      myStorage.setUnion(address, symbol, owned)
       commit('addAddressSymbolUnion', { address: address, symbol: symbol })
+      myStorage.setUnion(address, symbol, owned)
     },
     removeUnion ({ commit }, { address, symbol }) {
-      myStorage.removeUnion(address, symbol)
       commit('removeAddressSymbolUnion', { address: address, symbol: symbol })
+      myStorage.removeUnion(address, symbol)
     },
     async populateUnions ({ commit }) {
       let unions = myStorage.getAllUnions()
