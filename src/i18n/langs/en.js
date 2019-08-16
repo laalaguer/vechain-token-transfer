@@ -51,7 +51,7 @@ export default {
     mainNetWarning: '* The transaction would be irreversible on mainnet, click "Confirm" to continue.',
     transactionSent: 'Transaction sent!',
     copyText: 'click to copy address',
-    addWalletText: 'Add to Wallet',
+    addWalletText: 'Prove to be mine',
     addAnotherReceiver: 'add another receiver',
     addByUploadFile: 'add mulitple receivers by .csv file',
     uploadCSVModalTitle: 'Upload a .csv file',

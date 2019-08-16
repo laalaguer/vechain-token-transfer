@@ -22,6 +22,7 @@ export default {
     myStyle () {
       const bg = this.createBackground(this.address)
       return {
+        'filter':'saturate(200%)',
         'border-radius': '4px',
         height: this.myHeight,
         width: this.myWidth,
