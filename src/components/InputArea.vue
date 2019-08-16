@@ -58,6 +58,8 @@
 
 <script>
 import AddressBox from './AddressBox.vue'
+const operations = require('../operations.js')
+const utils = require('../utils.js')
 
 export default {
   props: {
@@ -78,7 +80,8 @@ export default {
     for (let i = 0; i < this.contracts.length; i++) {
       temp.push({
         text: this.contracts[i].symbol,
-        value: this.contracts[i].symbol
+        value: this.contracts[i].symbol,
+        contractAddr : this.contracts[i].contract
       })
     }
     this.options = temp
@@ -101,6 +104,38 @@ export default {
     },
     handleAddressReady (value) {
       this.address = value
+      for (let i = 0; i < this.options.length; i++){
+        // set to query state.
+        this.options[i].text = this.options[i].value + '...'
+        // query the balance and fill.
+        if (this.options[i].value !== "VET"){ // should be a token
+          operations.getTokenBalance(this.options[i].contractAddr, this.address)
+          .then(result => {
+            let printable = utils.evmToPrintable(result['decoded']['balance'], this.decimals, 2)
+            this.options[i].text = this.options[i].value + ' ' + printable
+            if (printable !== '0.00'){
+              this.selected.push(this.options[i].value)
+            }
+          })
+          .catch(e => {
+            console.log(e)
+          })
+        }
+        else { // should be VET itself.
+          operations.getAccountBalance(this.address)
+          .then(result => {
+            let printable = utils.evmToPrintable(result['balance'], 18)
+            this.options[i].text = this.options[i].value + ' ' + printable
+            if (printable !== '0.00'){
+              this.selected.push(this.options[i].value)
+            }
+            // this will result in a Promise with undefined as resolve(value).
+          })
+          .catch(e => {
+            console.log(e)
+          })
+        }
+      }
     },
     handleAddressNotReady () {
       this.address = ''
@@ -113,12 +148,14 @@ export default {
         })
         this.$emit('addaddress', this.address.toLowerCase(), temp)
         this.$refs.myInputBox.clearBox()
+        this.selected = [this.symbol]
       } else {
         bvModalEvt.preventDefault()
       }
     },
     handelModalCancel () {
       this.$refs.myInputBox.clearBox()
+      this.selected = [this.symbol]
     }
   },
   computed: {
