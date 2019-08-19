@@ -40,15 +40,15 @@
 
         <footer class="pt-4 pt-md-5">
           <b-row class="text-center">
-            <b-col cols="12" md="4" offset-lg="1" lg="3">
+            <b-col class="mb-3" cols="12" md="4" offset-lg="1" lg="3">
               <img class="mb-2" :src="iconSrc('favicon-32x32.png')" alt="" width="24" height="24">
-              <small class="d-block mb-3 text-muted">&copy; 2018-2019</small>
+              <small class="d-block text-muted">&copy; 2018-2019</small>
             </b-col>
-            <b-col cols="12" md="8" lg="4">
+            <b-col class="mb-3" cols="12" md="8" lg="4">
               <h5>{{donateText}}</h5>
               <a href="#" v-b-modal.donation-modal>0x422D582C08d7965cD5Fefef1572faaA15783f473</a>
             </b-col>
-            <b-col cols="12" md="12" lg="3">
+            <b-col class="mb-3" cols="12" md="12" lg="3">
               <h5>Github</h5>
               <div class="d-flex flex-row justify-content-center align-items-stretch">
                 <github-button class="mr-1" href="https://github.com/laalaguer/vechain-token-transfer" data-size="small" data-show-count="true" aria-label="Star laalaguer/vechain-token-transfer on GitHub">Star</github-button>
