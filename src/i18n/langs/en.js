@@ -4,7 +4,10 @@ export default {
     noEnvModalTitle: 'Environment Incorrect',
     noEnvModalText: 'This web page needs VeChain Sync.',
     noEnvModalOkayButtonText: 'Download Sync',
-    donateText: 'Donate to author'
+    donateText: 'Donate to author',
+    donateChoicesText: 'Ways of donation',
+    donateByCopy: 'Donate VET/VTHO to the following wallet',
+    donateByBuyMeACoffee: 'Donate through "Buy Me a Coffee" link'
   },
   topBar: {
     title: 'VeChain Tokens',
@@ -58,5 +61,8 @@ export default {
     uploadCSVModalTitle: 'Upload a .csv file',
     goBackText: 'Go back',
     deleteText: 'Delete'
+  },
+  toasts: {
+    copytitle: 'copied!'
   }
 }

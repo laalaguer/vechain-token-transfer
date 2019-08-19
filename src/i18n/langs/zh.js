@@ -4,7 +4,10 @@ export default {
     noEnvModalTitle: '运行环境不完整',
     noEnvModalText: '本网页运行在 VeChain Sync 浏览器中.',
     noEnvModalOkayButtonText: '下载 Sync',
-    donateText: '捐赠、支持作者'
+    donateText: '捐赠、支持作者',
+    donateChoicesText: '捐赠的方法',
+    donateByCopy: '直接发送VET/VTHO捐赠到下列地址',
+    donateByBuyMeACoffee: '使用 "Buy Me a Coffee" 链接来捐赠'
   },
   topBar: {
     title: '唯链代币神器',
@@ -58,5 +61,8 @@ export default {
     uploadCSVModalTitle: '上传一个 .csv 文件添加多个收款人',
     goBackText: '返回',
     deleteText: '删除'
+  },
+  toasts: {
+    copytitle: '地址已经复制'
   }
 }

@@ -46,7 +46,7 @@
             </b-col>
             <b-col cols="12" md="8" lg="4">
               <h5>{{donateText}}</h5>
-              <a class="d-block mb-3" target="_blank" href="https://bmac.vecha.in/donate?name=laalaguer&addr=0x422D582C08d7965cD5Fefef1572faaA15783f473&amount=1000&msg=Thank%20you!%0AIf%20you%20want%20new%20features,%20email%20to%20laalaguer@gmail.com%0A%E8%8B%A5%E6%9C%89%E6%96%B0%E9%9C%80%E6%B1%82%EF%BC%8C%E8%AF%B7email%E5%88%B0%20laalaguer@gmail.com">0x422D582C08d7965cD5Fefef1572faaA15783f473</a>
+              <a href="#" v-b-modal.donation-modal>0x422D582C08d7965cD5Fefef1572faaA15783f473</a>
             </b-col>
             <b-col cols="12" md="12" lg="3">
               <h5>Github</h5>
@@ -72,12 +72,30 @@
         :title="noEnvModalTitle">
         {{noEnvModalText}}
       </b-modal>
+
+      <!-- Donation modal -->
+      <b-modal
+        :title="donateChoicesText"
+        id="donation-modal"
+        ref="donation"
+        centered
+        hide-header-close
+        hide-footer
+        >
+        <div>
+          <p>1. {{donateByCopy}}</p>
+          <copy-input disabled="true" icon-name="fa-address-card" textToCopy="0x422D582C08d7965cD5Fefef1572faaA15783f473"></copy-input>
+          <p class="mt-3">2. {{donateByBuyMeACoffee}}</p>
+          <a class="d-block mb-3 ml-1" target="_blank" href="https://bmac.vecha.in/donate?name=laalaguer&addr=0x422D582C08d7965cD5Fefef1572faaA15783f473&amount=1000&msg=Thank%20you!%0AIf%20you%20want%20new%20features,%20email%20to%20laalaguer@gmail.com%0A%E8%8B%A5%E6%9C%89%E6%96%B0%E9%9C%80%E6%B1%82%EF%BC%8C%E8%AF%B7email%E5%88%B0%20laalaguer@gmail.com">0x422D582C08d7965cD5Fefef1572faaA15783f473</a>
+        </div>
+      </b-modal>
     </div>
     <!-- app -->
   </div>
 </template>
 
 <script>
+import CopyInput from './components/CopyInput.vue'
 import TopBar from './components/TopBar.vue'
 import TabBodyView from './components/TabBodyView.vue'
 import GithubButton from 'vue-github-button'
@@ -107,7 +125,8 @@ export default {
   components: {
     GithubButton,
     TopBar,
-    TabBodyView
+    TabBodyView,
+    CopyInput
   },
   beforeMount () {
     this.$store.dispatch('populateUnions')
@@ -170,6 +189,9 @@ export default {
       return this.$store.getters.themeVariant
     },
     donateText () { return this.$t('app.donateText') },
+    donateChoicesText () { return this.$t('app.donateChoicesText') },
+    donateByCopy () { return this.$t('app.donateByCopy') },
+    donateByBuyMeACoffee () { return this.$t('app.donateByBuyMeACoffee') },
     isMobile () { return window.innerWidth < 768 }
   }
 }
