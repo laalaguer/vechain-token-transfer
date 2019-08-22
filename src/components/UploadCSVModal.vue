@@ -102,7 +102,7 @@ export default {
               uniqueID: randomBytes(7).toString('hex'),
               toAddress: result.data[i][0],
               transferAmount: parseFloat(result.data[i][1]),
-              isAddressReady: true,  // if address is ready.
+              isAddressReady: true, // if address is ready.
               isAmountReady: true, // if amount is ready.
               hasTouched: true // if this element is fresh, or has been touched.
             })
