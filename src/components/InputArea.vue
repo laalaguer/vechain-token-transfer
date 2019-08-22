@@ -81,7 +81,7 @@ export default {
       temp.push({
         text: this.contracts[i].symbol,
         value: this.contracts[i].symbol,
-        contractAddr : this.contracts[i].contract
+        contractAddr: this.contracts[i].contract
       })
     }
     this.options = temp
@@ -104,36 +104,35 @@ export default {
     },
     handleAddressReady (value) {
       this.address = value
-      for (let i = 0; i < this.options.length; i++){
+      for (let i = 0; i < this.options.length; i++) {
         // set to query state.
         this.options[i].text = this.options[i].value + '...'
         // query the balance and fill.
-        if (this.options[i].value !== "VET"){ // should be a token
+        if (this.options[i].value !== 'VET') { // should be a token
           operations.getTokenBalance(this.options[i].contractAddr, this.address)
-          .then(result => {
-            let printable = utils.evmToPrintable(result['decoded']['balance'], this.decimals, 2)
-            this.options[i].text = this.options[i].value + ' ' + printable
-            if (printable !== '0.00'){
-              this.selected.push(this.options[i].value)
-            }
-          })
-          .catch(e => {
-            console.log(e)
-          })
-        }
-        else { // should be VET itself.
+            .then(result => {
+              let printable = utils.evmToPrintable(result['decoded']['balance'], this.decimals, 2)
+              this.options[i].text = this.options[i].value + ' ' + printable
+              if (printable !== '0.00') {
+                this.selected.push(this.options[i].value)
+              }
+            })
+            .catch(e => {
+              console.log(e)
+            })
+        } else { // should be VET itself.
           operations.getAccountBalance(this.address)
-          .then(result => {
-            let printable = utils.evmToPrintable(result['balance'], 18)
-            this.options[i].text = this.options[i].value + ' ' + printable
-            if (printable !== '0.00'){
-              this.selected.push(this.options[i].value)
-            }
+            .then(result => {
+              let printable = utils.evmToPrintable(result['balance'], 18)
+              this.options[i].text = this.options[i].value + ' ' + printable
+              if (printable !== '0.00') {
+                this.selected.push(this.options[i].value)
+              }
             // this will result in a Promise with undefined as resolve(value).
-          })
-          .catch(e => {
-            console.log(e)
-          })
+            })
+            .catch(e => {
+              console.log(e)
+            })
         }
       }
     },
