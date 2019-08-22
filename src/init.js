@@ -18,7 +18,7 @@ const sortFunction = function (a, b) {
   if (a.symbol > b.symbol) {
     return 1
   }
-  
+
   return 0
 }
 
