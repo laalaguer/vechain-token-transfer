@@ -70,6 +70,13 @@
     "icon": "snk.png"
   },
   {
+    "name": "JUR",
+    "symbol": "JUR",
+    "contract": "0x46209D5e5a49C1D403F4Ee3a0A88c3a27E29e58D",
+    "decimals": 18,
+    "icon": "jur.png"
+  },
+  {
     "name": "Vechain",
     "symbol": "VET",
     "contract": "",
