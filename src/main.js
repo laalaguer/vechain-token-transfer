@@ -9,7 +9,7 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faGithub } from '@fortawesome/free-brands-svg-icons'
-import { faPlusCircle, faBan, faTrash, faAngleDoubleDown, faAngleDoubleUp, faLanguage, faCopy, faAddressCard } from '@fortawesome/free-solid-svg-icons'
+import { faPlusCircle, faBan, faTrash, faAngleDoubleDown, faAngleDoubleUp, faLanguage, faCopy, faAddressCard, faEdit } from '@fortawesome/free-solid-svg-icons'
 import i18n from './i18n/i18n'
 import Toasted from 'vue-toasted'
 
@@ -25,6 +25,7 @@ library.add(faBan)
 library.add(faPlusCircle)
 library.add(faCopy)
 library.add(faAddressCard)
+library.add(faEdit)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

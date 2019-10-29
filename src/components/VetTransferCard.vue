@@ -19,7 +19,7 @@
         </b-col>
         <!-- Address -->
         <b-col class="d-none d-md-block" offset="4" cols="4" offset-md="0" md="4" lg="4" xl="4">
-          <p ref="exh6" class="truncatetext margin-none show-hand" @click="copySourceAddress">{{truncatedAddress}}</p>
+          <p ref="exh6" class="emphasis truncatetext margin-none show-hand" @click="copySourceAddress">{{truncatedAddress}}</p>
           <b-tooltip :target="() => $refs.exh6" placement="top">
             {{copyText}}
           </b-tooltip>
@@ -195,7 +195,8 @@ const randomBytes = require('randombytes')
 export default {
   props: {
     address: String, // Address of token holder.
-    symbol: String // Symbol of token.
+    symbol: String, // Symbol of token.
+    nickname: String // Nickname of this wallet.
   },
   components: {
     AddressPopover,
@@ -556,5 +557,9 @@ export default {
 
 .trash-none {
   display: none;
+}
+
+.emphasis {
+  border-bottom: 1px dashed;
 }
 </style>

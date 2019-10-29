@@ -19,11 +19,15 @@
         </b-col>
         <!-- Address -->
         <b-col class="d-none d-md-block" offset="4" cols="4" offset-md="0" md="4" lg="4" xl="4">
-          <p ref="exh6" class="truncatetext margin-none show-hand" @click="copySourceAddress">{{truncatedAddress}}</p>
+          <div class="d-flex align-items-center">
+            <font-awesome-icon :icon="['fas', 'edit']"/>
+            <p ref="exh6" class="ml-2 emphasis truncatetext margin-none show-hand" @click="copySourceAddress">{{addressOrNickname}}</p>
+          </div>
           <b-tooltip :target="() => $refs.exh6" placement="top">
             {{copyText}}
           </b-tooltip>
         </b-col>
+        
         <!-- Token value, on xm center and take whole space, on above take 4 cols. -->
         <b-col class="d-block d-md-none my-3" cols="12">
           <p class="margin-none text-center"><span class="text-primary">{{tokenValue || '--'}}</span> {{symbol}}</p>
@@ -32,7 +36,7 @@
           <p class="margin-none text-right"><span class="text-primary">{{tokenValue || '--'}}</span> {{symbol}}</p>
         </b-col>
         <!-- if owned show transfer button -->
-        <b-col class="text-center" v-if="isOwned" offset-md="0" md="4" lg="3" xl="3"  @click="toggleShowOffButton">
+        <b-col class="text-center" v-if="isOwned" offset-md="0" md="3" lg="3" xl="3"  @click="toggleShowOffButton">
           <b-button v-if="showTransferButton" variant="primary" size="sm">
             {{ transferText }}
           </b-button>
@@ -197,7 +201,8 @@ export default {
     address: String, // Address of token holder.
     symbol: String, // Symbol of token.
     contract: String, // Contract address.
-    decimals: Number // Contract decimals setting.
+    decimals: Number, // Contract decimals setting.
+    nickname: String // Nickname of this wallet.
   },
   components: {
     AddressPopover,
@@ -458,8 +463,14 @@ export default {
   computed: {
     isMobile () { return window.innerWidth < 768 },
     truncatedAddress () {
-      // return this.address.slice(0, 9) + '...' + this.address.slice(-7)
       return this.address
+    },
+    addressOrNickname() {
+      if (this.nickname !== '') {
+        return this.nickname
+      } else {
+        return this.address
+      }
     },
     maxTransferAllowed () {
       return parseFloat(this.tokenValue)
@@ -569,6 +580,10 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.emphasis {
+  border-bottom: 1px dashed;
 }
 
 .trash-block {
