@@ -1,25 +1,67 @@
 <!-- Card: Responsible for transferring VET -->
 <template>
   <div>
-    <b-card @mouseenter="imFocused" @mouseleave="imUnFocused" :border-variant="borderChoice" :class="[shadowChoice, 'bg-light']">
+    <b-card 
+      @mouseenter="imFocused" 
+      @mouseleave="imUnFocused" 
+      :border-variant="borderChoice" 
+      :class="[shadowChoice, 'bg-light']">
+
       <!-- Row of address and tokens it holds -->
       <b-row align-v="center">
-        <!-- Avatar -->
+
+        <!-- Avatar: hide on medium size screen -->
         <b-col class="d-block d-md-none" offset="0" cols="12">
           <div class="d-flex justify-content-center">
-            <avatar class="show-hand" :id="address+'sm'+symbol" :address="address" my-height="64px" my-width="64px"/>
+            <avatar
+              class="show-hand" 
+              :id="address+'sm'+symbol" 
+              :address="address" 
+              my-height="64px" 
+              my-width="64px"
+            />
           </div>
-          <address-popover :target="address+'sm'+symbol" :title="truncatedAddress" @deleteMe="showDeleteAddressModal"/>
+
+          <address-popover 
+            :target="address+'sm'+symbol" 
+            :title="truncatedAddress" 
+            @deleteMe="showDeleteAddressModal"
+          />
         </b-col>
+
+        <!-- Avatar: hide on small screen -->
         <b-col class="d-none d-md-block" offset-sm="0" sm="1">
           <div class="d-flex justify-content-center">
-            <avatar class="show-hand" :id="address+'md'+symbol" :address="address" my-height="32px" my-width="32px"/>
+            <avatar
+              class="show-hand" 
+              :id="address+'md'+symbol" 
+              :address="address" 
+              my-height="28px" 
+              my-width="28px"
+            />
           </div>
-          <address-popover :target="address+'md'+symbol" :title="truncatedAddress" @deleteMe="showDeleteAddressModal"/>
+
+          <address-popover 
+            :target="address+'md'+symbol" 
+            :title="truncatedAddress" 
+            @deleteMe="showDeleteAddressModal"
+          />
         </b-col>
-        <!-- Address -->
+
+        <!-- Address: hide on small screen -->
         <b-col class="d-none d-md-block" offset="4" cols="4" offset-md="0" md="4" lg="4" xl="4">
-          <p ref="exh6" class="emphasis truncatetext margin-none show-hand" @click="copySourceAddress">{{truncatedAddress}}</p>
+          <div class="d-flex align-items-center">
+            <font-awesome-icon
+              class="show-hand" 
+              :icon="['fas', 'edit']" 
+              @click="showEditNicknameModal"
+            />
+            <p 
+              ref="exh6" 
+              class="ml-2 emphasis truncatetext margin-none show-hand" 
+              @click="copySourceAddress">{{addressOrNickname}}
+            </p>
+          </div>
           <b-tooltip :target="() => $refs.exh6" placement="top">
             {{copyText}}
           </b-tooltip>
@@ -176,7 +218,16 @@
       {{address}}
     </b-modal>
 
-    <upload-c-s-v-modal :ref="uniqueCSVModalID" @csvReceiversReady="handleCSVReceivers"/>
+    <nickname-modal
+      :ref="uniqueNicknameModalID"
+      :presetNickname="nickname"
+      @nicknameReady="handleNicknameReady"
+    />
+
+    <upload-c-s-v-modal 
+      :ref="uniqueCSVModalID" 
+      @csvReceiversReady="handleCSVReceivers"
+    />
   </div>
 </template>
 
@@ -186,6 +237,7 @@ import AddressBox from './AddressBox.vue'
 import AmountBox from './AmountBox.vue'
 import Avatar from './Avatar.vue'
 import UploadCSVModal from './UploadCSVModal.vue'
+import NicknameModal from './NicknameModal.vue'
 import copy from 'copy-to-clipboard'
 
 const operations = require('../operations.js')
@@ -203,7 +255,8 @@ export default {
     AddressBox,
     AmountBox,
     Avatar,
-    UploadCSVModal
+    UploadCSVModal,
+    NicknameModal
   },
   data () {
     return {
@@ -219,10 +272,13 @@ export default {
       trashChoice: 'trash-none',
       showTransferButton: true,
       isOwned: false, // if self is owned address
-      uniqueCSVModalID: randomBytes(7).toString('hex')
+      uniqueCSVModalID: randomBytes(7).toString('hex'),
+      uniqueNicknameModalID: randomBytes(7).toString('hex'),
+      displayNickname: ''
     }
   },
   beforeMount () {
+    this.displayNickname = this.nickname
     this.refreshWalletBalance()
     this.refreshIsOwned()
     this.addAReceiver()
@@ -363,6 +419,9 @@ export default {
     showUploadCSVModal () {
       this.$refs[this.uniqueCSVModalID].showMe()
     },
+    showEditNicknameModal () {
+      this.$refs[this.uniqueNicknameModalID].showMe()
+    },
     showModal () {
       this.$refs.transferResultModal.show()
     },
@@ -435,6 +494,12 @@ export default {
     },
     openWallets () {
       window.open('sync://wallets', '_blank')
+    },
+    handleNicknameReady (newNickname) {
+      // refresh UI
+      this.displayNickname = newNickname
+      // commit to store
+      this.$store.dispatch('setUnion', { address: this.address, symbol: this.symbol, nickname: newNickname })
     }
   },
   computed: {
@@ -442,6 +507,13 @@ export default {
     truncatedAddress () {
       // return this.address.slice(0, 9) + '...' + this.address.slice(-7)
       return this.address
+    },
+    addressOrNickname() {
+      if (this.displayNickname !== '') {
+        return this.displayNickname
+      } else {
+        return this.address
+      }
     },
     maxTransferAllowed () {
       return parseFloat(this.vetValue)
@@ -503,7 +575,7 @@ export default {
     copyAddressToastText () { return this.$t('transferCard.copyAddressToastText') },
     mainNetWarning () { return this.$t('transferCard.mainNetWarning') },
     transactionSent () { return this.$t('transferCard.transactionSent') },
-    copyText () { return this.$t('transferCard.copyText') },
+    copyText () { return this.$t('transferCard.copyText') + this.address },
     addWalletText () { return this.$t('transferCard.addWalletText') },
     addAnotherReceiverText () { return this.$t('transferCard.addAnotherReceiver') },
     addByUploadFileText () { return this.$t('transferCard.addByUploadFile') }

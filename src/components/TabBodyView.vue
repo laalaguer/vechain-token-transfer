@@ -2,8 +2,22 @@
   <b-container>
     <b-row>
       <b-col class="my-2 px-0" cols="12" v-for="unit in addressSymbolUnions" :key="unit.address">
-        <transfer-card v-if="isContract" @removeAddress="removeAddress" :address="unit.address" :nickname="unit.nickname" :symbol="symbol" :contract="contractAddress" :decimals="decimals"/>
-        <vet-transfer-card v-if="!isContract" @removeAddress="removeAddress" :address="unit.address" :symbol="symbol"/>
+        <transfer-card
+          v-if="isContract"
+          @removeAddress="removeAddress" 
+          :address="unit.address"
+          :symbol="symbol"
+          :nickname="unit.nickname"
+          :contract="contractAddress"
+          :decimals="decimals"
+        />
+        <vet-transfer-card 
+          v-if="!isContract" 
+          @removeAddress="removeAddress" 
+          :address="unit.address" 
+          :symbol="symbol"
+          :nickname="unit.nickname"
+        />
       </b-col>
     </b-row>
 

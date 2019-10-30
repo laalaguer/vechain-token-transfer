@@ -64,5 +64,10 @@ export default {
   },
   toasts: {
     copytitle: '地址已经复制'
+  },
+  nicknameModal: {
+    title: '给账户起一个好记的名字',
+    ok: 'OK',
+    cancel: '取消'
   }
 }

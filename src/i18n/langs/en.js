@@ -54,15 +54,20 @@ export default {
     copyAddressToastText: 'Address Copied',
     mainNetWarning: '* The transaction would be irreversible on mainnet, click "Confirm" to continue.',
     transactionSent: 'Transaction sent!',
-    copyText: 'click to copy address',
+    copyText: 'Click to copy address',
     addWalletText: 'Prove to be mine',
-    addAnotherReceiver: 'add another receiver',
-    addByUploadFile: 'add mulitple receivers by .csv file',
+    addAnotherReceiver: 'Add another receiver',
+    addByUploadFile: 'Add mulitple receivers by .csv file',
     uploadCSVModalTitle: 'Upload a .csv file',
     goBackText: 'Go back',
     deleteText: 'Delete'
   },
   toasts: {
     copytitle: 'copied!'
+  },
+  nicknameModal: {
+    title: 'Give it a nickname.',
+    ok: 'OK',
+    cancel: 'Cancel'
   }
 }
