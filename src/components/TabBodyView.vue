@@ -111,6 +111,7 @@ export default {
       }
     },
     addNewAddress (value, symbolsToWatch) {
+      // loop through every symbols that this address may contain.
       for (let i = 0; i < symbolsToWatch.length; i++) {
         // if symbol is of current tab, and address is new, push to local array
         if (symbolsToWatch[i] === this.symbol) {
@@ -121,17 +122,17 @@ export default {
               break
             }
           }
-          if (index === -1) { // new address!
+          if (index === -1) { // new address in current tab!
             this.addressSymbolUnions.push({
               address: value,
               symbol: this.symbol,
               nickname: ''
             })
-
-            this.$store.dispatch('setUnion', { address: value, symbol: symbolsToWatch[i], nickname: '' })
-            GlobalEventBus.$emit('ADDRESS_ADDED', { address: value, symbol: symbolsToWatch[i], nickname: '' })
           }
         }
+
+        this.$store.dispatch('setUnion', { address: value, symbol: symbolsToWatch[i], nickname: '' })
+        GlobalEventBus.$emit('ADDRESS_ADDED', { address: value, symbol: symbolsToWatch[i], nickname: '' })
       }
     }
   },
