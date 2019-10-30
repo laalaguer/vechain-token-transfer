@@ -4,17 +4,17 @@
       <b-col class="my-2 px-0" cols="12" v-for="unit in addressSymbolUnions" :key="unit.address">
         <transfer-card
           v-if="isContract"
-          @removeAddress="removeAddress" 
+          @removeAddress="removeAddress"
           :address="unit.address"
           :symbol="symbol"
           :nickname="unit.nickname"
           :contract="contractAddress"
           :decimals="decimals"
         />
-        <vet-transfer-card 
-          v-if="!isContract" 
-          @removeAddress="removeAddress" 
-          :address="unit.address" 
+        <vet-transfer-card
+          v-if="!isContract"
+          @removeAddress="removeAddress"
+          :address="unit.address"
           :symbol="symbol"
           :nickname="unit.nickname"
         />
@@ -54,19 +54,18 @@ export default {
     GlobalEventBus.$on('ADDRESS_ADDED', (payload) => {
       if (payload.symbol === this.symbol) {
         let index = -1
-        for (let i = 0; i < this.addressSymbolUnions.length ;i++){
-          if (this.addressSymbolUnions[i]['address'] === payload.address){
+        for (let i = 0; i < this.addressSymbolUnions.length; i++) {
+          if (this.addressSymbolUnions[i]['address'] === payload.address) {
             index = i
             break
           }
         }
-        if (index === -1){ // new address!
+        if (index === -1) { // new address!
           this.addressSymbolUnions.push({
             address: payload.address,
             symbol: this.symbol,
             nickname: payload.nickname
           })
-
         }
       }
     })
@@ -82,13 +81,13 @@ export default {
       for (let i = 0; i < allAddresses.length; i++) {
         if (allAddresses[i].symbol === this.symbol) {
           let index = -1
-          for (let j = 0; j < this.addressSymbolUnions.length;j++){
-            if (this.addressSymbolUnions[j]['address'] === allAddresses[i].address){
+          for (let j = 0; j < this.addressSymbolUnions.length; j++) {
+            if (this.addressSymbolUnions[j]['address'] === allAddresses[i].address) {
               index = j
               break
             }
           }
-          if (index === -1){
+          if (index === -1) {
             this.addressSymbolUnions.push({
               address: allAddresses[i].address,
               symbol: allAddresses[i].symbol,
@@ -100,8 +99,8 @@ export default {
     },
     removeAddress (value) {
       let index = -1
-      for (let i = 0; i < this.addressSymbolUnions.length ;i++){
-        if (this.addressSymbolUnions[i]['address'] === value){
+      for (let i = 0; i < this.addressSymbolUnions.length; i++) {
+        if (this.addressSymbolUnions[i]['address'] === value) {
           index = i
           break
         }
@@ -116,13 +115,13 @@ export default {
         // if symbol is of current tab, and address is new, push to local array
         if (symbolsToWatch[i] === this.symbol) {
           let index = -1
-          for (let i = 0; i < this.addressSymbolUnions.length ;i++){
-            if (this.addressSymbolUnions[i]['address'] === value){
+          for (let i = 0; i < this.addressSymbolUnions.length; i++) {
+            if (this.addressSymbolUnions[i]['address'] === value) {
               index = i
               break
             }
           }
-          if (index === -1){ // new address!
+          if (index === -1) { // new address!
             this.addressSymbolUnions.push({
               address: value,
               symbol: this.symbol,

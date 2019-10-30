@@ -40,14 +40,12 @@ export default {
     }
   },
   methods: {
-    handleModalOk: function (bvModalEvt){
+    handleModalOk: function (bvModalEvt) {
       if (this.nicknameState === true) {
         this.$emit('nicknameReady', this.nickname)
-      } 
-      else if (this.nicknameState === null) {
+      } else if (this.nicknameState === null) {
         this.$emit('nicknameReady', '')
-      }
-      else {
+      } else {
         bvModalEvt.preventDefault()
       }
     },
@@ -57,11 +55,11 @@ export default {
     clearBox () {
       this.nickname = ''
     },
-    showMe() {
+    showMe () {
       this.clearBox()
       this.modalShow = true
     },
-    hideMe() {
+    hideMe () {
       this.clearBox()
       this.modalShow = false
     }

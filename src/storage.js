@@ -1,5 +1,3 @@
-import { SourceMapGenerator } from "../../../Library/Caches/typescript/3.6/node_modules/source-map/source-map";
-
 /**
  * Storage options for persistant data.
  * Storage key is:
@@ -12,7 +10,7 @@ import { SourceMapGenerator } from "../../../Library/Caches/typescript/3.6/node_
  *  true/false in string
  */
 
-const separater = '::';
+const separater = '::'
 const version = '2';
 
 /**
@@ -31,7 +29,7 @@ const version = '2';
  */
 
 /** Storage migration from version 1 to version 2 */
-(function(){
+(function () {
   for (let i in localStorage) {
     if (i.startsWith(['1', 'union'].join(separater))) {
       const [, , mSymbol, mAddress] = i.split(separater)
@@ -51,7 +49,7 @@ const version = '2';
       localStorage.removeItem(i) // remove old data.
     }
   }
-}());
+}())
 
 /**
  * Set an address to storage.

@@ -1,10 +1,10 @@
 <!-- Card: Responsible for transferring VET -->
 <template>
   <div>
-    <b-card 
-      @mouseenter="imFocused" 
-      @mouseleave="imUnFocused" 
-      :border-variant="borderChoice" 
+    <b-card
+      @mouseenter="imFocused"
+      @mouseleave="imUnFocused"
+      :border-variant="borderChoice"
       :class="[shadowChoice, 'bg-light']">
 
       <!-- Row of address and tokens it holds -->
@@ -14,17 +14,17 @@
         <b-col class="d-block d-md-none" offset="0" cols="12">
           <div class="d-flex justify-content-center">
             <avatar
-              class="show-hand" 
-              :id="address+'sm'+symbol" 
-              :address="address" 
-              my-height="64px" 
+              class="show-hand"
+              :id="address+'sm'+symbol"
+              :address="address"
+              my-height="64px"
               my-width="64px"
             />
           </div>
 
-          <address-popover 
-            :target="address+'sm'+symbol" 
-            :title="truncatedAddress" 
+          <address-popover
+            :target="address+'sm'+symbol"
+            :title="truncatedAddress"
             @deleteMe="showDeleteAddressModal"
           />
         </b-col>
@@ -33,17 +33,17 @@
         <b-col class="d-none d-md-block" offset-sm="0" sm="1">
           <div class="d-flex justify-content-center">
             <avatar
-              class="show-hand" 
-              :id="address+'md'+symbol" 
-              :address="address" 
-              my-height="28px" 
+              class="show-hand"
+              :id="address+'md'+symbol"
+              :address="address"
+              my-height="28px"
               my-width="28px"
             />
           </div>
 
-          <address-popover 
-            :target="address+'md'+symbol" 
-            :title="truncatedAddress" 
+          <address-popover
+            :target="address+'md'+symbol"
+            :title="truncatedAddress"
             @deleteMe="showDeleteAddressModal"
           />
         </b-col>
@@ -52,13 +52,13 @@
         <b-col class="d-none d-md-block" offset="4" cols="4" offset-md="0" md="4" lg="4" xl="4">
           <div class="d-flex align-items-center">
             <font-awesome-icon
-              class="show-hand" 
-              :icon="['fas', 'edit']" 
+              class="show-hand"
+              :icon="['fas', 'edit']"
               @click="showEditNicknameModal"
             />
-            <p 
-              ref="exh6" 
-              class="ml-2 emphasis truncatetext margin-none show-hand" 
+            <p
+              ref="exh6"
+              class="ml-2 emphasis truncatetext margin-none show-hand"
               @click="copySourceAddress">{{addressOrNickname}}
             </p>
           </div>
@@ -224,8 +224,8 @@
       @nicknameReady="handleNicknameReady"
     />
 
-    <upload-c-s-v-modal 
-      :ref="uniqueCSVModalID" 
+    <upload-c-s-v-modal
+      :ref="uniqueCSVModalID"
       @csvReceiversReady="handleCSVReceivers"
     />
   </div>
@@ -508,7 +508,7 @@ export default {
       // return this.address.slice(0, 9) + '...' + this.address.slice(-7)
       return this.address
     },
-    addressOrNickname() {
+    addressOrNickname () {
       if (this.displayNickname !== '') {
         return this.displayNickname
       } else {
