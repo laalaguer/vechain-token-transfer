@@ -30,11 +30,27 @@ export default new Vuex.Store({
   // Sync methods.
   // Call by $store.commit('actionName', params)
   mutations: {
-    addAddressSymbolUnion: function (state, { address, symbol }) {
-      state.addressSymbolUnions.push({
-        address: address,
-        symbol: symbol
-      })
+    setAddressSymbolUnion: function (state, { address, symbol, nickname }) {
+      let index = -1
+      for (let i in state.addressSymbolUnions) {
+        if (i.address === address && i.symbol === symbol) {
+          index = i
+          break
+        }
+      }
+      if (index === -1) { // not found? add new!
+        state.addressSymbolUnions.push({
+          address: address,
+          symbol: symbol,
+          nickname: nickname
+        })
+      } else { // found? mutate!
+        state.addressSymbolUnions[index] = {
+          address: address,
+          symbol: symbol,
+          nickname: nickname
+        }
+      }
     },
     removeAddressSymbolUnion: function (state, { address, symbol }) {
       let index = -1
@@ -55,18 +71,19 @@ export default new Vuex.Store({
   // Async methods.
   // Call by $store.dispatch('actionName', params)
   actions: {
-    setUnion ({ commit }, { address, symbol, owned }) {
-      commit('addAddressSymbolUnion', { address: address, symbol: symbol })
-      myStorage.setUnion(address, symbol, owned)
+    setUnion ({ commit }, { address, symbol, nickname }) {
+      commit('setAddressSymbolUnion', { address: address, symbol: symbol, nickname: nickname })
+      myStorage.setUnion(address, symbol, nickname)
     },
     removeUnion ({ commit }, { address, symbol }) {
       commit('removeAddressSymbolUnion', { address: address, symbol: symbol })
       myStorage.removeUnion(address, symbol)
     },
+    // Read all the unions from storage at once.
     async populateUnions ({ commit }) {
       let unions = myStorage.getAllUnions()
       for (let i = 0; i < unions.length; i++) {
-        commit('addAddressSymbolUnion', { address: unions[i].address, symbol: unions[i].symbol })
+        commit('setAddressSymbolUnion', { address: unions[i].address, symbol: unions[i].symbol, nickname: unions[i].nickname })
       }
     }
   }

@@ -11,7 +11,45 @@
  */
 
 const separater = '::'
-const version = '1'
+const version = '2';
+
+/**
+ * version 1:
+ * 1::language 'value'
+ * 1::union::BAG::0x49b39a0bfe03a6987ca3252dd2096515d1435ab1 'false'
+ * here 'false' is if this address is owned by the user or not.
+ */
+
+/**
+ * version 2:
+ * 1::language 'value'
+ * 2::union::BAG::0x49b39a0bfe03a6987ca3252dd2096515d1435ab1 'nickname'
+ * or
+ * 2::union::BAG::0x49b39a0bfe03a6987ca3252dd2096515d1435ab1 ''
+ */
+
+/** Storage migration from version 1 to version 2 */
+(function () {
+  for (let i in localStorage) {
+    if (i.startsWith(['1', 'union'].join(separater))) {
+      const [, , mSymbol, mAddress] = i.split(separater)
+      localStorage.setItem(
+        ['2', 'union', mSymbol, mAddress].join(separater),
+        '' // empty nickname
+      )
+      localStorage.removeItem(i) // remove old data.
+    }
+
+    if (i.startsWith(['1', 'language'].join(separater))) {
+      const value = localStorage.getItem(i.toString())
+      localStorage.setItem(
+        ['2', 'language'].join(separater),
+        value
+      )
+      localStorage.removeItem(i) // remove old data.
+    }
+  }
+}())
 
 /**
  * Set an address to storage.
@@ -45,9 +83,11 @@ const getAllUnions = function () {
   for (let i in localStorage) {
     if (i.startsWith([version, 'union'].join(separater))) {
       const [, , mSymbol, mAddress] = i.split(separater)
+      const nickname = localStorage.getItem(i.toString())
       returnList.push({
         symbol: mSymbol,
-        address: mAddress
+        address: mAddress,
+        nickname: nickname
       })
     }
   }
