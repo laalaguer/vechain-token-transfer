@@ -109,10 +109,30 @@ const getLanguage = function () {
   return item
 }
 
+// index should be int.
+const setRememberedTabIndex = function (index) {
+  localStorage.setItem(
+    [version, 'tabIndex'].join(separater),
+    index.toString()
+  )
+}
+
+// 0 or any index.
+const getRememberedTabIndex = function () {
+  const item = localStorage.getItem([version, 'tabIndex'].join(separater))
+  if (item === null) {
+    return 0
+  } else {
+    return parseInt(item)
+  }
+}
+
 export {
   setUnion,
   removeUnion,
   getAllUnions,
   setLanguage,
-  getLanguage
+  getLanguage,
+  setRememberedTabIndex,
+  getRememberedTabIndex
 }

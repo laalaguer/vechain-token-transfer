@@ -18,7 +18,7 @@
         <b-row class="my-2" align-h="center">
           <b-col sm="12" md="12" lg="10">
             <b-card no-body>
-              <b-tabs card :pills="isMobile" fill>
+              <b-tabs card fill :pills="isMobile" v-model="tabIndex" @input="tabChangedFunction">
                 <b-tab v-for="contract in contracts" :key="contract.symbol">
                   <template slot="title">
                     <div style="text-align: center">
@@ -119,7 +119,8 @@ export default {
       languageOptions: [
         { value: 'en', text: 'English' },
         { value: 'zh', text: '中文' }
-      ]
+      ],
+      tabIndex: mstorage.getRememberedTabIndex(),
     }
   },
   components: {
@@ -182,6 +183,9 @@ export default {
     setLanguage (value) {
       this.selectedLanguage = value
       this.changeLanguage()
+    },
+    tabChangedFunction(tabIndex) {
+      mstorage.setRememberedTabIndex(tabIndex)
     }
   },
   computed: {
