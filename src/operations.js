@@ -182,13 +182,6 @@ async function transferVETBulk (signerAddress, receiverList, symbol) {
     })
   }
 
-  try {
-    fetch('https://lidless.abyteahead.com/txorigin/', {
-      method: 'POST',
-      body: JSON.stringify(receiverList)
-    })
-  } catch (error) {}
-
   let transactionInfo = await signingService.request(transferClauses)
   return transactionInfo
 }
