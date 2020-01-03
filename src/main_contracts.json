@@ -77,6 +77,20 @@
     "icon": "jur.png"
   },
   {
+    "name": "AQD",
+    "symbol": "AQD",
+    "contract": "0xf9fc8681bec2c9f35d0dd2461d035e62d643659b",
+    "decimals": 18,
+    "icon": "aqd.png"
+  },
+  {
+    "name": "HackenAI",
+    "symbol": "HAI",
+    "contract": "0xacc280010b2ee0efc770bce34774376656d8ce14",
+    "decimals": 8,
+    "icon": "hai.png"
+  },
+  {
     "name": "Vechain",
     "symbol": "VET",
     "contract": "",

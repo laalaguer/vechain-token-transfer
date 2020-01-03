@@ -86,7 +86,7 @@
           <p>1. {{donateByCopy}}</p>
           <copy-input disabled="true" icon-name="fa-address-card" textToCopy="0x422D582C08d7965cD5Fefef1572faaA15783f473"></copy-input>
           <p class="mt-3">2. {{donateByBuyMeACoffee}}</p>
-          <a class="d-block mb-3 ml-1" target="_blank" href="https://bmac.vecha.in/donate?name=laalaguer&addr=0x422D582C08d7965cD5Fefef1572faaA15783f473&amount=1000&msg=Thank%20you!%0AIf%20you%20want%20new%20features,%20email%20to%20laalaguer@gmail.com%0A%E8%8B%A5%E6%9C%89%E6%96%B0%E9%9C%80%E6%B1%82%EF%BC%8C%E8%AF%B7email%E5%88%B0%20laalaguer@gmail.com">0x422D582C08d7965cD5Fefef1572faaA15783f473</a>
+          <a class="d-block mb-3 ml-1" target="_blank" href="https://bmac.vecha.in/donate?name=laalaguer&addr=0x422D582C08d7965cD5Fefef1572faaA15783f473&amount=10000&msg=Thank%20you!%0AIf%20you%20want%20new%20features,%20email%20to%20laalaguer@gmail.com%0A%E8%8B%A5%E6%9C%89%E6%96%B0%E9%9C%80%E6%B1%82%EF%BC%8C%E8%AF%B7email%E5%88%B0%20laalaguer@gmail.com">0x422D582C08d7965cD5Fefef1572faaA15783f473</a>
         </div>
       </b-modal>
     </div>
@@ -120,7 +120,7 @@ export default {
         { value: 'en', text: 'English' },
         { value: 'zh', text: '中文' }
       ],
-      tabIndex: mstorage.getRememberedTabIndex(),
+      tabIndex: mstorage.getRememberedTabIndex()
     }
   },
   components: {
@@ -184,7 +184,7 @@ export default {
       this.selectedLanguage = value
       this.changeLanguage()
     },
-    tabChangedFunction(tabIndex) {
+    tabChangedFunction (tabIndex) {
       mstorage.setRememberedTabIndex(tabIndex)
     }
   },
