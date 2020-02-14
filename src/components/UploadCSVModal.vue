@@ -53,7 +53,9 @@ export default {
     },
     clearAll () { // clear all the inputs, and the internal data status.
       this.importedReceiverList = []
-      this.$refs[this.uniqueID].value = null
+      if (this.$refs[this.uniqueID] !== undefined) {
+        this.$refs[this.uniqueID].value = null
+      }
     },
     clearReceiverList () {
       this.importedReceiverList = []

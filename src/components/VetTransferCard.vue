@@ -136,7 +136,7 @@
           </p>
         </b-col>
         <b-col cols="5" style="text-align: center;">
-          <p>{{transferAmountTitle}} <span class="font-weight-bold">{{totalTransferAmount}}</span> </p>
+          <p>{{transferAmountTitle}} <span class="font-weight-bold">{{totalTransferAmount.toString(10)}}</span> </p>
         </b-col>
       </b-row>
 
@@ -177,7 +177,7 @@
         <hr/>
         <b-row style="text-align: center;">
           <b-col offset="8" cols="4">
-             <p>{{totalTransferAmount}} {{symbol}}</p>
+             <p>{{totalTransferAmount.toString(10)}} {{symbol}}</p>
           </b-col>
         </b-row>
 
@@ -260,8 +260,9 @@ export default {
   },
   data () {
     return {
-      vetValue: 0, // How many vet this address has, is a String type.
-      vthoValue: 0, // How many energy this address has, is a String type.
+      displayDecimals: 2, // display decimals of numbers.
+      vetValue: '0', // How many vet this address has, is a String type.
+      vthoValue: '0', // How many energy this address has, is a String type.
       showCollapseOfTransfer: false,
       showCollapseOfConfirmation: false,
       receiverList: [],
@@ -399,8 +400,8 @@ export default {
       // Refresh user vtho balance
       operations.getAccountBalance(this.address)
         .then(result => {
-          this.vthoValue = utils.evmToPrintable(result['energy'], 18)
-          this.vetValue = utils.evmToPrintable(result['balance'], 18)
+          this.vthoValue = utils.evmToPrintable(result['energy'], 18, this.displayDecimals)
+          this.vetValue = utils.evmToPrintable(result['balance'], 18, this.displayDecimals)
           // this will result in a Promise with undefined as resolve(value).
         })
         .then(() => {
@@ -515,26 +516,26 @@ export default {
         return this.address
       }
     },
-    maxTransferAllowed () {
-      return parseFloat(this.vetValue)
+    maxTransferAllowed () { // a BigNumber
+      return utils.makeBN(this.tokenValue)
     },
-    totalTransferAmount () {
-      let total = 0
+    totalTransferAmount () { // a BigNumber
+      let total = utils.makeBN('0')
       for (let i = 0; i < this.receiverList.length; i++) {
-        total += this.receiverList[i].transferAmount
+        total = total.plus(utils.makeBN(this.receiverList[i].transferAmount))
       }
-      return total.toFixed(4)
+      return total
     },
     isBreachedMax () {
-      return this.totalTransferAmount > this.maxTransferAllowed
+      return this.totalTransferAmount.isGreaterThan(this.maxTransferAllowed)
     },
     canTransfer () {
       if (this.receiverList.length === 0) {
         console.log('receiver list is empty')
         return false
       }
-      if (this.totalTransferAmount === 0) {
-        console.log('total transfer amount', this.totalTransferAmount)
+      if (this.totalTransferAmount.isZero()) {
+        console.log('total transfer amount', this.totalTransferAmount.toString(10))
         return false
       }
       // Max breached?
