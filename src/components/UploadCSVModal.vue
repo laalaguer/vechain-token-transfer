@@ -75,11 +75,18 @@ export default {
           // result.errors => array[]
           // result.meta
           for (let i = 0; i < result.data.length; i++) {
-            let parts = result.data[i]
+            var parts = result.data[i]
+            if (i == (result.data.length - 1)) {
+              if (parts.length == 1 && parts[0] == "") { // Windows 10 + Libre Office.
+                console.log("Warning: last line is empty, skipped.");
+                continue
+              }
+            }
+
             if (parts.length !== 2) {
               this.parseError = true
               this.clearAll()
-              alert('Error: each line should be: | address | amount ')
+              alert(`Error: each line should be: | address | amount |`)
               break
             }
 
