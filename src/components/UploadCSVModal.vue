@@ -76,9 +76,9 @@ export default {
           // result.meta
           for (let i = 0; i < result.data.length; i++) {
             var parts = result.data[i]
-            if (i == (result.data.length - 1)) {
-              if (parts.length == 1 && parts[0] == "") { // Windows 10 + Libre Office.
-                console.log("Warning: last line is empty, skipped.");
+            if (i === (result.data.length - 1)) {
+              if (parts.length === 1 && parts[0] === '') { // Windows 10 + Libre Office.
+                console.log('Warning: last line is empty, skipped.')
                 continue
               }
             }

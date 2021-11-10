@@ -91,6 +91,55 @@
     "icon": "hai.png"
   },
   {
+    "name": "Madini",
+    "symbol": "MDN",
+    "contract": "0x1b44a9718e12031530604137f854160759677192",
+    "decimals": 18,
+    "icon": "4bad919e2ba460940b3ac5f5a94394964303bb86.png"
+  },
+  {
+    "name": "VIMworld",
+    "symbol": "VEED",
+    "decimals": 18,
+    "contract": "0x67fd63f6068962937ec81ab3ae3bf9871e524fc9",
+    "icon": "1d9b0e0c19a85eb860fd2f1d244026f2e2c8f799.png"
+  },
+  {
+    "name": "VPunks Token",
+    "symbol": "VPU",
+    "decimals": 18,
+    "contract": "0xb0821559723db89e0bd14fee81e13a3aae007e65",
+    "icon": "39a2d6b3089373e42e4578fd8753cbf4f8f04251.png"
+  },
+  {
+    "name": "Mad Viking Games",
+    "symbol": "MVG",
+    "decimals": 18,
+    "contract": "0x99763494a7b545f983ee9fe02a3b5441c7ef1396",
+    "icon": "aa1a4cae47690ccd8a848e2bed5560606d90dd98.png"
+  },
+  {
+    "name": "WorldOfV",
+    "symbol": "WoV",
+    "decimals": 18,
+    "contract": "0x170f4ba8e7acf6510f55db26047c83d13498af8a",
+    "icon": "86d852d5b2bacaa182139c0ca08bc916a63eee24.png"
+  },
+  {
+    "name": "GEMS",
+    "symbol": "GEMS",
+    "decimals": 18,
+    "contract": "0x28c61940bdcf5a67158d00657e8c3989e112eb38",
+    "icon": "a4c5cf35736eb5a6e8cd974b9a9a72d65355451c.png"
+  },
+  {
+    "name": "Vexchange",
+    "symbol": "VEX",
+    "decimals": 18,
+    "contract": "0x0bd802635eb9ceb3fcbe60470d2857b86841aab6",
+    "icon": "e05418659d6e0cb7f290669e43b60b617379ba57.png"
+  },
+  {
     "name": "Vechain",
     "symbol": "VET",
     "contract": "",
