@@ -70,6 +70,41 @@
     "icon": "jur.png"
   },
   {
+    "name": "SneakerCoin",
+    "symbol": "SNK",
+    "decimals": 18,
+    "contract": "0xe0d0402a948ab02af08938dad2a79669bdbe1c31",
+    "icon": "e352c4d1e1343614b49d7f711075c7c8aec53b08.png"
+  },
+  {
+    "name": "Madini",
+    "symbol": "MDN",
+    "decimals": 18,
+    "contract": "0x4c76f2c483e0ec292c06d0a0d1440717ed0787c0",
+    "icon": "4bad919e2ba460940b3ac5f5a94394964303bb86.png"
+  },
+  {
+    "name": "VIMworld",
+    "symbol": "VEED",
+    "decimals": 18,
+    "contract": "0xa39a4b2e23220305083e2e7c94c8950ef1e641c6",
+    "icon": "1d9b0e0c19a85eb860fd2f1d244026f2e2c8f799.png"
+  },
+  {
+    "name": "Mad Viking Games",
+    "symbol": "MVG",
+    "decimals": 18,
+    "contract": "0x6e32a40481dc95c7495b48ee81e3d388a0f0eb77",
+    "icon": "aa1a4cae47690ccd8a848e2bed5560606d90dd98.png"
+  },
+  {
+    "name": "GEMS",
+    "symbol": "GEMS",
+    "decimals": 18,
+    "contract": "0x7b12cdd6dc20bac5a7c85924e4d29f84a3bc376f",
+    "icon": "a4c5cf35736eb5a6e8cd974b9a9a72d65355451c.png"
+  },
+  {
     "name": "Vechain",
     "symbol": "VET",
     "contract": "",
