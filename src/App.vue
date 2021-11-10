@@ -10,7 +10,19 @@
         <b-row>
           <b-col cols="12" class="mt-2 mb-2">
             <div class="d-flex justify-content-center">
-              <a href="#" @click="setLanguage('zh')">中文 </a> || <a href="#" @click="setLanguage('en')">English</a>
+              <b-form-group
+              >
+                <b-form-radio-group
+                  id="btn-radios-language"
+                  v-model="selectedLanguage"
+                  :options="languageOptions"
+                  @change="setLanguage"
+                  button-variant="outline-primary"
+                  name="radio-btn-outline"
+                  size="sm"
+                  buttons
+                ></b-form-radio-group>
+              </b-form-group>
             </div>
           </b-col>
         </b-row>
