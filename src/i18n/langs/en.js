@@ -35,9 +35,9 @@ export default {
     buttonText: '+',
     modalOkText: 'Okay',
     modalCancelText: 'Cancel',
-    modalBoxTitle: 'Enter a new address:',
+    modalBoxTitle: 'Enter a new wallet address:',
     modalTokensTitle: 'Tokens:',
-    hintText1: 'Empty watchlist of symbol? Add an address to start watching/transferring',
+    hintText1: 'Add a wallet to start transfer symbol',
     hintText2: 'Have more symbol tokens? Add it.',
     hintText3: 'Add a symbol wallet'
   },

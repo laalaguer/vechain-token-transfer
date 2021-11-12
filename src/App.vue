@@ -30,7 +30,9 @@
         <b-row class="my-2" align-h="center">
           <b-col sm="12" md="12" lg="10">
             <b-card no-body>
-              <b-tabs card fill :pills="isMobile" v-model="tabIndex" @input="tabChangedFunction">
+              <!-- :pills="isMobile" -->
+              <!-- :vertical -->
+              <b-tabs card pills v-model="tabIndex" @input="tabChangedFunction">
                 <b-tab v-for="contract in contracts" :key="contract.symbol">
                   <template slot="title">
                     <div style="text-align: center">

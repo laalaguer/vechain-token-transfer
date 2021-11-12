@@ -12,8 +12,8 @@
         id="input-address"
         :state="addressState"
         v-model.trim="address"
-        v-on:change="boxChange"
-        placeholder="0x"
+        v-on:update="boxChange"
+        placeholder="0x..."
       ></b-form-input>
   </b-form-group>
 </template>
@@ -52,7 +52,7 @@ export default {
   computed: {
     computedLabel () {
       if (this.address === '') {
-        return this.label + ' ' + '...'
+        return this.label
       }
       return this.label + ' ' + this.address.slice(0, 7) + '...' + this.address.slice(-7)
     },
