@@ -112,6 +112,13 @@
     "icon": "6264aec1716bb13dc8f0d4044d3e986678c553f0.png"
   },
   {
+    "name": "B3TR",
+    "symbol": "B3TR",
+    "decimals": 18,
+    "contract": "0xac0ca2a5148e15ef913f9f5cf8eb3cf763f5a43f",
+    "icon": "3d55edb42b09a634f7f2f26756a02571de901a5b.png"
+  },
+  {
     "name": "Vechain",
     "symbol": "VET",
     "contract": "",

@@ -1,7 +1,9 @@
 # VeChain Tokens
 
+This web program ONLY runs in the Sync 1 environment.
+
 ## Demo
-[https://vechaintokens.abyteahead.com/](https://vechaintokens.abyteahead.com/)
+[https://laalaguer.github.io/vechain-token-transfer/](https://laalaguer.github.io/vechain-token-transfer/)
 
 <img src="./interface.png" style="max-width:500px;"/>
 
@@ -9,7 +11,18 @@
 1. Runs in [VeChain-Sync-Browser](https://github.com/vechain/thor-sync.electron)
 2. Depends on web page environment [Connex](https://github.com/vechain/connex)
 
+## Add New Tokens
+
+```bash
+src/test_contracts.json # add test tokens
+src/main_contracts.json # add main tokens
+src/assets/?.png # add some pngs as icons
+```
+
 ## Project setup
+
+Uses Node Version 12 (`nvm use v12`)
+
 ```
 npm install
 ```
@@ -34,7 +47,7 @@ npm run test
 npm run lint
 ```
 
-### Prepare for publish
+### Prepare for publish (move to gh pages folder)
 ```
 npm run publish
 ```
