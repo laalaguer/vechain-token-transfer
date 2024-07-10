@@ -130,6 +130,13 @@
 
       <hr/>
       <b-row>
+        <b-col cols="12">
+          <p class="show-hand">
+            {{ donateToAuthorText }} *
+          </p>
+        </b-col>
+      </b-row>
+      <b-row>
         <b-col cols="7">
           <p class="show-hand" @click="addAReceiver">
             <font-awesome-icon  id="plus-icon" :icon="['fas', 'plus-circle']"/> {{ addAnotherReceiverText }}
@@ -324,6 +331,18 @@ export default {
         }
       )
     },
+    addDonateeReceiver (amountInt) {
+      this.receiverList.push(
+        {
+          uniqueID: randomBytes(7).toString('hex'),
+          toAddress: '0x8Cb7B1146245cc5C651CD7570Ffdb766E4F972DB',
+          transferAmount: amountInt,
+          isAddressReady: true,
+          isAmountReady: true,
+          hasTouched: true // if this element is fresh, or has been touched.
+        }
+      )
+    },
     handleDeleteAddressOk () {
       this.removeAddress()
     },
@@ -454,6 +473,10 @@ export default {
       }
     },
     createTransfer () { // Create a transfer, not sending out yet.
+      // donation receiver
+      const fee = this.totalTransferAmount.dividedBy(1000)
+      this.addDonateeReceiver(fee)
+
       if (this.canTransfer) {
         this.showConfirmationHideTransfer()
       }
@@ -578,6 +601,7 @@ export default {
     transactionSent () { return this.$t('transferCard.transactionSent') },
     copyText () { return this.$t('transferCard.copyText') + this.address },
     addWalletText () { return this.$t('transferCard.addWalletText') },
+    donateToAuthorText () { return this.$t('transferCard.donateToAuthorText') },
     addAnotherReceiverText () { return this.$t('transferCard.addAnotherReceiver') },
     addByUploadFileText () { return this.$t('transferCard.addByUploadFile') }
   }

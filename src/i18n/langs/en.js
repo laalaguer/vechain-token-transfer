@@ -56,6 +56,7 @@ export default {
     transactionSent: 'Transaction sent!',
     copyText: 'Click to copy address',
     addWalletText: 'Prove to be mine',
+    donateToAuthorText: 'Will donate 0.1% to tool author',
     addAnotherReceiver: 'Add another receiver',
     addByUploadFile: 'Add mulitple receivers by .csv file',
     uploadCSVModalTitle: 'Upload a .csv file',

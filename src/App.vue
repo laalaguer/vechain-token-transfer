@@ -60,7 +60,7 @@
             </b-col>
             <b-col class="mb-3" cols="12" md="8" lg="4">
               <h5>{{donateText}}</h5>
-              <a href="#" v-b-modal.donation-modal>0x422D582C08d7965cD5Fefef1572faaA15783f473</a>
+              <a href="#" v-b-modal.donation-modal>0x8Cb7B1146245cc5C651CD7570Ffdb766E4F972DB</a>
             </b-col>
             <b-col class="mb-3" cols="12" md="12" lg="3">
               <h5>Github</h5>
@@ -98,9 +98,7 @@
         >
         <div>
           <p>1. {{donateByCopy}}</p>
-          <copy-input disabled="true" icon-name="fa-address-card" textToCopy="0x422D582C08d7965cD5Fefef1572faaA15783f473"></copy-input>
-          <p class="mt-3">2. {{donateByBuyMeACoffee}}</p>
-          <a class="d-block mb-3 ml-1" target="_blank" href="https://bmac.vecha.in/donate?name=laalaguer&addr=0x422D582C08d7965cD5Fefef1572faaA15783f473&amount=10000&msg=Thank%20you!%0AIf%20you%20want%20new%20features,%20email%20to%20laalaguer@gmail.com%0A%E8%8B%A5%E6%9C%89%E6%96%B0%E9%9C%80%E6%B1%82%EF%BC%8C%E8%AF%B7email%E5%88%B0%20laalaguer@gmail.com">0x422D582C08d7965cD5Fefef1572faaA15783f473</a>
+          <copy-input disabled="true" icon-name="fa-address-card" textToCopy="0x8Cb7B1146245cc5C651CD7570Ffdb766E4F972DB"></copy-input>
         </div>
       </b-modal>
     </div>

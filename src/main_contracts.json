@@ -148,6 +148,15 @@
     "icon": "6264aec1716bb13dc8f0d4044d3e986678c553f0.png"
   },
   {
+    "name": "B3TR",
+    "symbol": "B3TR",
+    "decimals": 18,
+    "address": "0x5ef79995fe8a89e0812330e4378eb2660cede699",
+    "desc": "The official utility token in the VeBetterDAO",
+    "icon": "3d55edb42b09a634f7f2f26756a02571de901a5b.png",
+    "totalSupply": "8750000000000000000000000"
+  },
+  {
     "name": "Vechain",
     "symbol": "VET",
     "contract": "",
